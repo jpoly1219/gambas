@@ -9,7 +9,7 @@ type Index struct {
 }
 
 type Series struct {
-	Data map[Index][]interface{}
+	Data map[Index]interface{}
 	Name string
 }
 
