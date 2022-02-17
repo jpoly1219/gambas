@@ -1,29 +1,25 @@
 package gambas
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type Index struct {
-	Value interface{}
+type CustomIndex struct {
+	Value []interface{}
 }
 
 type Series struct {
-	Data map[Index]interface{}
-	Name string
+	Data        map[int]interface{}
+	CustomIndex CustomIndex
+	Name        string
 }
 
-func (s Series) PrintElements() {
-	if s.Name != "" {
-		fmt.Println(" ", s.Name)
-	}
-	for k, v := range s.Data {
-		fmt.Println(k.Value, v)
-	}
+func (s Series) PrintSeries() string {
+	message := fmt.Sprintln("Data:", s.Data, "\nCustomIndex:", s.CustomIndex, "\nName:", s.Name)
+	fmt.Println(message)
+	return message
 }
 
 type DataFrame struct {
-	SeriesArray []Series
-	IndexArray  []Index
-	Name        string
+	SeriesArray      []Series
+	CustomIndexArray []CustomIndex
+	Name             string
 }
