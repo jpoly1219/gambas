@@ -8,10 +8,10 @@ import (
 
 func TestNewSeries(t *testing.T) {
 	data := []interface{}{"alice", "bob", "charlie"}
-	s, err := NewSeries(data, nil, "People")
+	s, err := NewSeries(data, CustomIndex{}, "People")
 
 	expected := Series{
-		Data: map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
+		Data: map[int]interface{}{0: "alice", 1: "bob", 2: "charlie"},
 		Name: "People",
 	}
 
