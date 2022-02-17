@@ -1,15 +1,15 @@
 package gambas
 
-func NewSeries(data []interface{}, indexes []Index, name string) (Series, error) {
+func NewSeries(data []interface{}, indexes CustomIndex, name string) (Series, error) {
 	var s Series
-	s.Data = make(map[Index]interface{})
+	s.Data = make(map[int]interface{})
+
+	if indexes.Value != nil {
+		s.CustomIndex = indexes
+	}
 
 	for i, v := range data {
-		if indexes == nil {
-			s.Data[Index{i}] = v
-		} else {
-			s.Data[indexes[i]] = v
-		}
+		s.Data[i] = v
 	}
 
 	s.Name = name
