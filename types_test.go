@@ -4,7 +4,7 @@ import "testing"
 
 func TestPrintSeries(t *testing.T) {
 	s := Series{
-		Data: map[int]interface{}{0: "alice", 1: "bob", 2: "charlie"},
+		Data: map[interface{}]interface{}{0: "alice", 1: "bob", 2: "charlie"},
 		Name: "People",
 	}
 

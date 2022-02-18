@@ -7,7 +7,7 @@ type CustomIndex struct {
 }
 
 type Series struct {
-	Data        map[int]interface{}
+	Data        map[interface{}]interface{}
 	CustomIndex CustomIndex
 	Name        string
 }
