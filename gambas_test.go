@@ -7,16 +7,40 @@ import (
 )
 
 func TestNewSeries(t *testing.T) {
-	data := []interface{}{"alice", "bob", "charlie"}
-	s := NewSeries(data, []Index{{"a"}, {"b"}, {"c"}}, "People")
-
-	expected := Series{
-		Data:       map[Index]interface{}{{"a"}: "alice", {"b"}: "bob", {"c"}: "charlie"},
-		IndexArray: []Index{{"a"}, {"b"}, {"c"}},
-		Name:       "People",
+	type newSeriesTest struct {
+		arg1     []interface{}
+		arg2     []Index
+		arg3     string
+		expected Series
 	}
 
-	if !cmp.Equal(s, expected) {
-		t.Fatalf("expected %v, got %v", expected, s)
+	newSeriesTests := []newSeriesTest{
+		{
+			[]interface{}{"alice", "bob", "charlie"},
+			nil,
+			"People",
+			Series{
+				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
+				[]Index{{0}, {1}, {2}},
+				"People",
+			},
+		},
+		{
+			[]interface{}{"apple", "banana", "cherry"},
+			[]Index{{"a"}, {"b"}, {"c"}},
+			"Fruit",
+			Series{
+				map[Index]interface{}{{"a"}: "apple", {"b"}: "banana", {"c"}: "cherry"},
+				[]Index{{"a"}, {"b"}, {"c"}},
+				"Fruit",
+			},
+		},
+	}
+
+	for _, test := range newSeriesTests {
+		output := NewSeries(test.arg1, test.arg2, test.arg3)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
 	}
 }
