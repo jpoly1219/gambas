@@ -39,7 +39,7 @@ func TestNewSeries(t *testing.T) {
 
 	for _, test := range newSeriesTests {
 		output := NewSeries(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(output, output.indexArray[0])) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
