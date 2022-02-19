@@ -45,9 +45,9 @@ func (s Series) Loc(index Index) interface{} {
 func (s Series) LocM(indexArray []Index) []interface{} {
 	resultArray := make([]interface{}, len(indexArray))
 
-	for _, v := range indexArray {
+	for i, v := range indexArray {
 		result := s.Data[v]
-		resultArray = append(resultArray, result)
+		resultArray[i] = result
 	}
 
 	return resultArray
