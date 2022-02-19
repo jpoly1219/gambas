@@ -32,13 +32,13 @@ func TestPrintSeries(t *testing.T) {
 	}
 }
 
-func TestLoc(t *testing.T) {
-	type locTest struct {
+func TestAt(t *testing.T) {
+	type atTest struct {
 		arg1     Series
 		arg2     Index
 		expected interface{}
 	}
-	locTests := []locTest{
+	atTests := []atTest{
 		{
 			Series{
 				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
@@ -59,21 +59,21 @@ func TestLoc(t *testing.T) {
 		},
 	}
 
-	for _, test := range locTests {
-		output := test.arg1.Loc(test.arg2)
+	for _, test := range atTests {
+		output := test.arg1.At(test.arg2)
 		if output != test.expected {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
 }
 
-func TestLocM(t *testing.T) {
-	type locMTest struct {
+func TestAtM(t *testing.T) {
+	type atMTest struct {
 		arg1     Series
 		arg2     []Index
 		expected []interface{}
 	}
-	locMTests := []locMTest{
+	atMTests := []atMTest{
 		{
 			Series{
 				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
@@ -94,8 +94,46 @@ func TestLocM(t *testing.T) {
 		},
 	}
 
-	for _, test := range locMTests {
-		output := test.arg1.LocM(test.arg2)
+	for _, test := range atMTests {
+		output := test.arg1.AtM(test.arg2)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
+func TestAtR(t *testing.T) {
+	type atRTest struct {
+		arg1     Series
+		arg2     int
+		arg3     int
+		expected []interface{}
+	}
+	atRTests := []atRTest{
+		{
+			Series{
+				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
+				[]Index{{0}, {1}, {2}},
+				"People",
+			},
+			0,
+			2,
+			[]interface{}{"alice", "bob", "charlie"},
+		},
+		{
+			Series{
+				map[Index]interface{}{{"a"}: "apple", {"b"}: "banana", {"c"}: "cherry"},
+				[]Index{{"a"}, {"b"}, {"c"}},
+				"Fruit",
+			},
+			0,
+			1,
+			[]interface{}{"apple", "banana"},
+		},
+	}
+
+	for _, test := range atRTests {
+		output := test.arg1.AtR(test.arg2, test.arg3)
 		if !cmp.Equal(output, test.expected) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
