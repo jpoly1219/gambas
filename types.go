@@ -36,18 +36,30 @@ func (s Series) CalcMean() (float64, error) {
 	return mean, nil
 }
 
-func (s Series) Loc(index Index) interface{} {
+func (s Series) At(index Index) interface{} {
 	result := s.Data[index]
 
 	return result
 }
 
-func (s Series) LocM(indexArray []Index) []interface{} {
+func (s Series) AtM(indexArray []Index) []interface{} {
 	resultArray := make([]interface{}, len(indexArray))
 
 	for i, v := range indexArray {
 		result := s.Data[v]
 		resultArray[i] = result
+	}
+
+	return resultArray
+}
+
+func (s Series) AtR(min, max int) []interface{} {
+	resultArray := make([]interface{}, 0)
+
+	for i := min; i <= max; i++ {
+		key := s.IndexArray[i]
+		result := s.Data[key]
+		resultArray = append(resultArray, result)
 	}
 
 	return resultArray
