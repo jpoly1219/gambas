@@ -9,19 +9,19 @@ import (
 func TestPrintSeries(t *testing.T) {
 	seriesArray := []Series{
 		{
-			map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
-			[]Index{{0}, {1}, {2}},
+			map[interface{}]interface{}{0: "alice", 1: "bob", 2: "charlie"},
+			Index{[]interface{}{0, 1, 2}},
 			"People",
 		},
 		{
-			map[Index]interface{}{{"a"}: "apple", {"b"}: "banana", {"c"}: "cherry"},
-			[]Index{{"a"}, {"b"}, {"c"}},
+			map[interface{}]interface{}{"a": "apple", "b": "banana", "c": "cherry"},
+			Index{[]interface{}{"a", "b", "c"}},
 			"Fruit",
 		},
 	}
 	expectedArray := []string{
-		"data: map[{0}:alice {1}:bob {2}:charlie] \nindexArray: [{0} {1} {2}] \nname: People\n",
-		"data: map[{a}:apple {b}:banana {c}:cherry] \nindexArray: [{a} {b} {c}] \nname: Fruit\n",
+		"data: map[0:alice 1:bob 2:charlie] \nindexArray: {[0 1 2]} \nname: People\n",
+		"data: map[a:apple b:banana c:cherry] \nindexArray: {[a b c]} \nname: Fruit\n",
 	}
 
 	for i, test := range seriesArray {
@@ -35,26 +35,26 @@ func TestPrintSeries(t *testing.T) {
 func TestAt(t *testing.T) {
 	type atTest struct {
 		arg1     Series
-		arg2     Index
+		arg2     interface{}
 		expected interface{}
 	}
 	atTests := []atTest{
 		{
 			Series{
-				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
-				[]Index{{0}, {1}, {2}},
+				map[interface{}]interface{}{0: "alice", 1: "bob", 2: "charlie"},
+				Index{[]interface{}{0, 1, 2}},
 				"People",
 			},
-			Index{0},
+			0,
 			"alice",
 		},
 		{
 			Series{
-				map[Index]interface{}{{"a"}: "apple", {"b"}: "banana", {"c"}: "cherry"},
-				[]Index{{"a"}, {"b"}, {"c"}},
+				map[interface{}]interface{}{"a": "apple", "b": "banana", "c": "cherry"},
+				Index{[]interface{}{"a", "b", "c"}},
 				"Fruit",
 			},
-			Index{"b"},
+			"b",
 			"banana",
 		},
 	}
@@ -70,26 +70,26 @@ func TestAt(t *testing.T) {
 func TestAtM(t *testing.T) {
 	type atMTest struct {
 		arg1     Series
-		arg2     []Index
+		arg2     []interface{}
 		expected []interface{}
 	}
 	atMTests := []atMTest{
 		{
 			Series{
-				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
-				[]Index{{0}, {1}, {2}},
+				map[interface{}]interface{}{0: "alice", 1: "bob", 2: "charlie"},
+				Index{[]interface{}{0, 1, 2}},
 				"People",
 			},
-			[]Index{{0}, {1}},
+			[]interface{}{0, 1},
 			[]interface{}{"alice", "bob"},
 		},
 		{
 			Series{
-				map[Index]interface{}{{"a"}: "apple", {"b"}: "banana", {"c"}: "cherry"},
-				[]Index{{"a"}, {"b"}, {"c"}},
+				map[interface{}]interface{}{"a": "apple", "b": "banana", "c": "cherry"},
+				Index{[]interface{}{"a", "b", "c"}},
 				"Fruit",
 			},
-			[]Index{{"b"}, {"c"}},
+			[]interface{}{"b", "c"},
 			[]interface{}{"banana", "cherry"},
 		},
 	}
@@ -112,8 +112,8 @@ func TestAtR(t *testing.T) {
 	atRTests := []atRTest{
 		{
 			Series{
-				map[Index]interface{}{{0}: "alice", {1}: "bob", {2}: "charlie"},
-				[]Index{{0}, {1}, {2}},
+				map[interface{}]interface{}{0: "alice", 1: "bob", 2: "charlie"},
+				Index{[]interface{}{0, 1, 2}},
 				"People",
 			},
 			0,
@@ -122,8 +122,8 @@ func TestAtR(t *testing.T) {
 		},
 		{
 			Series{
-				map[Index]interface{}{{"a"}: "apple", {"b"}: "banana", {"c"}: "cherry"},
-				[]Index{{"a"}, {"b"}, {"c"}},
+				map[interface{}]interface{}{"a": "apple", "b": "banana", "c": "cherry"},
+				Index{[]interface{}{"a", "b", "c"}},
 				"Fruit",
 			},
 			0,
