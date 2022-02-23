@@ -23,6 +23,10 @@ func NewSeries(data []interface{}, index []interface{}, name string) Series {
 	return s
 }
 
+func NewSeriesFromFile(pathToFile ) {
+
+}
+
 func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface{}, name string) DataFrame {
 	var df DataFrame
 	df.series = make(map[interface{}]Series, len(data))
@@ -34,4 +38,8 @@ func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface
 	}
 
 	return df
+}
+
+func NewDataFrameFromFile() {
+
 }
