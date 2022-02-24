@@ -2,6 +2,8 @@ package gambas
 
 import "fmt"
 
+// NewSeries created a new Series object from given parameters.
+// Generally, NewSeriesFromFile will be used more often.
 func NewSeries(data []interface{}, index []interface{}, name string) Series {
 	var s Series
 	s.data = make(map[interface{}]interface{})
@@ -23,10 +25,14 @@ func NewSeries(data []interface{}, index []interface{}, name string) Series {
 	return s
 }
 
-func NewSeriesFromFile(pathToFile ) {
+// NewSeriesFromFile creates a new Series object from the file provided.
+// Path to file should be generated using `filepath.Join`.
+func NewSeriesFromFile(pathToFile string) {
 
 }
 
+// NewDataFrame created a new DataFrame object from given parameters.
+// Generally, NewDataFrameFromFile will be used more often.
 func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface{}, name string) DataFrame {
 	var df DataFrame
 	df.series = make(map[interface{}]Series, len(data))
@@ -40,6 +46,8 @@ func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface
 	return df
 }
 
-func NewDataFrameFromFile() {
+// NewDataFrameFromFile creates a new DataFrame object from the file provided.
+// Path to file should be generated using `filepath.Join`.
+func NewDataFrameFromFile(pathToFile string) {
 
 }
