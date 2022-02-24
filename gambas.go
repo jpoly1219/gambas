@@ -33,7 +33,7 @@ func NewSeriesFromFile(pathToFile string) {
 
 // NewDataFrame created a new DataFrame object from given parameters.
 // Generally, NewDataFrameFromFile will be used more often.
-func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface{}, name string) DataFrame {
+func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface{}) DataFrame {
 	var df DataFrame
 	df.series = make(map[interface{}]Series, len(data))
 	df.index.data = make([]interface{}, len(index))
@@ -42,6 +42,8 @@ func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface
 	for i, v := range data {
 		df.series[columns[i]] = NewSeries(v, index, columns[i].(string))
 	}
+	df.index.data = index
+	df.columns.data = columns
 
 	return df
 }

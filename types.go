@@ -72,5 +72,4 @@ type DataFrame struct {
 	series  map[interface{}]Series
 	index   Index
 	columns Index
-	name    string
 }
