@@ -2,6 +2,18 @@ package gambas
 
 import "fmt"
 
+// CreateRangeIndex takes the length of an Index and creates a RangeIndex.
+// RangeIndex is an index that spans from 0 to the length of the index.
+func CreateRangeIndex(length int) Index {
+	zeroToLength := make([]interface{}, length)
+
+	for i := 0; i < length; i++ {
+		zeroToLength[i] = i
+	}
+
+	return Index{zeroToLength}
+}
+
 // NewSeries created a new Series object from given parameters.
 // Generally, NewSeriesFromFile will be used more often.
 func NewSeries(data []interface{}, index []interface{}, name string) Series {
