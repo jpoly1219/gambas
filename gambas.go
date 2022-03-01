@@ -37,12 +37,6 @@ func NewSeries(data []interface{}, index []interface{}, name string) Series {
 	return s
 }
 
-// NewSeriesFromFile creates a new Series object from the file provided.
-// Path to file should be generated using `filepath.Join`.
-func NewSeriesFromFile(pathToFile string) {
-
-}
-
 // NewDataFrame created a new DataFrame object from given parameters.
 // Generally, NewDataFrameFromFile will be used more often.
 func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface{}) DataFrame {
@@ -58,10 +52,4 @@ func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface
 	df.columns.data = columns
 
 	return df
-}
-
-// NewDataFrameFromFile creates a new DataFrame object from the file provided.
-// Path to file should be generated using `filepath.Join`.
-func NewDataFrameFromFile(pathToFile string) {
-
 }
