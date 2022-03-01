@@ -33,7 +33,9 @@ func ReadCsv(pathToFile string, dtype []string) DataFrame {
 		if rowNum == 0 {
 			// add to columnArray
 			for _, v := range row {
-				columnArray = append(columnArray, v)
+				// each data should be checked to see what type it is
+				vChecked := checkType(v)
+				columnArray = append(columnArray, vChecked)
 			}
 			rowNum++
 			continue
@@ -50,5 +52,4 @@ func ReadCsv(pathToFile string, dtype []string) DataFrame {
 	// create new DataFrame object and return it
 	df := NewDataFrame(data2DArray, []interface{}{}, columnArray)
 	return df
-	// each data should be checked to see what type it is
 }
