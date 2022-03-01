@@ -5,6 +5,17 @@ import (
 	"reflect"
 )
 
+// checkType checks to see if the data can be represented as a float64.
+// Because CSV is read as an array of strings, there has to be a way to check the type.
+func checkType(data interface{}) interface{} {
+	switch data {
+	case data.(float64):
+		return data.(float64)
+	default:
+		return data.(string)
+	}
+}
+
 type Index struct {
 	data []interface{}
 }
