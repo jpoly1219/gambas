@@ -21,7 +21,7 @@ type Index struct {
 }
 
 type Series struct {
-	data  map[interface{}]interface{}
+	data  []interface{}
 	index Index
 	name  string
 }
@@ -48,39 +48,55 @@ func (s Series) CalcMean() (float64, error) {
 }
 
 // At() returns the element at a given index.
-func (s Series) At(index interface{}) interface{} {
-	result := s.data[index]
+func (s Series) At(index interface{}) (interface{}, error) {
+	for i, v := range s.index.data {
+		if v == index {
+			result := s.data[i]
+			return result, nil
+			break
+		}
+	}
 
-	return result
+	return nil, fmt.Errorf("index %s is not found", index)
 }
 
 // AtM() returns an array of elements at given indexes.
-func (s Series) AtM(indexArray []interface{}) []interface{} {
+func (s Series) AtM(indexArray []interface{}) ([]interface{}, error) {
 	resultArray := make([]interface{}, len(indexArray))
 
-	for i, v := range indexArray {
-		result := s.data[v]
-		resultArray[i] = result
-	}
-
-	return resultArray
-}
-
-// AtR() returns an array of elements at a given index range.
-func (s Series) AtR(min, max int) []interface{} {
-	resultArray := make([]interface{}, 0)
-
-	for i := min; i <= max; i++ {
-		key := s.index.data[i]
-		result := s.data[key]
+	for _, v := range indexArray {
+		result, err := s.At(v)
+		if err != nil {
+			return nil, err
+		}
 		resultArray = append(resultArray, result)
 	}
 
-	return resultArray
+	return resultArray, nil
+}
+
+// AtR() returns an array of elements at a given index range.
+func (s Series) AtR(min, max int) ([]interface{}, error) {
+	resultArray := make([]interface{}, 0)
+
+	for i := min; i < max; i++ {
+		key := s.index.data[i]
+		result, err := s.At(key)
+		if err != nil {
+			return nil, err
+		}
+		resultArray = append(resultArray, result)
+	}
+
+	return resultArray, nil
 }
 
 type DataFrame struct {
-	series  map[interface{}]Series
+	series  []Series
 	index   Index
 	columns Index
+}
+
+func Loc(row, col string) {
+
 }
