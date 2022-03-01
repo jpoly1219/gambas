@@ -64,12 +64,12 @@ func (s Series) At(index interface{}) (interface{}, error) {
 func (s Series) AtM(indexArray []interface{}) ([]interface{}, error) {
 	resultArray := make([]interface{}, len(indexArray))
 
-	for _, v := range indexArray {
+	for i, v := range indexArray {
 		result, err := s.At(v)
 		if err != nil {
 			return nil, err
 		}
-		resultArray = append(resultArray, result)
+		resultArray[i] = result
 	}
 
 	return resultArray, nil
