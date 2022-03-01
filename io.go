@@ -9,7 +9,7 @@ import (
 
 // ReadCsv reads a CSV file and returns a new DataFrame object.
 // Path to file should be generated using `filepath.Join`.
-func ReadCsv(pathToFile string, dtype []string) DataFrame {
+func ReadCsv(pathToFile string) DataFrame {
 	// read line by line
 	f, err := os.Open(pathToFile)
 	if err != nil {
