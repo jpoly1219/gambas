@@ -6,6 +6,35 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestCreateRangeIndex(t *testing.T) {
+	type createRangeIndexTest struct {
+		arg1     int
+		expected Index
+	}
+
+	createRangeIndexTests := []createRangeIndexTest{
+		{
+			5,
+			Index{[]interface{}{0, 1, 2, 3, 4}},
+		},
+		{
+			10,
+			Index{[]interface{}{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
+		},
+		{
+			1,
+			Index{[]interface{}{0}},
+		},
+	}
+
+	for _, test := range createRangeIndexTests {
+		output := CreateRangeIndex(test.arg1)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
 func TestNewSeries(t *testing.T) {
 	type newSeriesTest struct {
 		arg1     []interface{}
@@ -20,7 +49,7 @@ func TestNewSeries(t *testing.T) {
 			nil,
 			"People",
 			Series{
-				map[interface{}]interface{}{0: "alice", 1: "bob", 2: "charlie"},
+				[]interface{}{"alice", "bob", "charlie"},
 				Index{[]interface{}{0, 1, 2}},
 				"People",
 			},
@@ -30,7 +59,7 @@ func TestNewSeries(t *testing.T) {
 			[]interface{}{"a", "b", "c"},
 			"Fruit",
 			Series{
-				map[interface{}]interface{}{"a": "apple", "b": "banana", "c": "cherry"},
+				[]interface{}{"apple", "banana", "cherry"},
 				Index{[]interface{}{"a", "b", "c"}},
 				"Fruit",
 			},
@@ -38,7 +67,7 @@ func TestNewSeries(t *testing.T) {
 	}
 
 	for _, test := range newSeriesTests {
-		output := NewSeries(test.arg1, test.arg2, test.arg3)
+		output, err := NewSeries(test.arg1, test.arg2, test.arg3)
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(output, output.index)) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
