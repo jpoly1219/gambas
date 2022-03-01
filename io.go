@@ -9,11 +9,11 @@ import (
 
 // ReadCsv reads a CSV file and returns a new DataFrame object.
 // Path to file should be generated using `filepath.Join`.
-func ReadCsv(pathToFile string) DataFrame {
+func ReadCsv(pathToFile string) (*DataFrame, error) {
 	// read line by line
 	f, err := os.Open(pathToFile)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer f.Close()
 	csvr := csv.NewReader(f)
@@ -50,6 +50,10 @@ func ReadCsv(pathToFile string) DataFrame {
 		rowNum++
 	}
 	// create new DataFrame object and return it
-	df := NewDataFrame(data2DArray, []interface{}{}, columnArray)
-	return df
+	df, err := NewDataFrame(data2DArray, CreateRangeIndex(len(data2DArray)), columnArray)
+	if err != nil {
+		return nil, err
+	}
+
+	return df, nil
 }
