@@ -16,40 +16,46 @@ func CreateRangeIndex(length int) Index {
 
 // NewSeries created a new Series object from given parameters.
 // Generally, NewSeriesFromFile will be used more often.
-func NewSeries(data []interface{}, index []interface{}, name string) Series {
+// For default index (0, ..., n-1), pass in CreateRangeIndex().
+func NewSeries(data []interface{}, index Index, name string) (*Series, error) {
+	if len(data) != len(index.data) {
+		return nil, fmt.Errorf("length of data (%d) and index (%d) does not match", len(data), len(index.data))
+	}
+
 	var s Series
-	s.data = make(map[interface{}]interface{})
-	s.index.data = make([]interface{}, len(index))
+	s.data = make([]interface{}, len(index.data))
+	s.index = index
 
 	for i, v := range data {
-		if index == nil {
-			s.index.data = append(s.index.data, i)
-			s.data[i] = v
-		} else {
-			s.index.data = index
-			s.data[index[i]] = v
-		}
+		s.data[i] = v
 	}
 
 	s.name = name
 	fmt.Println(s)
 
-	return s
+	return &s, nil
 }
 
 // NewDataFrame created a new DataFrame object from given parameters.
 // Generally, NewDataFrameFromFile will be used more often.
-func NewDataFrame(data [][]interface{}, index []interface{}, columns []interface{}) DataFrame {
-	var df DataFrame
-	df.series = make(map[interface{}]Series, len(data))
-	df.index.data = make([]interface{}, len(index))
-	df.columns.data = make([]interface{}, len(columns))
-
-	for i, v := range data {
-		df.series[columns[i]] = NewSeries(v, index, columns[i].(string))
+// For default index (0, ..., n-1), pass in CreateRangeIndex().
+func NewDataFrame(data [][]interface{}, index Index, columns []interface{}) (*DataFrame, error) {
+	if len(data) != len(columns) {
+		return nil, fmt.Errorf("length of data (%d) and columns (%d) does not match", len(data), len(columns))
 	}
-	df.index.data = index
+
+	var df DataFrame
+	df.series = make([]Series, len(data))
+	df.index = index
 	df.columns.data = columns
 
-	return df
+	for i, v := range data {
+		series, err := NewSeries(v, index, columns[i].(string))
+		if err != nil {
+			return nil, err
+		}
+		df.series[i] = *series
+	}
+
+	return &df, nil
 }
