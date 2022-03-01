@@ -25,7 +25,7 @@ func ReadCsv(pathToFile string, dtype []string) DataFrame {
 		row, err := csvr.Read()
 		if err != nil {
 			if err == io.EOF {
-				err = nil
+				break
 			}
 			log.Fatal(err)
 		}
