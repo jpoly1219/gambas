@@ -33,24 +33,25 @@ func ReadCsv(pathToFile string) (*DataFrame, error) {
 		if rowNum == 0 {
 			// add to columnArray
 			for _, v := range row {
-				// each data should be checked to see what type it is
-				vChecked := checkType(v)
-				columnArray = append(columnArray, vChecked)
+				columnArray = append(columnArray, v)
 			}
 			rowNum++
 			continue
 		}
 		// second line onwards is the actual data
-		dataArray := make([]interface{}, len(row))
-		for _, v := range row {
+		for i, v := range row {
 			// add to data2DArray
-			dataArray = append(dataArray, v)
+			if len(data2DArray) < len(row) {
+				data2DArray = append(data2DArray, make([]interface{}, 0))
+			}
+			// each data should be checked to see what type it is
+			vChecked := checkType(v)
+			data2DArray[i] = append(data2DArray[i], vChecked)
 		}
-		data2DArray = append(data2DArray, dataArray)
 		rowNum++
 	}
 	// create new DataFrame object and return it
-	df, err := NewDataFrame(data2DArray, CreateRangeIndex(len(data2DArray)), columnArray)
+	df, err := NewDataFrame(data2DArray, CreateRangeIndex(len(data2DArray[0])), columnArray)
 	if err != nil {
 		return nil, err
 	}
