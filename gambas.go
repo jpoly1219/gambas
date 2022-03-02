@@ -50,7 +50,7 @@ func NewDataFrame(data [][]interface{}, index Index, columns []interface{}) (*Da
 	df.columns.data = columns
 
 	for i, v := range data {
-		series, err := NewSeries(v, index, columns[i].(string))
+		series, err := NewSeries(v, index, fmt.Sprint(columns[i]))
 		if err != nil {
 			return nil, err
 		}
