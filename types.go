@@ -60,7 +60,6 @@ func (s Series) At(index interface{}) (interface{}, error) {
 		if v == index {
 			result := s.data[i]
 			return result, nil
-			break
 		}
 	}
 
