@@ -55,7 +55,7 @@ func (s Series) CalcMean() (float64, error) {
 }
 
 // At() returns the element at a given index.
-func (s Series) At(index interface{}) (interface{}, error) {
+func (s Series) Loc(index interface{}) (interface{}, error) {
 	for i, v := range s.index.data {
 		if v == index {
 			result := s.data[i]
@@ -67,11 +67,11 @@ func (s Series) At(index interface{}) (interface{}, error) {
 }
 
 // AtM() returns an array of elements at given indexes.
-func (s Series) AtM(indexArray []interface{}) ([]interface{}, error) {
+func (s Series) LocM(indexArray []interface{}) ([]interface{}, error) {
 	resultArray := make([]interface{}, len(indexArray))
 
 	for i, v := range indexArray {
-		result, err := s.At(v)
+		result, err := s.Loc(v)
 		if err != nil {
 			return nil, err
 		}
@@ -82,12 +82,12 @@ func (s Series) AtM(indexArray []interface{}) ([]interface{}, error) {
 }
 
 // AtR() returns an array of elements at a given index range.
-func (s Series) AtR(min, max int) ([]interface{}, error) {
+func (s Series) LocR(min, max int) ([]interface{}, error) {
 	resultArray := make([]interface{}, 0)
 
 	for i := min; i < max; i++ {
 		key := s.index.data[i]
-		result, err := s.At(key)
+		result, err := s.Loc(key)
 		if err != nil {
 			return nil, err
 		}
@@ -103,6 +103,20 @@ type DataFrame struct {
 	columns Index
 }
 
-func Loc(row, col string) {
+func (df DataFrame) Loc(row, col []interface{}) (*DataFrame, error) {
+	var colFilter Series
+	// index through columns first
+	for i, v := range df.columns.data {
+		if v == col {
+			colFilter = df.series[i]
+		}
+	}
+	// then index through rows
+	for i, v := range colFilter.index.data {
+		if v == row {
+			return colFilter.data[i], nil
+		}
+	}
 
+	return nil, fmt.Errorf("no data found")
 }
