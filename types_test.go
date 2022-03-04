@@ -32,7 +32,7 @@ func TestPrintSeries(t *testing.T) {
 	}
 }
 
-func TestAt(t *testing.T) {
+func TestSeriesLoc(t *testing.T) {
 	type atTest struct {
 		arg1     Series
 		arg2     interface{}
@@ -60,14 +60,14 @@ func TestAt(t *testing.T) {
 	}
 
 	for _, test := range atTests {
-		output, err := test.arg1.At(test.arg2)
+		output, err := test.arg1.Loc(test.arg2)
 		if output != test.expected || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
 }
 
-func TestAtM(t *testing.T) {
+func TestSeriesLocM(t *testing.T) {
 	type atMTest struct {
 		arg1     Series
 		arg2     []interface{}
@@ -95,14 +95,14 @@ func TestAtM(t *testing.T) {
 	}
 
 	for _, test := range atMTests {
-		output, err := test.arg1.AtM(test.arg2)
+		output, err := test.arg1.LocM(test.arg2)
 		if !cmp.Equal(output, test.expected) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
 }
 
-func TestAtR(t *testing.T) {
+func TestSeriesLocR(t *testing.T) {
 	type atRTest struct {
 		arg1     Series
 		arg2     int
@@ -133,7 +133,7 @@ func TestAtR(t *testing.T) {
 	}
 
 	for _, test := range atRTests {
-		output, err := test.arg1.AtR(test.arg2, test.arg3)
+		output, err := test.arg1.LocR(test.arg2, test.arg3)
 		if !cmp.Equal(output, test.expected) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
