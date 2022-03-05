@@ -245,3 +245,94 @@ func TestDataFrameLocRows(t *testing.T) {
 		}
 	}
 }
+
+func TestDataFrameLocCols(t *testing.T) {
+	type dataframeLocColsTest struct {
+		arg1     DataFrame
+		arg2     []interface{}
+		expected *DataFrame
+	}
+	dataframeLocColsTests := []dataframeLocColsTest{
+		{
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradford", "Candice"},
+						Index{[]interface{}{0, 1, 2}},
+						"Name",
+					},
+					{
+						[]interface{}{19, 25, 22},
+						Index{[]interface{}{0, 1, 2}},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						Index{[]interface{}{0, 1, 2}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{0, 1, 2}},
+				Index{[]interface{}{"Name", "Age", "Sex"}},
+			},
+			[]interface{}{"Name"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradford", "Candice"},
+						Index{[]interface{}{0, 1, 2}},
+						"Name",
+					},
+				},
+				Index{[]interface{}{0, 1, 2}},
+				Index{[]interface{}{"Name"}},
+			},
+		},
+		{
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradford", "Candice"},
+						Index{[]interface{}{0, 1, 2}},
+						"Name",
+					},
+					{
+						[]interface{}{19, 25, 22},
+						Index{[]interface{}{0, 1, 2}},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						Index{[]interface{}{0, 1, 2}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{0, 1, 2}},
+				Index{[]interface{}{"Name", "Age", "Sex"}},
+			},
+			[]interface{}{"Name", "Sex"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradford", "Candice"},
+						Index{[]interface{}{0, 1, 2}},
+						"Name",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						Index{[]interface{}{0, 1, 2}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{0, 1, 2}},
+				Index{[]interface{}{"Name", "Sex"}},
+			},
+		},
+	}
+	for _, test := range dataframeLocColsTests {
+		output, err := test.arg1.LocCols(test.arg2)
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index)) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
