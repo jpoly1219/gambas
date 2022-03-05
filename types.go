@@ -103,20 +103,69 @@ type DataFrame struct {
 	columns Index
 }
 
-func (df DataFrame) Loc(row, col []interface{}) (*DataFrame, error) {
+// LocRows returns a set of rows as a new DataFrame object, given a list of labels.
+func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
+	filtered2D := make([][]interface{}, 0)
+	for _, series := range df.series {
+		filtered := make([]interface{}, 0)
+		for _, label := range rows {
+			for j, index := range df.index.data {
+				if label == index {
+					filtered = append(filtered, series.data[j])
+				}
+			}
+		}
+		filtered2D = append(filtered2D, filtered)
+	}
+
+	dataframe, err := NewDataFrame(filtered2D, Index{rows}, df.columns.data)
+	if err != nil {
+		return nil, err
+	}
+
+	return dataframe, nil
+}
+
+func (df DataFrame) LocCols(cols []interface{}) (*Series, error) {
+
+}
+
+// Loc indexes the DataFrame object given a single row or column label.
+func (df DataFrame) Loc(row, col interface{}) (*Series, error) {
+	if row == nil && col == nil {
+		return nil, fmt.Errorf("no labels are given")
+	}
+
+	// case 1: only row is given
+	if col == nil {
+
+	}
+
 	var colFilter Series
 	// index through columns first
-	for i, v := range df.columns.data {
-		if v == col {
-			colFilter = df.series[i]
+	if col != nil {
+		for i, v := range df.columns.data {
+			if v == col {
+				colFilter = df.series[i]
+			}
 		}
 	}
 	// then index through rows
-	for i, v := range colFilter.index.data {
-		if v == row {
-			return colFilter.data[i], nil
+	if row != nil {
+		for i, v := range colFilter.index.data {
+			if v == row {
+				return colFilter.data[i], nil
+			}
 		}
 	}
 
 	return nil, fmt.Errorf("no data found")
+}
+
+func (df DataFrame) LocM() (*DataFrame, error) {
+
+}
+
+func (df DataFrame) ILoc() (*DataFrame, error) {
+
 }
