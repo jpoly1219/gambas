@@ -126,46 +126,61 @@ func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
 	return dataframe, nil
 }
 
-func (df DataFrame) LocCols(cols []interface{}) (*Series, error) {
+// LocRows returns a set of columns as a new DataFrame object, given a list of labels.
+func (df DataFrame) LocCols(cols []interface{}) (*DataFrame, error) {
+	filtered2D := make([][]interface{}, 0)
+	for _, column := range cols {
+		for _, series := range df.series {
+			if series.name == column {
+				filtered2D = append(filtered2D, series.data)
+			}
+		}
+	}
 
+	dataframe, err := NewDataFrame(filtered2D, df.index, cols)
+	if err != nil {
+		return nil, err
+	}
+
+	return dataframe, nil
 }
 
 // Loc indexes the DataFrame object given a single row or column label.
-func (df DataFrame) Loc(row, col interface{}) (*Series, error) {
-	if row == nil && col == nil {
-		return nil, fmt.Errorf("no labels are given")
-	}
+// func (df DataFrame) Loc(row, col interface{}) (*Series, error) {
+// 	if row == nil && col == nil {
+// 		return nil, fmt.Errorf("no labels are given")
+// 	}
 
-	// case 1: only row is given
-	if col == nil {
+// 	// case 1: only row is given
+// 	if col == nil {
 
-	}
+// 	}
 
-	var colFilter Series
-	// index through columns first
-	if col != nil {
-		for i, v := range df.columns.data {
-			if v == col {
-				colFilter = df.series[i]
-			}
-		}
-	}
-	// then index through rows
-	if row != nil {
-		for i, v := range colFilter.index.data {
-			if v == row {
-				return colFilter.data[i], nil
-			}
-		}
-	}
+// 	var colFilter Series
+// 	// index through columns first
+// 	if col != nil {
+// 		for i, v := range df.columns.data {
+// 			if v == col {
+// 				colFilter = df.series[i]
+// 			}
+// 		}
+// 	}
+// 	// then index through rows
+// 	if row != nil {
+// 		for i, v := range colFilter.index.data {
+// 			if v == row {
+// 				return colFilter.data[i], nil
+// 			}
+// 		}
+// 	}
 
-	return nil, fmt.Errorf("no data found")
-}
+// 	return nil, fmt.Errorf("no data found")
+// }
 
-func (df DataFrame) LocM() (*DataFrame, error) {
+// func (df DataFrame) LocM() (*DataFrame, error) {
 
-}
+// }
 
-func (df DataFrame) ILoc() (*DataFrame, error) {
+// func (df DataFrame) ILoc() (*DataFrame, error) {
 
-}
+// }
