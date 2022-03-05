@@ -139,3 +139,109 @@ func TestSeriesLocR(t *testing.T) {
 		}
 	}
 }
+
+func TestDataFrameLocRows(t *testing.T) {
+	type dataframeLocRowsTest struct {
+		arg1     DataFrame
+		arg2     []interface{}
+		expected *DataFrame
+	}
+	dataframeLocRowsTests := []dataframeLocRowsTest{
+		{
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradford", "Candice"},
+						Index{[]interface{}{0, 1, 2}},
+						"Name",
+					},
+					{
+						[]interface{}{19, 25, 22},
+						Index{[]interface{}{0, 1, 2}},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						Index{[]interface{}{0, 1, 2}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{0, 1, 2}},
+				Index{[]interface{}{"Name", "Age", "Sex"}},
+			},
+			[]interface{}{0},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery"},
+						Index{[]interface{}{0}},
+						"Name",
+					},
+					{
+						[]interface{}{19},
+						Index{[]interface{}{0}},
+						"Age",
+					},
+					{
+						[]interface{}{"Male"},
+						Index{[]interface{}{0}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{0}},
+				Index{[]interface{}{"Name", "Age", "Sex"}},
+			},
+		},
+		{
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradford", "Candice"},
+						Index{[]interface{}{0, 1, 2}},
+						"Name",
+					},
+					{
+						[]interface{}{19, 25, 22},
+						Index{[]interface{}{0, 1, 2}},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						Index{[]interface{}{0, 1, 2}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{0, 1, 2}},
+				Index{[]interface{}{"Name", "Age", "Sex"}},
+			},
+			[]interface{}{1, 2},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Bradford", "Candice"},
+						Index{[]interface{}{1, 2}},
+						"Name",
+					},
+					{
+						[]interface{}{25, 22},
+						Index{[]interface{}{1, 2}},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Female"},
+						Index{[]interface{}{1, 2}},
+						"Sex",
+					},
+				},
+				Index{[]interface{}{1, 2}},
+				Index{[]interface{}{"Name", "Age", "Sex"}},
+			},
+		},
+	}
+	for _, test := range dataframeLocRowsTests {
+		output, err := test.arg1.LocRows(test.arg2)
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index)) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
