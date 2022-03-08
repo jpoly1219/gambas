@@ -171,12 +171,21 @@ func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
 		filtered2D[i] = filteredRows
 	}
 
-	dataframe, err := NewDataFrame(filtered2D, Index{rows}, cols)
-	if err != nil {
-		return nil, err
+	switch rows[0].(type) {
+	case int:
+		dataframe, err := NewDataFrame(filtered2D, CreateRangeIndex(len(rows)), cols)
+		if err != nil {
+			return nil, err
+		}
+		return dataframe, nil
+	default:
+		dataframe, err := NewDataFrame(filtered2D, Index{rows}, cols)
+		if err != nil {
+			return nil, err
+		}
+		return dataframe, nil
 	}
 
-	return dataframe, nil
 }
 
 // func (df DataFrame) LocM() (*DataFrame, error) {
