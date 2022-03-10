@@ -195,3 +195,8 @@ func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
 // func (df DataFrame) ILoc() (*DataFrame, error) {
 
 // }
+
+// I am thinking of redefining some of DataFrame at the moment.
+// Notably, adding indexCol method of type []interface{} and changing the type of index to []Index.
+// This is to make indexing make more sense, and allow for multi-indexing.
+// There will be a major overhaul for this which I will work on during the weekend.
