@@ -98,27 +98,36 @@ func (s Series) LocR(min, max int) ([]interface{}, error) {
 }
 
 type DataFrame struct {
-	series  []Series
-	index   Index
-	columns Index
+	series    []Series
+	columns   Index
+	indexCols []interface{}
+	index     []Index
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
 func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
-	filtered2D := make([][]interface{}, 0)
-	for _, series := range df.series {
-		filtered := make([]interface{}, 0)
-		for _, label := range rows {
-			for j, index := range df.index.data {
-				if label == index {
-					filtered = append(filtered, series.data[j])
+	locations := make([]int, 0)
+
+	for _, row := range rows {
+		for _, index := df.index {
+			for i, value := range index {
+				if row == value {
+					locations = append(locations, i)
 				}
 			}
 		}
-		filtered2D = append(filtered2D, filtered)
 	}
 
-	dataframe, err := NewDataFrame(filtered2D, Index{rows}, df.columns.data)
+	filteredCols := make([][]interface{}, 0)
+	for _, series := range df.series {
+		filteredCol := make([]interface{}, 0)
+		for _, location := range locations {
+			filteredCol = append(filteredCol, df.series[location])
+		}
+		filteredCols = append(filteredCols, filteredCol)
+	}
+
+	dataframe, err := NewDataFrame(filteredCols, df.columns.data, df.indexCols)
 	if err != nil {
 		return nil, err
 	}
