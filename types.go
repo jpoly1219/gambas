@@ -154,47 +154,58 @@ func (df DataFrame) LocCols(cols []interface{}) (*DataFrame, error) {
 	return dataframe, nil
 }
 
-// Loc indexes the DataFrame object given a single row or column label.
+// Loc indexes the DataFrame object given a slice of row and column labels.
 func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
-	filteredCols := make([]Series, len(cols))
-	for i, col := range cols {
-		for _, series := range df.series {
-			if series.name == col {
-				filteredCols[i] = series
-			}
-		}
+	df1, err := df.LocCols(cols)
+	if err != nil {
+		return nil, err
 	}
 
-	filtered2D := make([][]interface{}, len(cols))
-	for i, filteredCol := range filteredCols {
-		filteredRows := make([]interface{}, len(rows))
-
-		for j, row := range rows {
-			for k, index := range filteredCol.index.data {
-				if index == row {
-					filteredRows[j] = filteredCol.data[k]
-				}
-			}
-		}
-
-		filtered2D[i] = filteredRows
+	df2, err := df1.LocRows(rows)
+	if err != nil {
+		return nil, err
 	}
 
-	switch rows[0].(type) {
-	case int:
-		dataframe, err := NewDataFrame(filtered2D, CreateRangeIndex(len(rows)), cols)
-		if err != nil {
-			return nil, err
-		}
-		return dataframe, nil
-	default:
-		dataframe, err := NewDataFrame(filtered2D, Index{rows}, cols)
-		if err != nil {
-			return nil, err
-		}
-		return dataframe, nil
-	}
+	return df2, nil
 
+	// filteredCols := make([]Series, len(cols))
+	// for i, col := range cols {
+	// 	for _, series := range df.series {
+	// 		if series.name == col {
+	// 			filteredCols[i] = series
+	// 		}
+	// 	}
+	// }
+
+	// filtered2D := make([][]interface{}, len(cols))
+	// for i, filteredCol := range filteredCols {
+	// 	filteredRows := make([]interface{}, len(rows))
+
+	// 	for j, row := range rows {
+	// 		for k, index := range filteredCol.index.data {
+	// 			if index == row {
+	// 				filteredRows[j] = filteredCol.data[k]
+	// 			}
+	// 		}
+	// 	}
+
+	// 	filtered2D[i] = filteredRows
+	// }
+
+	// switch rows[0].(type) {
+	// case int:
+	// 	dataframe, err := NewDataFrame(filtered2D, CreateRangeIndex(len(rows)), cols)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	return dataframe, nil
+	// default:
+	// 	dataframe, err := NewDataFrame(filtered2D, Index{rows}, cols)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	return dataframe, nil
+	// }
 }
 
 // func (df DataFrame) LocM() (*DataFrame, error) {
