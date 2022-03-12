@@ -166,8 +166,9 @@ func TestDataFrameLocRows(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 			[]interface{}{0},
 			&DataFrame{
@@ -188,8 +189,9 @@ func TestDataFrameLocRows(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0}}},
 			},
 		},
 		{
@@ -211,8 +213,9 @@ func TestDataFrameLocRows(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 			[]interface{}{1, 2},
 			&DataFrame{
@@ -233,8 +236,9 @@ func TestDataFrameLocRows(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{1, 2}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{1, 2}}},
 			},
 		},
 	}
