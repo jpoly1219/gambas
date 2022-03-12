@@ -109,8 +109,8 @@ func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
 	locations := make([]int, 0)
 
 	for _, row := range rows {
-		for _, index := df.index {
-			for i, value := range index {
+		for _, index := range df.index {
+			for i, value := range index.data {
 				if row == value {
 					locations = append(locations, i)
 				}
@@ -122,7 +122,7 @@ func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
 	for _, series := range df.series {
 		filteredCol := make([]interface{}, 0)
 		for _, location := range locations {
-			filteredCol = append(filteredCol, df.series[location])
+			filteredCol = append(filteredCol, series.data[location])
 		}
 		filteredCols = append(filteredCols, filteredCol)
 	}
