@@ -146,7 +146,7 @@ func (df DataFrame) LocCols(cols []interface{}) (*DataFrame, error) {
 		}
 	}
 
-	dataframe, err := NewDataFrame(filtered2D, df.index, cols)
+	dataframe, err := NewDataFrame(filtered2D, cols, []interface{}{cols[0]})
 	if err != nil {
 		return nil, err
 	}
