@@ -74,7 +74,7 @@ func TestNewSeries(t *testing.T) {
 func TestNewDataFrame(t *testing.T) {
 	type newDataFrameTest struct {
 		arg1     [][]interface{}
-		arg2     Index
+		arg2     []interface{}
 		arg3     []interface{}
 		expected *DataFrame
 	}
@@ -82,8 +82,8 @@ func TestNewDataFrame(t *testing.T) {
 	newDataFrameTests := []newDataFrameTest{
 		{
 			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
-			CreateRangeIndex(3),
 			[]interface{}{"group a", "group b", "group c"},
+			[]interface{}{"group a"},
 			&DataFrame{
 				[]Series{
 					{
@@ -102,8 +102,9 @@ func TestNewDataFrame(t *testing.T) {
 						"group c",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"group a", "group b", "group c"}},
+				[]interface{}{"group a"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 		},
 	}
