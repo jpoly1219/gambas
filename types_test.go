@@ -276,8 +276,9 @@ func TestDataFrameLocCols(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 			[]interface{}{"Name"},
 			&DataFrame{
@@ -288,8 +289,9 @@ func TestDataFrameLocCols(t *testing.T) {
 						"Name",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 		},
 		{
@@ -311,8 +313,9 @@ func TestDataFrameLocCols(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 			[]interface{}{"Name", "Sex"},
 			&DataFrame{
@@ -328,8 +331,9 @@ func TestDataFrameLocCols(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 		},
 	}
