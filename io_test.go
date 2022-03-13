@@ -36,8 +36,9 @@ func TestReadCsv(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{0, 1, 2}},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2}}},
 			},
 		},
 		{
@@ -90,8 +91,9 @@ func TestReadCsv(t *testing.T) {
 						"Salary",
 					},
 				},
-				Index{[]interface{}{0, 1, 2, 3}},
 				Index{[]interface{}{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"}},
+				[]interface{}{"Name"},
+				[]Index{{[]interface{}{0, 1, 2, 3}}},
 			},
 		},
 	}
