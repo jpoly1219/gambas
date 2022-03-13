@@ -38,15 +38,13 @@ func TestCreateRangeIndex(t *testing.T) {
 func TestNewSeries(t *testing.T) {
 	type newSeriesTest struct {
 		arg1     []interface{}
-		arg2     Index
-		arg3     string
+		arg2     string
 		expected *Series
 	}
 
 	newSeriesTests := []newSeriesTest{
 		{
 			[]interface{}{"alice", "bob", "charlie"},
-			CreateRangeIndex(3),
 			"People",
 			&Series{
 				[]interface{}{"alice", "bob", "charlie"},
@@ -56,7 +54,6 @@ func TestNewSeries(t *testing.T) {
 		},
 		{
 			[]interface{}{"apple", "banana", "cherry"},
-			Index{[]interface{}{"a", "b", "c"}},
 			"Fruit",
 			&Series{
 				[]interface{}{"apple", "banana", "cherry"},
@@ -67,7 +64,7 @@ func TestNewSeries(t *testing.T) {
 	}
 
 	for _, test := range newSeriesTests {
-		output, err := NewSeries(test.arg1, test.arg2, test.arg3)
+		output, err := NewSeries(test.arg1, test.arg2)
 		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.index)) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
