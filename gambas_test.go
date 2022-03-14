@@ -57,7 +57,7 @@ func TestNewSeries(t *testing.T) {
 			"Fruit",
 			&Series{
 				[]interface{}{"apple", "banana", "cherry"},
-				Index{[]interface{}{"a", "b", "c"}},
+				Index{[]interface{}{0, 1, 2}},
 				"Fruit",
 			},
 		},
@@ -104,14 +104,14 @@ func TestNewDataFrame(t *testing.T) {
 				},
 				Index{[]interface{}{"group a", "group b", "group c"}},
 				[]interface{}{"group a"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{1, 2, 3}}},
 			},
 		},
 	}
 
 	for _, test := range newDataFrameTests {
 		output, err := NewDataFrame(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.index, output.series[0])) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.index[0], output.series[0])) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
