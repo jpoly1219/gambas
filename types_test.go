@@ -168,9 +168,9 @@ func TestDataFrameLocRows(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
-			[]interface{}{0},
+			[]interface{}{"Avery"},
 			&DataFrame{
 				[]Series{
 					{
@@ -191,7 +191,7 @@ func TestDataFrameLocRows(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0}}},
+				[]Index{{[]interface{}{"Avery"}}},
 			},
 		},
 		{
@@ -215,36 +215,36 @@ func TestDataFrameLocRows(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
-			[]interface{}{1, 2},
+			[]interface{}{"Bradford", "Candice"},
 			&DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Bradford", "Candice"},
-						Index{[]interface{}{1, 2}},
+						Index{[]interface{}{0, 1}},
 						"Name",
 					},
 					{
 						[]interface{}{25, 22},
-						Index{[]interface{}{1, 2}},
+						Index{[]interface{}{0, 1}},
 						"Age",
 					},
 					{
 						[]interface{}{"Male", "Female"},
-						Index{[]interface{}{1, 2}},
+						Index{[]interface{}{0, 1}},
 						"Sex",
 					},
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{1, 2}}},
+				[]Index{{[]interface{}{"Bradford", "Candice"}}},
 			},
 		},
 	}
 	for _, test := range dataframeLocRowsTests {
 		output, err := test.arg1.LocRows(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index)) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index[0])) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -278,7 +278,7 @@ func TestDataFrameLocCols(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
 			[]interface{}{"Name"},
 			&DataFrame{
@@ -291,7 +291,7 @@ func TestDataFrameLocCols(t *testing.T) {
 				},
 				Index{[]interface{}{"Name"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
 		},
 		{
@@ -315,15 +315,15 @@ func TestDataFrameLocCols(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
-			[]interface{}{"Name", "Sex"},
+			[]interface{}{"Age", "Sex"},
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
+						[]interface{}{19, 25, 22},
 						Index{[]interface{}{0, 1, 2}},
-						"Name",
+						"Age",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -331,15 +331,15 @@ func TestDataFrameLocCols(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{[]interface{}{"Name", "Sex"}},
-				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				Index{[]interface{}{"Age", "Sex"}},
+				[]interface{}{"Age"},
+				[]Index{{[]interface{}{19, 25, 22}}},
 			},
 		},
 	}
 	for _, test := range dataframeLocColsTests {
 		output, err := test.arg1.LocCols(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index)) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index[0])) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -374,9 +374,9 @@ func TestDataFrameLoc(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
-			[]interface{}{1, 2},
+			[]interface{}{"Bradford", "Candice"},
 			[]interface{}{"Name"},
 			&DataFrame{
 				[]Series{
@@ -388,7 +388,7 @@ func TestDataFrameLoc(t *testing.T) {
 				},
 				Index{[]interface{}{"Name"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1}}},
+				[]Index{{[]interface{}{"Bradford", "Candice"}}},
 			},
 		},
 		{
@@ -412,9 +412,9 @@ func TestDataFrameLoc(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
-			[]interface{}{0, 1, 2},
+			[]interface{}{"Avery", "Bradford", "Candice"},
 			[]interface{}{"Name", "Sex"},
 			&DataFrame{
 				[]Series{
@@ -431,13 +431,13 @@ func TestDataFrameLoc(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
 		},
 	}
 	for _, test := range dataframeLocTests {
 		output, err := test.arg1.Loc(test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index)) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index[0])) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
