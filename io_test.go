@@ -38,7 +38,7 @@ func TestReadCsv(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Age", "Sex"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2}}},
+				[]Index{{[]interface{}{"Avery", "Bradford", "Candice"}}},
 			},
 		},
 		{
@@ -93,14 +93,14 @@ func TestReadCsv(t *testing.T) {
 				},
 				Index{[]interface{}{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"}},
 				[]interface{}{"Name"},
-				[]Index{{[]interface{}{0, 1, 2, 3}}},
+				[]Index{{[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"}}},
 			},
 		},
 	}
 
 	for _, test := range readCsvTests {
 		output, err := ReadCsv(test.arg1)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index), cmpopts.IgnoreTypes(0.0)) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.series[0], output.index[0]), cmpopts.IgnoreTypes(0.0)) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
