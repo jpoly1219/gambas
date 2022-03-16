@@ -167,56 +167,24 @@ func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
 	}
 
 	return df2, nil
-
-	// filteredCols := make([]Series, len(cols))
-	// for i, col := range cols {
-	// 	for _, series := range df.series {
-	// 		if series.name == col {
-	// 			filteredCols[i] = series
-	// 		}
-	// 	}
-	// }
-
-	// filtered2D := make([][]interface{}, len(cols))
-	// for i, filteredCol := range filteredCols {
-	// 	filteredRows := make([]interface{}, len(rows))
-
-	// 	for j, row := range rows {
-	// 		for k, index := range filteredCol.index.data {
-	// 			if index == row {
-	// 				filteredRows[j] = filteredCol.data[k]
-	// 			}
-	// 		}
-	// 	}
-
-	// 	filtered2D[i] = filteredRows
-	// }
-
-	// switch rows[0].(type) {
-	// case int:
-	// 	dataframe, err := NewDataFrame(filtered2D, CreateRangeIndex(len(rows)), cols)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	return dataframe, nil
-	// default:
-	// 	dataframe, err := NewDataFrame(filtered2D, Index{rows}, cols)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	return dataframe, nil
-	// }
 }
 
-// func (df DataFrame) LocM() (*DataFrame, error) {
-
-// }
-
-// func (df DataFrame) ILoc() (*DataFrame, error) {
-
-// }
-
-// I am thinking of redefining some of DataFrame at the moment.
-// Notably, adding indexCol method of type []interface{} and changing the type of index to []Index.
-// This is to make indexing make more sense, and allow for multi-indexing.
-// There will be a major overhaul for this which I will work on during the weekend.
+// Basic arithmetic operations for columns.
+func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					v += value
+					series.data[i] = v
+				default:
+					return nil, fmt.Errorf("cannot add, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
