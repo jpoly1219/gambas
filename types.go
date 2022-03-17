@@ -209,7 +209,6 @@ func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
 func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
@@ -228,7 +227,6 @@ func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
 func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
@@ -247,7 +245,6 @@ func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
@@ -266,7 +263,6 @@ func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
@@ -285,7 +281,6 @@ func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
 func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
@@ -304,7 +299,6 @@ func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
 func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
