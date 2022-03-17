@@ -243,3 +243,21 @@ func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 	}
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
+
+func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					series.data[i] = math.Mod(v, value)
+				default:
+					return nil, fmt.Errorf("cannot use modulus, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
