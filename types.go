@@ -261,3 +261,61 @@ func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 	}
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
+
+// Basic boolean operators for columns.
+func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					isGt := (v > value)
+					series.data[i] = isGt
+				default:
+					return nil, fmt.Errorf("cannot compare, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
+
+func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					isLt := (v < value)
+					series.data[i] = isLt
+				default:
+					return nil, fmt.Errorf("cannot compare, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
+
+func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					isEq := (v == value)
+					series.data[i] = isEq
+				default:
+					return nil, fmt.Errorf("cannot compare, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
