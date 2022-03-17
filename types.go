@@ -173,7 +173,6 @@ func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
 func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
-			fmt.Println(colname)
 			for i, data := range series.data {
 				switch v := data.(type) {
 				case float64:
@@ -181,6 +180,62 @@ func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
 					series.data[i] = v
 				default:
 					return nil, fmt.Errorf("cannot add, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
+
+func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					v -= value
+					series.data[i] = v
+				default:
+					return nil, fmt.Errorf("cannot subtract, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
+
+func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					v *= value
+					series.data[i] = v
+				default:
+					return nil, fmt.Errorf("cannot multiply, column data type is not float64")
+				}
+			}
+			return df, nil
+		}
+	}
+	return nil, fmt.Errorf("colname does not match any of the existing column names")
+}
+
+func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
+	for _, series := range df.series {
+		if series.name == colname {
+			fmt.Println(colname)
+			for i, data := range series.data {
+				switch v := data.(type) {
+				case float64:
+					v /= value
+					series.data[i] = v
+				default:
+					return nil, fmt.Errorf("cannot divide, column data type is not float64")
 				}
 			}
 			return df, nil
