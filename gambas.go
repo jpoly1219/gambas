@@ -21,7 +21,6 @@ func NewSeries(data []interface{}, name string) (*Series, error) {
 	s.data = data
 	s.index = CreateRangeIndex(len(data))
 	s.name = name
-	fmt.Println(s)
 
 	return &s, nil
 }
