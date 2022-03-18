@@ -58,3 +58,26 @@ func NewDataFrame(data [][]interface{}, columns []interface{}, indexCols []inter
 
 	return &df, nil
 }
+
+func checkTypeIntegrity(data []interface{}) (bool, error) {
+	isFloat64 := false
+	isString := false
+	for _, v := range data {
+		switch t := v.(type) {
+		case float64:
+			isFloat64 = true
+		case string:
+			isString = true
+		default:
+			return false, fmt.Errorf("invalid type: %T", t)
+		}
+
+		if isFloat64 && isString {
+			return false, fmt.Errorf("some elements in this column have different type")
+		} else if !isFloat64 && !isString {
+			return false, fmt.Errorf("some elements in this column have different type")
+		}
+	}
+
+	return true, nil
+}
