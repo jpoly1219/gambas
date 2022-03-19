@@ -69,15 +69,54 @@ func checkTypeIntegrity(data []interface{}) (bool, error) {
 		case string:
 			isString = true
 		default:
-			return false, fmt.Errorf("invalid type: %T", t)
+			_, err := i2f(v)
+			if err != nil {
+				return false, fmt.Errorf("invalid type: %T", t)
+			} else {
+				isFloat64 = true
+			}
 		}
 
 		if isFloat64 && isString {
-			return false, fmt.Errorf("some elements in this column have different type")
+			return false, nil
 		} else if !isFloat64 && !isString {
-			return false, fmt.Errorf("some elements in this column have different type")
+			return false, nil
 		}
 	}
 
 	return true, nil
+}
+
+func i2f(data interface{}) (float64, error) {
+	var x float64
+	switch v := data.(type) {
+	case int:
+		x = float64(v)
+	case int8:
+		x = float64(v)
+	case int16:
+		x = float64(v)
+	case int32:
+		x = float64(v)
+	case int64:
+		x = float64(v)
+	case uint:
+		x = float64(v)
+	case uint8:
+		x = float64(v)
+	case uint16:
+		x = float64(v)
+	case uint32:
+		x = float64(v)
+	case uint64:
+		x = float64(v)
+	case float32:
+		x = float64(v)
+	case float64:
+		x = v
+	default:
+		return 0.0, fmt.Errorf("%v is not a number", data)
+	}
+
+	return x, nil
 }
