@@ -116,3 +116,39 @@ func TestNewDataFrame(t *testing.T) {
 		}
 	}
 }
+
+func TestCheckTypeIntegrity(t *testing.T) {
+	type checkTypeIntegrityTest struct {
+		arg1     []interface{}
+		expected bool
+	}
+	checkTypeIntegrityTests := []checkTypeIntegrityTest{
+		{
+			[]interface{}{0, 1, 2, 3, 4, 5, 6},
+			true,
+		},
+		{
+			[]interface{}{3.4, 5.6, 2.4, 6.5, 7},
+			true,
+		},
+		{
+			[]interface{}{1, 2, "3", "4", 5},
+			false,
+		},
+		{
+			[]interface{}{"a", "b", "c"},
+			true,
+		},
+		{
+			[]interface{}{true, false, true},
+			false,
+		},
+	}
+
+	for _, test := range checkTypeIntegrityTests {
+		output, err := checkTypeIntegrity(test.arg1)
+		if !cmp.Equal(output, test.expected) || (output != test.expected && err == nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
