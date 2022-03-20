@@ -18,10 +18,18 @@ func CreateRangeIndex(length int) Index {
 // Generally, NewSeriesFromFile will be used more often.
 func NewSeries(data []interface{}, name string) (*Series, error) {
 	var s Series
+	ok, err := checkTypeIntegrity(data)
+	if err != nil {
+		fmt.Println("1")
+		return nil, err
+	}
+	if !ok {
+		fmt.Println("2")
+		return nil, fmt.Errorf("types do not match")
+	}
 	s.data = data
 	s.index = CreateRangeIndex(len(data))
 	s.name = name
-
 	return &s, nil
 }
 
