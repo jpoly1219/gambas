@@ -62,11 +62,16 @@ func TestNewSeries(t *testing.T) {
 				"Fruit",
 			},
 		},
+		{
+			[]interface{}{"apple", 2, "cherry"},
+			"Fruit",
+			nil,
+		},
 	}
 
 	for _, test := range newSeriesTests {
 		output, err := NewSeries(test.arg1, test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.index)) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
