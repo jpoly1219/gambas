@@ -97,6 +97,20 @@ func (s Series) LocR(min, max int) ([]interface{}, error) {
 	return resultArray, nil
 }
 
+// Summary statistics functions
+
+// count() counts the number of non-NA elements in a column.
+func (s Series) Count() int {
+	count := 0
+	for _, v := range s.data {
+		if v != nil || v != math.NaN() {
+			count++
+		}
+	}
+
+	return count
+}
+
 type DataFrame struct {
 	series    []Series
 	columns   Index
@@ -170,6 +184,8 @@ func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
 }
 
 // Basic arithmetic operations for columns.
+
+// ColAdd() adds the given value to each element in the specified column.
 func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -188,6 +204,7 @@ func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+// ColSub() subtracts the given value from each element in the specified column.
 func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -206,6 +223,7 @@ func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+// ColMul() multiplies each element in the specified column by the given value.
 func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -224,6 +242,7 @@ func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+// ColDiv() divides each element in the specified column by the given value.
 func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -242,6 +261,7 @@ func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+// ColMod() applies modulus calculations on each element in the specified column, returning the remainder.
 func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -260,6 +280,8 @@ func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 }
 
 // Basic boolean operators for columns.
+
+// ColGt() checks if each element in the specified column is greater than the given value.
 func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -278,6 +300,7 @@ func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+// ColLt() checks if each element in the specified column is less than the given value.
 func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
@@ -296,6 +319,7 @@ func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+// ColEq() checks if each element in the specified column is equal to the given value.
 func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 	for _, series := range df.series {
 		if series.name == colname {
