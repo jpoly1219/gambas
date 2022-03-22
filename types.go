@@ -111,6 +111,20 @@ func (s Series) Count() int {
 	return count
 }
 
+// mean() returns the mean of elements in a column.
+func (s Series) Mean() float64 {
+	mean := 0.0
+	for _, v := range s.data {
+		if v != nil || v != math.NaN() {
+			mean += v.(float64)
+		}
+	}
+
+	mean /= float64(len(s.data))
+
+	return mean
+}
+
 type DataFrame struct {
 	series    []Series
 	columns   Index
