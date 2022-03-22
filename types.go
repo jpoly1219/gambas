@@ -313,3 +313,18 @@ func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 	}
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
+
+// NewCol() creates a new column with the given data and column name.
+// To create a blank column, pass in a slice with zero values.
+// Use this in conjunction with operators, like this: df.NewCol().ColAdd()
+func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, error) {
+	newSeries, err := NewSeries(data, colname)
+	if err != nil {
+		return nil, err
+	}
+
+	df.series = append(df.series, *newSeries)
+	df.columns.data = append(df.columns.data, colname)
+
+	return df, nil
+}
