@@ -153,6 +153,51 @@ func (s Series) Std() float64 {
 	return std
 }
 
+// Min() returns the smallest element in a column.
+func (s Series) Min() float64 {
+	min := s.data[0].(float64)
+
+	for _, v := range s.data {
+		if v.(float64) < min {
+			min = v.(float64)
+		} else {
+			continue
+		}
+	}
+
+	return min
+}
+
+// Max() returns the largest element is a column.
+func (s Series) Max() float64 {
+	max := s.data[0].(float64)
+
+	for _, v := range s.data {
+		if v.(float64) > max {
+			max = v.(float64)
+		} else {
+			continue
+		}
+	}
+
+	return max
+}
+
+// Q1() returns the lower quartile (25%) of the elements in a column.
+func (s Series) Q1() float64 {
+
+}
+
+// Q2() returns the middle quartile (50%) of the elements in a column.
+func (s Series) Q2() float64 {
+
+}
+
+// Q3() returns the upper quartile (75%) of the elements in a column.
+func (s Series) Q3() float64 {
+
+}
+
 type DataFrame struct {
 	series    []Series
 	columns   Index
