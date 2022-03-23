@@ -111,7 +111,7 @@ func (s Series) Count() int {
 	return count
 }
 
-// mean() returns the mean of elements in a column.
+// mean() returns the mean of the elements in a column.
 func (s Series) Mean() float64 {
 	mean := 0.0
 	for _, v := range s.data {
@@ -124,6 +124,21 @@ func (s Series) Mean() float64 {
 
 	return mean
 }
+
+// median() returns the median of the elements in a column.
+func (s Series) Median() float64 {
+	median := 0.0
+	total := len(s.data)
+	if total%2 == 0 {
+		median = (s.data[total/2-1].(float64) + s.data[total/2].(float64)) / 2
+	} else {
+		median = s.data[total/2-1].(float64)
+	}
+
+	return median
+}
+
+
 
 type DataFrame struct {
 	series    []Series
