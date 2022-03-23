@@ -99,7 +99,7 @@ func (s Series) LocR(min, max int) ([]interface{}, error) {
 
 // Summary statistics functions
 
-// count() counts the number of non-NA elements in a column.
+// Count() counts the number of non-NA elements in a column.
 func (s Series) Count() int {
 	count := 0
 	for _, v := range s.data {
@@ -111,7 +111,7 @@ func (s Series) Count() int {
 	return count
 }
 
-// mean() returns the mean of the elements in a column.
+// Mean() returns the mean of the elements in a column.
 func (s Series) Mean() float64 {
 	mean := 0.0
 	for _, v := range s.data {
@@ -125,7 +125,7 @@ func (s Series) Mean() float64 {
 	return mean
 }
 
-// median() returns the median of the elements in a column.
+// Median() returns the median of the elements in a column.
 func (s Series) Median() float64 {
 	median := 0.0
 	total := len(s.data)
@@ -138,7 +138,20 @@ func (s Series) Median() float64 {
 	return median
 }
 
+// Std() returns the standard deviation of the elements in a column.
+func (s Series) Std() float64 {
+	std := 0.0
+	mean := s.Mean()
 
+	numerator := 0.0
+	for _, v := range s.data {
+		temp := math.Pow(v.(float64)-mean, 2)
+		numerator += temp
+	}
+	std = math.Sqrt(numerator / float64(len(s.data)-1))
+
+	return std
+}
 
 type DataFrame struct {
 	series    []Series
