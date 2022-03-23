@@ -138,7 +138,7 @@ func (s Series) Median() float64 {
 	return median
 }
 
-// Std() returns the standard deviation of the elements in a column.
+// Std() returns the sample standard deviation of the elements in a column.
 func (s Series) Std() float64 {
 	std := 0.0
 	mean := s.Mean()
