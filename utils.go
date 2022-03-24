@@ -2,6 +2,8 @@ package gambas
 
 import (
 	"fmt"
+	"math"
+	"strconv"
 )
 
 func checkTypeIntegrity(data []interface{}) (bool, error) {
@@ -67,4 +69,20 @@ func i2f(data interface{}) (float64, error) {
 	}
 
 	return x, nil
+}
+
+// checkType checks to see if the data can be represented as a float64.
+// Because CSV is read as an array of strings, there has to be a way to check the type.
+func checkType(data interface{}) interface{} {
+	if data.(string) == "NaN" {
+		fmt.Println("NaN detected")
+		return math.NaN()
+	}
+	v, ok := strconv.ParseFloat(data.(string), 64)
+	switch ok {
+	case nil:
+		return v
+	default:
+		return data.(string)
+	}
 }
