@@ -86,3 +86,33 @@ func checkType(data interface{}) interface{} {
 		return data.(string)
 	}
 }
+
+// interface2F64Data() converts a slice of interface{} into F64Data.
+func interface2F64Data(data []interface{}) (F64Data, error) {
+	fd := make(F64Data, 0)
+	for _, v := range data {
+		switch converted := v.(type) {
+		case float64:
+			fd = append(fd, converted)
+		default:
+			return nil, fmt.Errorf("data is not a float64: %v", v)
+		}
+	}
+
+	return fd, nil
+}
+
+// interface2StringData() converts a slice of interface{} into StringData.
+func interface2StringData(data []interface{}) (StringData, error) {
+	sd := make(StringData, 0)
+	for _, v := range data {
+		switch converted := v.(type) {
+		case string:
+			sd = append(sd, converted)
+		default:
+			return nil, fmt.Errorf("data is not a string: %v", v)
+		}
+	}
+
+	return sd, nil
+}
