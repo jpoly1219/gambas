@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"sort"
 )
 
 // F64Data and StringData are defined to allow easier sorting, by implementing sort.Interface.
@@ -197,18 +198,41 @@ func (s Series) Max() float64 {
 
 // Q1() returns the lower quartile (25%) of the elements in a column.
 func (s Series) Q1() float64 {
-	data := s.data
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN()
+	}
+	sort.Sort(data)
 
+	// calculate Q1
+	q1 := float64(len(data)+1) * 0.25
+	return q1
 }
 
 // Q2() returns the middle quartile (50%) of the elements in a column.
 func (s Series) Q2() float64 {
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN()
+	}
+	sort.Sort(data)
 
+	// calculate Q2
+	q2 := float64(len(data)+1) * 0.5
+	return q2
 }
 
 // Q3() returns the upper quartile (75%) of the elements in a column.
 func (s Series) Q3() float64 {
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN()
+	}
+	sort.Sort(data)
 
+	// calculate Q3
+	q3 := float64(len(data)+1) * 0.75
+	return q3
 }
 
 type DataFrame struct {
