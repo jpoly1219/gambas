@@ -23,6 +23,34 @@ func checkType(data interface{}) interface{} {
 	}
 }
 
+type F64Data []float64
+
+func (fd F64Data) Len() int {
+	return len(fd)
+}
+
+func (fd F64Data) Less(i, j int) bool {
+	return fd[i] < fd[j]
+}
+
+func (fd F64Data) Swap(i, j int) {
+	fd[i], fd[j] = fd[j], fd[i]
+}
+
+type StringData []string
+
+func (sd StringData) Len() int {
+	return len(sd)
+}
+
+func (sd StringData) Less(i, j int) bool {
+	return sd[i] < sd[j]
+}
+
+func (sd StringData) Swap(i, j int) {
+	sd[i], sd[j] = sd[j], sd[i]
+}
+
 type Index struct {
 	data []interface{}
 }
@@ -185,6 +213,7 @@ func (s Series) Max() float64 {
 
 // Q1() returns the lower quartile (25%) of the elements in a column.
 func (s Series) Q1() float64 {
+	data := s.data
 
 }
 
