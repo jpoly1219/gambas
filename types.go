@@ -23,6 +23,7 @@ func checkType(data interface{}) interface{} {
 	}
 }
 
+// F64Data and StringData are defined to allow easier sorting, by implementing sort.Interface.
 type F64Data []float64
 
 func (fd F64Data) Len() int {
