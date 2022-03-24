@@ -66,3 +66,50 @@ func TestI2f(t *testing.T) {
 		}
 	}
 }
+
+// func TestCheckType(t *testing.T) {
+
+// }
+
+func TestInterface2F64Data(t *testing.T) {
+	type interface2F64DataTest struct {
+		arg1     []interface{}
+		expected F64Data
+	}
+	interface2F64DataTests := []interface2F64DataTest{
+		{
+			[]interface{}{0.0, 1.0, 2.0, 3.0, 4.0},
+			F64Data{0.0, 1.0, 2.0, 3.0, 4.0},
+		},
+		{
+			[]interface{}{0, 1, 2, 3, 4},
+			nil,
+		},
+		{
+			[]interface{}{"0", "1", "2", "3", "4"},
+			nil,
+		},
+		{
+			[]interface{}{"a", "b", "c", "d", "e"},
+			nil,
+		},
+		{
+			[]interface{}{0.5, 1, 1.5, 2, 2.5},
+			nil,
+		},
+		{
+			[]interface{}{"a", 1, "b", 2, "c", 3},
+			nil,
+		},
+	}
+	for _, test := range interface2F64DataTests {
+		output, err := interface2F64Data(test.arg1)
+		if !cmp.Equal(output, test.expected) || (output != nil && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+// func TestInterface2StringData(t *testing.T) {
+
+// }
