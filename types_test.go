@@ -1,6 +1,8 @@
 package gambas
 
 import (
+	"fmt"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -1567,7 +1569,53 @@ func TestCount(t *testing.T) {
 }
 
 func TestMean(t *testing.T) {
+	type meanTest struct {
+		arg1          Series
+		expected      float64
+		expectedError error
+	}
+	meanTests := []meanTest{
+		{
+			Series{
+				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Name",
+			},
+			0.0,
+			fmt.Errorf("data is not float64: Avery"),
+		},
+		{
+			Series{
+				[]interface{}{30.0, 23.0, 19.0},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Age",
+			},
+			24.0,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{},
+				Index{[]interface{}{}},
+				"Empty",
+			},
+			math.NaN(),
+			nil,
+		},
+	}
 
+	for _, test := range meanTests {
+		output, err := test.arg1.Mean()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+			if fmt.Sprint(output) == "NaN" {
+				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
+					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				}
+			} else {
+				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+			}
+		}
+	}
 }
 
 func TestMedian(t *testing.T) {
