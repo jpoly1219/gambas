@@ -73,17 +73,17 @@ func i2f(data interface{}) (float64, error) {
 
 // checkType checks to see if the data can be represented as a float64.
 // Because CSV is read as an array of strings, there has to be a way to check the type.
-func checkType(data interface{}) interface{} {
-	if data.(string) == "NaN" {
+func checkCSVDataType(data string) interface{} {
+	if data == "NaN" {
 		fmt.Println("NaN detected")
 		return math.NaN()
 	}
-	v, ok := strconv.ParseFloat(data.(string), 64)
+	v, ok := strconv.ParseFloat(data, 64)
 	switch ok {
 	case nil:
 		return v
 	default:
-		return data.(string)
+		return data
 	}
 }
 
