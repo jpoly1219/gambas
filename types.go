@@ -125,17 +125,21 @@ func (s Series) Count() int {
 }
 
 // Mean() returns the mean of the elements in a column.
-func (s Series) Mean() float64 {
+func (s Series) Mean() (float64, error) {
 	mean := 0.0
 	for _, v := range s.data {
 		if v != nil || v != math.NaN() {
-			mean += v.(float64)
+			converted, ok := v.(float64)
+			if !ok {
+				return 0.0, fmt.Errorf("data is not float64: %v", v)
+			}
+			mean += converted
 		}
 	}
 
 	mean /= float64(len(s.data))
 
-	return mean
+	return mean, nil
 }
 
 // Median() returns the median of the elements in a column.
@@ -152,9 +156,12 @@ func (s Series) Median() float64 {
 }
 
 // Std() returns the sample standard deviation of the elements in a column.
-func (s Series) Std() float64 {
+func (s Series) Std() (float64, error) {
 	std := 0.0
-	mean := s.Mean()
+	mean, err := s.Mean() // this also checks that all data can be converted to float64.
+	if err != nil {
+		return 0.0, err
+	}
 
 	numerator := 0.0
 	for _, v := range s.data {
@@ -163,7 +170,7 @@ func (s Series) Std() float64 {
 	}
 	std = math.Sqrt(numerator / float64(len(s.data)-1))
 
-	return std
+	return std, nil
 }
 
 // Min() returns the smallest element in a column.
