@@ -1525,3 +1525,75 @@ func TestNewCol(t *testing.T) {
 		}
 	}
 }
+
+func TestCount(t *testing.T) {
+	type countTest struct {
+		arg1     Series
+		expected int
+	}
+	countTests := []countTest{
+		{
+			Series{
+				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Name",
+			},
+			4,
+		},
+		{
+			Series{
+				[]interface{}{30.0, 23.0, 19.0},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Age",
+			},
+			3,
+		},
+		{
+			Series{
+				[]interface{}{},
+				Index{[]interface{}{}},
+				"Empty",
+			},
+			0,
+		},
+	}
+
+	for _, test := range countTests {
+		output := test.arg1.Count()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
+func TestMean(t *testing.T) {
+
+}
+
+func TestMedian(t *testing.T) {
+
+}
+
+func TestStd(t *testing.T) {
+
+}
+
+func TestMin(t *testing.T) {
+
+}
+
+func TestMax(t *testing.T) {
+
+}
+
+func TestQ1(t *testing.T) {
+
+}
+
+func TestQ2(t *testing.T) {
+
+}
+
+func TestQ3(t *testing.T) {
+
+}
