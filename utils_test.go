@@ -2,6 +2,7 @@ package gambas
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -67,9 +68,31 @@ func TestI2f(t *testing.T) {
 	}
 }
 
-// func TestCheckType(t *testing.T) {
+func TestCheckCSVDataType(t *testing.T) {
+	type checkCSVDataTypeTest struct {
+		arg1     string
+		expected interface{}
+	}
+	checkCSVDataTypeTests := []checkCSVDataTypeTest{
+		{"50.0", 50.0},
+		{"abcd", "abcd"},
+		{"100", 100.0},
+		{"NaN", math.NaN()},
+	}
 
-// }
+	for _, test := range checkCSVDataTypeTests {
+		output := checkCSVDataType(test.arg1)
+		if !cmp.Equal(output, test.expected) {
+			if test.arg1 == "NaN" {
+				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
+					t.Fatalf("expected %v, got %v", test.expected, output)
+				}
+			} else {
+				t.Fatalf("expected %v, got %v", test.expected, output)
+			}
+		}
+	}
+}
 
 func TestInterface2F64Data(t *testing.T) {
 	type interface2F64DataTest struct {
