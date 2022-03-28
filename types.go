@@ -127,17 +127,23 @@ func (s Series) Count() int {
 // Mean() returns the mean of the elements in a column.
 func (s Series) Mean() (float64, error) {
 	mean := 0.0
-	for _, v := range s.data {
-		if v != nil || v != math.NaN() {
-			converted, ok := v.(float64)
-			if !ok {
-				return 0.0, fmt.Errorf("data is not float64: %v", v)
-			}
-			mean += converted
-		}
+
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN(), err
+	}
+	sort.Sort(data)
+
+	total := len(data)
+	if total == 0 {
+		return math.NaN(), fmt.Errorf("no elements in this column")
 	}
 
-	mean /= float64(len(s.data))
+	for _, v := range data {
+		mean += v
+	}
+
+	mean /= float64(len(data))
 
 	return mean, nil
 }
@@ -154,7 +160,7 @@ func (s Series) Median() (float64, error) {
 
 	total := len(data)
 	if total == 0 {
-		return 0.0, fmt.Errorf("no elements in this column")
+		return math.NaN(), fmt.Errorf("no elements in this column")
 	}
 	if total%2 == 0 {
 		lower := data[total/2-1]
@@ -174,15 +180,22 @@ func (s Series) Std() (float64, error) {
 	std := 0.0
 	mean, err := s.Mean() // this also checks that all data can be converted to float64.
 	if err != nil {
-		return 0.0, err
+		return math.NaN(), err
 	}
+	fmt.Println(mean)
+
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN(), err
+	}
+	sort.Sort(data)
 
 	numerator := 0.0
-	for _, v := range s.data {
-		temp := math.Pow(v.(float64)-mean, 2)
+	for _, v := range data {
+		temp := math.Pow(v-mean, 2)
 		numerator += temp
 	}
-	std = math.Sqrt(numerator / float64(len(s.data)-1))
+	std = math.Sqrt(numerator / float64(len(data)-1))
 
 	return std, nil
 }
