@@ -93,6 +93,9 @@ func interface2F64Data(data []interface{}) (F64Data, error) {
 	for _, v := range data {
 		switch converted := v.(type) {
 		case float64:
+			if math.IsNaN(converted) {
+				continue
+			}
 			fd = append(fd, converted)
 		default:
 			return nil, fmt.Errorf("data is not a float64: %v", v)
