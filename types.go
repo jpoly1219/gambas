@@ -143,16 +143,30 @@ func (s Series) Mean() (float64, error) {
 }
 
 // Median() returns the median of the elements in a column.
-func (s Series) Median() float64 {
+func (s Series) Median() (float64, error) {
 	median := 0.0
-	total := len(s.data)
+
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN(), err
+	}
+	sort.Sort(data)
+
+	total := len(data)
+	if total == 0 {
+		return 0.0, fmt.Errorf("no elements in this column")
+	}
 	if total%2 == 0 {
-		median = (s.data[total/2-1].(float64) + s.data[total/2].(float64)) / 2
+		lower := data[total/2-1]
+		upper := data[total/2]
+
+		median = (lower + upper) / 2
 	} else {
-		median = s.data[total/2-1].(float64)
+		median := data[(total+1)/2-1]
+		return median, nil
 	}
 
-	return median
+	return median, nil
 }
 
 // Std() returns the sample standard deviation of the elements in a column.
