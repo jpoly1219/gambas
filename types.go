@@ -201,18 +201,19 @@ func (s Series) Std() (float64, error) {
 }
 
 // Min() returns the smallest element in a column.
-func (s Series) Min() float64 {
-	min := s.data[0].(float64)
+func (s Series) Min() (float64, error) {
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN(), err
+	}
+	sort.Sort(data)
 
-	for _, v := range s.data {
-		if v.(float64) < min {
-			min = v.(float64)
-		} else {
-			continue
-		}
+	total := len(data)
+	if total == 0 {
+		return math.NaN(), fmt.Errorf("no elements in this column")
 	}
 
-	return min
+	return data[0], nil
 }
 
 // Max() returns the largest element is a column.
