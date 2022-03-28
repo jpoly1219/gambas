@@ -217,18 +217,19 @@ func (s Series) Min() (float64, error) {
 }
 
 // Max() returns the largest element is a column.
-func (s Series) Max() float64 {
-	max := s.data[0].(float64)
+func (s Series) Max() (float64, error) {
+	data, err := interface2F64Data(s.data)
+	if err != nil {
+		return math.NaN(), err
+	}
+	sort.Sort(data)
 
-	for _, v := range s.data {
-		if v.(float64) > max {
-			max = v.(float64)
-		} else {
-			continue
-		}
+	total := len(data)
+	if total == 0 {
+		return math.NaN(), fmt.Errorf("no elements in this column")
 	}
 
-	return max
+	return data[total-1], nil
 }
 
 // Q1() returns the lower quartile (25%) of the elements in a column.
