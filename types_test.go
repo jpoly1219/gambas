@@ -1581,7 +1581,7 @@ func TestMean(t *testing.T) {
 				Index{[]interface{}{0, 1, 2, 3}},
 				"Name",
 			},
-			0.0,
+			math.NaN(),
 			fmt.Errorf("data is not float64: Avery"),
 		},
 		{
@@ -1600,7 +1600,7 @@ func TestMean(t *testing.T) {
 				"Empty",
 			},
 			math.NaN(),
-			nil,
+			fmt.Errorf("no elements in this column"),
 		},
 	}
 
@@ -1649,7 +1649,7 @@ func TestMedian(t *testing.T) {
 				Index{[]interface{}{}},
 				"Empty",
 			},
-			0.0,
+			math.NaN(),
 			fmt.Errorf("no elements in this column"),
 		},
 		{
@@ -1696,7 +1696,80 @@ func TestMedian(t *testing.T) {
 }
 
 func TestStd(t *testing.T) {
+	type stdTest struct {
+		arg1          Series
+		expected      float64
+		expectedError error
+	}
+	stdTests := []stdTest{
+		{
+			Series{
+				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Name",
+			},
+			math.NaN(),
+			fmt.Errorf("data is not float64: %v", "Avery"),
+		},
+		{
+			Series{
+				[]interface{}{30.0, 23.0, 19.0},
+				Index{[]interface{}{0, 1, 2}},
+				"Age",
+			},
+			5.5677643628300215,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{},
+				Index{[]interface{}{}},
+				"Empty",
+			},
+			math.NaN(),
+			fmt.Errorf("no elements in this column"),
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, 173.0, 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			7.913437938089859,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			9.600694419328905,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2}},
+				"Height",
+			},
+			10.182337649086268,
+			nil,
+		},
+	}
 
+	for _, test := range stdTests {
+		output, err := test.arg1.Std()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+			if fmt.Sprint(output) == "NaN" {
+				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
+					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				}
+			} else {
+				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+			}
+		}
+	}
 }
 
 func TestMin(t *testing.T) {
