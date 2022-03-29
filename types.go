@@ -233,42 +233,63 @@ func (s Series) Max() (float64, error) {
 }
 
 // Q1() returns the lower quartile (25%) of the elements in a column.
-func (s Series) Q1() float64 {
+// This does not include the median during calculation.
+func (s Series) Q1() (float64, error) {
 	data, err := interface2F64Data(s.data)
 	if err != nil {
-		return math.NaN()
+		return math.NaN(), err
 	}
 	sort.Sort(data)
 
-	// calculate Q1
-	q1 := float64(len(data)+1) * 0.25
-	return q1
+	if len(data)%2 == 0 {
+		lower := data[:len(data)/2]
+		q1, err := median(lower)
+		if err != nil {
+			return math.NaN(), err
+		}
+		return q1, nil
+	} else {
+		lower := data[:(len(data)-1)/2]
+		q1, err := median(lower)
+		if err != nil {
+			return math.NaN(), err
+		}
+		return q1, nil
+	}
 }
 
 // Q2() returns the middle quartile (50%) of the elements in a column.
-func (s Series) Q2() float64 {
-	data, err := interface2F64Data(s.data)
+func (s Series) Q2() (float64, error) {
+	q2, err := s.Median()
 	if err != nil {
-		return math.NaN()
+		return math.NaN(), err
 	}
-	sort.Sort(data)
-
-	// calculate Q2
-	q2 := float64(len(data)+1) * 0.5
-	return q2
+	return q2, nil
 }
 
 // Q3() returns the upper quartile (75%) of the elements in a column.
-func (s Series) Q3() float64 {
+func (s Series) Q3() (float64, error) {
 	data, err := interface2F64Data(s.data)
 	if err != nil {
-		return math.NaN()
+		return math.NaN(), err
 	}
 	sort.Sort(data)
 
-	// calculate Q3
-	q3 := float64(len(data)+1) * 0.75
-	return q3
+	if len(data)%2 == 0 {
+		upper := data[len(data)/2:]
+		q3, err := median(upper)
+		if err != nil {
+			return math.NaN(), err
+		}
+		return q3, nil
+	} else {
+		upper := data[:(len(data)+1)/2]
+		q3, err := median(upper)
+		if err != nil {
+			return math.NaN(), err
+		}
+		return q3, nil
+	}
 }
 
 type DataFrame struct {
