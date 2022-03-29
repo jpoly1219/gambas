@@ -3,6 +3,7 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"sort"
 	"strconv"
 )
 
@@ -118,4 +119,28 @@ func interface2StringData(data []interface{}) (StringData, error) {
 	}
 
 	return sd, nil
+}
+
+// Summary statistics functions (internal use only)
+
+// median() returns the median of the elements in an array.
+func median(data F64Data) (float64, error) {
+	median := 0.0
+	sort.Sort(data)
+
+	total := len(data)
+	if total == 0 {
+		return math.NaN(), fmt.Errorf("no elements in this column")
+	}
+	if total%2 == 0 {
+		lower := data[total/2-1]
+		upper := data[total/2]
+
+		median = (lower + upper) / 2
+	} else {
+		median := data[(total+1)/2-1]
+		return median, nil
+	}
+
+	return median, nil
 }
