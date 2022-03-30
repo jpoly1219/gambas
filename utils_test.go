@@ -94,15 +94,15 @@ func TestCheckCSVDataType(t *testing.T) {
 	}
 }
 
-func TestInterface2F64Data(t *testing.T) {
+func TestInterface2F64Slice(t *testing.T) {
 	type interface2F64DataTest struct {
 		arg1     []interface{}
-		expected F64Data
+		expected []float64
 	}
 	interface2F64DataTests := []interface2F64DataTest{
 		{
 			[]interface{}{0.0, 1.0, 2.0, 3.0, 4.0},
-			F64Data{0.0, 1.0, 2.0, 3.0, 4.0},
+			[]float64{0.0, 1.0, 2.0, 3.0, 4.0},
 		},
 		{
 			[]interface{}{0, 1, 2, 3, 4},
@@ -126,17 +126,17 @@ func TestInterface2F64Data(t *testing.T) {
 		},
 	}
 	for _, test := range interface2F64DataTests {
-		output, err := interface2F64Data(test.arg1)
+		output, err := interface2F64Slice(test.arg1)
 		if !cmp.Equal(output, test.expected) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
 }
 
-func TestInterface2StringData(t *testing.T) {
+func TestInterface2StringSlice(t *testing.T) {
 	type interface2StringDataTest struct {
 		arg1     []interface{}
-		expected StringData
+		expected []string
 	}
 	interface2StringDataTests := []interface2StringDataTest{
 		{
@@ -149,11 +149,11 @@ func TestInterface2StringData(t *testing.T) {
 		},
 		{
 			[]interface{}{"0", "1", "2", "3", "4"},
-			StringData{"0", "1", "2", "3", "4"},
+			[]string{"0", "1", "2", "3", "4"},
 		},
 		{
 			[]interface{}{"a", "b", "c", "d", "e"},
-			StringData{"a", "b", "c", "d", "e"},
+			[]string{"a", "b", "c", "d", "e"},
 		},
 		{
 			[]interface{}{0.5, 1, 1.5, 2, 2.5},
@@ -165,7 +165,7 @@ func TestInterface2StringData(t *testing.T) {
 		},
 	}
 	for _, test := range interface2StringDataTests {
-		output, err := interface2StringData(test.arg1)
+		output, err := interface2StringSlice(test.arg1)
 		if !cmp.Equal(output, test.expected) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
