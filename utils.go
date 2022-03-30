@@ -89,8 +89,8 @@ func checkCSVDataType(data string) interface{} {
 }
 
 // interface2F64Data() converts a slice of interface{} into F64Data.
-func interface2F64Data(data []interface{}) (F64Data, error) {
-	fd := make(F64Data, 0)
+func interface2F64Slice(data []interface{}) ([]float64, error) {
+	fd := make([]float64, 0)
 	for _, v := range data {
 		switch converted := v.(type) {
 		case float64:
@@ -107,8 +107,8 @@ func interface2F64Data(data []interface{}) (F64Data, error) {
 }
 
 // interface2StringData() converts a slice of interface{} into StringData.
-func interface2StringData(data []interface{}) (StringData, error) {
-	sd := make(StringData, 0)
+func interface2StringSlice(data []interface{}) ([]string, error) {
+	sd := make([]string, 0)
 	for _, v := range data {
 		switch converted := v.(type) {
 		case string:
@@ -124,9 +124,9 @@ func interface2StringData(data []interface{}) (StringData, error) {
 // Summary statistics functions (internal use only)
 
 // median() returns the median of the elements in an array.
-func median(data F64Data) (float64, error) {
+func median(data []float64) (float64, error) {
 	median := 0.0
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
