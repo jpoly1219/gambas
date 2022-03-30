@@ -258,6 +258,7 @@ func (s Series) Q1() (float64, error) {
 }
 
 // Q2() returns the middle quartile (50%) of the elements in a column.
+// This accomplishes the same thing as s.Median().
 func (s Series) Q2() (float64, error) {
 	q2, err := s.Median()
 	if err != nil {
@@ -267,6 +268,7 @@ func (s Series) Q2() (float64, error) {
 }
 
 // Q3() returns the upper quartile (75%) of the elements in a column.
+// This does not include the median during calculation.
 func (s Series) Q3() (float64, error) {
 	data, err := interface2F64Data(s.data)
 	if err != nil {
