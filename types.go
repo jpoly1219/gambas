@@ -99,11 +99,11 @@ func (s Series) Count() int {
 func (s Series) Mean() (float64, error) {
 	mean := 0.0
 
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
@@ -123,11 +123,11 @@ func (s Series) Mean() (float64, error) {
 func (s Series) Median() (float64, error) {
 	median := 0.0
 
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
@@ -154,11 +154,11 @@ func (s Series) Std() (float64, error) {
 		return math.NaN(), err
 	}
 
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	numerator := 0.0
 	for _, v := range data {
@@ -172,11 +172,11 @@ func (s Series) Std() (float64, error) {
 
 // Min() returns the smallest element in a column.
 func (s Series) Min() (float64, error) {
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
@@ -188,11 +188,11 @@ func (s Series) Min() (float64, error) {
 
 // Max() returns the largest element is a column.
 func (s Series) Max() (float64, error) {
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
@@ -205,11 +205,11 @@ func (s Series) Max() (float64, error) {
 // Q1() returns the lower quartile (25%) of the elements in a column.
 // This does not include the median during calculation.
 func (s Series) Q1() (float64, error) {
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	if len(data)%2 == 0 {
 		lower := data[:len(data)/2]
@@ -241,11 +241,11 @@ func (s Series) Q2() (float64, error) {
 // Q3() returns the upper quartile (75%) of the elements in a column.
 // This does not include the median during calculation.
 func (s Series) Q3() (float64, error) {
-	data, err := interface2F64Data(s.data)
+	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
 	}
-	sort.Sort(data)
+	sort.Float64s(data)
 
 	if len(data)%2 == 0 {
 		upper := data[len(data)/2:]
