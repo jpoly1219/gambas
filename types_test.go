@@ -1927,13 +1927,232 @@ func TestMax(t *testing.T) {
 }
 
 func TestQ1(t *testing.T) {
+	type q1Test struct {
+		arg1          Series
+		expected      float64
+		expectedError error
+	}
+	q1Tests := []q1Test{
+		{
+			Series{
+				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Name",
+			},
+			math.NaN(),
+			fmt.Errorf("data is not a float64: %v", "Avery"),
+		},
+		{
+			Series{
+				[]interface{}{30.0, 23.0, 19.0},
+				Index{[]interface{}{0, 1, 2}},
+				"Age",
+			},
+			19.0,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{},
+				Index{[]interface{}{}},
+				"Empty",
+			},
+			math.NaN(),
+			fmt.Errorf("no elements in this column"),
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, 173.0, 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			168.65,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			164.3,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2}},
+				"Height",
+			},
+			164.3,
+			nil,
+		},
+	}
 
+	for _, test := range q1Tests {
+		output, err := test.arg1.Q1()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+			if fmt.Sprint(output) == "NaN" {
+				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
+					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				}
+			} else {
+				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+			}
+		}
+	}
 }
 
 func TestQ2(t *testing.T) {
+	type q2Test struct {
+		arg1          Series
+		expected      float64
+		expectedError error
+	}
+	q2Tests := []q2Test{
+		{
+			Series{
+				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Name",
+			},
+			math.NaN(),
+			fmt.Errorf("data is not float64: %v", "Avery"),
+		},
+		{
+			Series{
+				[]interface{}{30.0, 23.0, 19.0},
+				Index{[]interface{}{0, 1, 2}},
+				"Age",
+			},
+			23.0,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{},
+				Index{[]interface{}{}},
+				"Empty",
+			},
+			math.NaN(),
+			fmt.Errorf("no elements in this column"),
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, 173.0, 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			175.85,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			178.7,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2}},
+				"Height",
+			},
+			171.5,
+			nil,
+		},
+	}
 
+	for _, test := range q2Tests {
+		output, err := test.arg1.Q2()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+			if fmt.Sprint(output) == "NaN" {
+				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
+					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				}
+			} else {
+				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+			}
+		}
+	}
 }
 
 func TestQ3(t *testing.T) {
+	type q3Test struct {
+		arg1          Series
+		expected      float64
+		expectedError error
+	}
+	q3Tests := []q3Test{
+		{
+			Series{
+				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Name",
+			},
+			math.NaN(),
+			fmt.Errorf("data is not float64: %v", "Avery"),
+		},
+		{
+			Series{
+				[]interface{}{30.0, 23.0, 19.0},
+				Index{[]interface{}{0, 1, 2}},
+				"Age",
+			},
+			30.0,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{},
+				Index{[]interface{}{}},
+				"Empty",
+			},
+			math.NaN(),
+			fmt.Errorf("no elements in this column"),
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, 173.0, 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			180.6,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2, 3}},
+				"Height",
+			},
+			182.5,
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{164.3, math.NaN(), 178.7},
+				Index{[]interface{}{0, 1, 2}},
+				"Height",
+			},
+			178.7,
+			nil,
+		},
+	}
 
+	for _, test := range q3Tests {
+		output, err := test.arg1.Q3()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+			if fmt.Sprint(output) == "NaN" {
+				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
+					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				}
+			} else {
+				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+			}
+		}
+	}
 }
