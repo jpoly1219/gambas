@@ -182,7 +182,6 @@ func (s Series) Std() (float64, error) {
 	if err != nil {
 		return math.NaN(), err
 	}
-	fmt.Println(mean)
 
 	data, err := interface2F64Data(s.data)
 	if err != nil {
@@ -283,7 +282,7 @@ func (s Series) Q3() (float64, error) {
 		}
 		return q3, nil
 	} else {
-		upper := data[:(len(data)+1)/2]
+		upper := data[(len(data)+1)/2:]
 		q3, err := median(upper)
 		if err != nil {
 			return math.NaN(), err
