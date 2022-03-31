@@ -7,9 +7,7 @@ import (
 	"sort"
 )
 
-type Index struct {
-	data []interface{}
-}
+type Index []interface{}
 
 type Series struct {
 	data  []interface{}
@@ -40,7 +38,7 @@ func (s Series) CalcMean() (float64, error) {
 
 // At() returns the element at a given index.
 func (s Series) Loc(index interface{}) (interface{}, error) {
-	for i, v := range s.index.data {
+	for i, v := range s.index {
 		if v == index {
 			result := s.data[i]
 			return result, nil
@@ -70,7 +68,7 @@ func (s Series) LocR(min, max int) ([]interface{}, error) {
 	resultArray := make([]interface{}, 0)
 
 	for i := min; i < max; i++ {
-		key := s.index.data[i]
+		key := s.index[i]
 		result, err := s.Loc(key)
 		if err != nil {
 			return nil, err
@@ -277,7 +275,7 @@ func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
 
 	for _, row := range rows {
 		for _, index := range df.index {
-			for i, value := range index.data {
+			for i, value := range index {
 				if row == value {
 					locations = append(locations, i)
 				}
@@ -294,7 +292,7 @@ func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
 		filteredCols = append(filteredCols, filteredCol)
 	}
 
-	dataframe, err := NewDataFrame(filteredCols, df.columns.data, df.indexCols)
+	dataframe, err := NewDataFrame(filteredCols, df.columns, df.indexCols)
 	if err != nil {
 		return nil, err
 	}
@@ -501,7 +499,7 @@ func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, err
 	}
 
 	df.series = append(df.series, *newSeries)
-	df.columns.data = append(df.columns.data, colname)
+	df.columns = append(df.columns, colname)
 
 	return df, nil
 }
