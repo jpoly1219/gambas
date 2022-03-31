@@ -15,21 +15,21 @@ func TestCreateRangeIndex(t *testing.T) {
 	createRangeIndexTests := []createRangeIndexTest{
 		{
 			5,
-			Index{[]interface{}{0, 1, 2, 3, 4}},
+			Index{0, 1, 2, 3, 4},
 		},
 		{
 			10,
-			Index{[]interface{}{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}},
+			Index{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
 		},
 		{
 			1,
-			Index{[]interface{}{0}},
+			Index{0},
 		},
 	}
 
 	for _, test := range createRangeIndexTests {
 		output := CreateRangeIndex(test.arg1)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(output)) {
+		if !cmp.Equal(output, test.expected) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
@@ -48,7 +48,7 @@ func TestNewSeries(t *testing.T) {
 			"People",
 			&Series{
 				[]interface{}{"alice", "bob", "charlie"},
-				Index{[]interface{}{0, 1, 2}},
+				Index{0, 1, 2},
 				"People",
 			},
 		},
@@ -57,7 +57,7 @@ func TestNewSeries(t *testing.T) {
 			"Fruit",
 			&Series{
 				[]interface{}{"apple", "banana", "cherry"},
-				Index{[]interface{}{0, 1, 2}},
+				Index{0, 1, 2},
 				"Fruit",
 			},
 		},
@@ -70,7 +70,7 @@ func TestNewSeries(t *testing.T) {
 
 	for _, test := range newSeriesTests {
 		output, err := NewSeries(test.arg1, test.arg2)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, Series{}.index)) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -93,30 +93,30 @@ func TestNewDataFrame(t *testing.T) {
 				[]Series{
 					{
 						[]interface{}{1, 2, 3},
-						Index{[]interface{}{0, 1, 2}},
+						Index{0, 1, 2},
 						"group a",
 					},
 					{
 						[]interface{}{4, 5, 6},
-						Index{[]interface{}{0, 1, 2}},
+						Index{0, 1, 2},
 						"group b",
 					},
 					{
 						[]interface{}{7, 8, 9},
-						Index{[]interface{}{0, 1, 2}},
+						Index{0, 1, 2},
 						"group c",
 					},
 				},
-				Index{[]interface{}{"group a", "group b", "group c"}},
+				Index{"group a", "group b", "group c"},
 				[]interface{}{"group a"},
-				[]Index{{[]interface{}{1, 2, 3}}},
+				[]Index{{1, 2, 3}},
 			},
 		},
 	}
 
 	for _, test := range newDataFrameTests {
 		output, err := NewDataFrame(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(*output, output.index[0], output.series[0])) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
