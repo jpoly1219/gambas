@@ -5,13 +5,13 @@ import "fmt"
 // CreateRangeIndex takes the length of an Index and creates a RangeIndex.
 // RangeIndex is an index that spans from 0 to the length of the index.
 func CreateRangeIndex(length int) Index {
-	zeroToLength := make([]interface{}, length)
+	rangeIndex := make(Index, length)
 
 	for i := 0; i < length; i++ {
-		zeroToLength[i] = i
+		rangeIndex[i] = i
 	}
 
-	return Index{zeroToLength}
+	return rangeIndex
 }
 
 // NewSeries created a new Series object from given parameters.
@@ -20,11 +20,9 @@ func NewSeries(data []interface{}, name string) (*Series, error) {
 	var s Series
 	ok, err := checkTypeIntegrity(data)
 	if err != nil {
-		fmt.Println("1")
 		return nil, err
 	}
 	if !ok {
-		fmt.Println("2")
 		return nil, fmt.Errorf("types do not match")
 	}
 	s.data = data
@@ -43,7 +41,7 @@ func NewDataFrame(data [][]interface{}, columns []interface{}, indexCols []inter
 	var df DataFrame
 	df.series = make([]Series, len(data))
 	df.index = make([]Index, 0)
-	df.columns.data = columns
+	df.columns = columns
 	df.indexCols = indexCols
 
 	// create df.index
@@ -51,7 +49,7 @@ func NewDataFrame(data [][]interface{}, columns []interface{}, indexCols []inter
 	for i, col := range columns {
 		for _, indexCol := range indexCols {
 			if col == indexCol {
-				df.index = append(df.index, Index{data[i]})
+				df.index = append(df.index, data[i])
 			}
 		}
 	}
