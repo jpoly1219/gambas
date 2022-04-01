@@ -9,6 +9,18 @@ import (
 
 type Index []interface{}
 
+func (in Index) Len() int {
+	return len(in)
+}
+
+func (in Index) Less(i, j int) bool {
+	return fmt.Sprint(in[i]) < fmt.Sprint(in[j])
+}
+
+func (in Index) Swap(i, j int) {
+	in[i], in[j] = in[j], in[i]
+}
+
 type Series struct {
 	data  []interface{}
 	index Index
@@ -259,6 +271,23 @@ func (s Series) Q3() (float64, error) {
 			return math.NaN(), err
 		}
 		return q3, nil
+	}
+}
+
+func (s *Series) SortByIndex(ascending bool) {
+	indDatMap := make(map[interface{}]interface{})
+	for i, data := range s.data {
+		indDatMap[s.index[i]] = data
+	}
+
+	if ascending {
+		sort.Sort(s.index)
+	} else {
+		sort.Sort(sort.Reverse(s.index))
+	}
+
+	for i, index := range s.index {
+		s.data[i] = indDatMap[index]
 	}
 }
 
