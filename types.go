@@ -274,6 +274,8 @@ func (s Series) Q3() (float64, error) {
 	}
 }
 
+// SortByIndex() sorts the elements in a series by the index.
+// Multiindex support is coming, but this may require an overhaul.
 func (s *Series) SortByIndex(ascending bool) {
 	indDatMap := make(map[interface{}]interface{})
 	for i, data := range s.data {
