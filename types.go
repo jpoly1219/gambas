@@ -5,20 +5,44 @@ import (
 	"math"
 	"reflect"
 	"sort"
+	"strconv"
 )
 
 type Index []interface{}
 
-func (in Index) Len() int {
-	return len(in)
+type IndexData struct {
+	index []Index
+	names []string
 }
 
-func (in Index) Less(i, j int) bool {
-	return fmt.Sprint(in[i]) < fmt.Sprint(in[j])
+func (id IndexData) Len() int {
+	return len(id.index)
 }
 
-func (in Index) Swap(i, j int) {
-	in[i], in[j] = in[j], in[i]
+func (id IndexData) Less(i, j int) bool {
+	var iStrData, jStrData string
+
+	for a := range id.index[0] {
+		switch v := id.index[i][a].(type) {
+		case string:
+			iStrData = v
+			jStrData = id.index[j][a].(string)
+		case float64:
+			iStrData = strconv.FormatFloat(v, 'f', -1, 64)
+			jStrData = strconv.FormatFloat(id.index[j][a].(float64), 'f', -1, 64)
+		}
+
+		if iStrData == jStrData {
+			continue
+		} else {
+			break
+		}
+	}
+	return iStrData < jStrData
+}
+
+func (id IndexData) Sort(i, j int) {
+	id.index[i], id.index[j] = id.index[j], id.index[i]
 }
 
 type Series struct {
