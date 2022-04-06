@@ -34,35 +34,41 @@ func TestPrintSeries(t *testing.T) {
 	}
 }
 
-func TestSeriesLoc(t *testing.T) {
+func TestSeriesAt(t *testing.T) {
 	type atTest struct {
 		arg1     Series
-		arg2     interface{}
+		arg2     Index
 		expected interface{}
 	}
 	atTests := []atTest{
 		{
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
-				Index{0, 1, 2},
+				IndexData{
+					[]Index{{0, 1, 2}},
+					[]string{""},
+				},
 				"People",
 			},
-			0,
+			Index{0},
 			"alice",
 		},
 		{
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
-				Index{"a", "b", "c"},
+				IndexData{
+					[]Index{{"a", "b", "c"}},
+					[]string{""},
+				},
 				"Fruit",
 			},
-			"b",
+			Index{"b"},
 			"banana",
 		},
 	}
 
 	for _, test := range atTests {
-		output, err := test.arg1.Loc(test.arg2)
+		output, err := test.arg1.At(test.arg2)
 		if output != test.expected || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
