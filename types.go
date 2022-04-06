@@ -3,7 +3,6 @@ package gambas
 import (
 	"fmt"
 	"math"
-	"reflect"
 	"sort"
 	"strconv"
 )
@@ -47,7 +46,7 @@ func (id IndexData) Sort(i, j int) {
 
 type Series struct {
 	data  []interface{}
-	index Index
+	index IndexData
 	name  string
 }
 
@@ -57,62 +56,60 @@ func (s Series) PrintSeries() string {
 	return message
 }
 
-func (s Series) CalcMean() (float64, error) {
-	sum := 0.0
-	for _, v := range s.data {
-		if reflect.ValueOf(v).Kind() != reflect.Float64 || reflect.ValueOf(v).Kind() != reflect.Int {
-			err := fmt.Errorf("type is not int or float64: %T", v)
-			fmt.Println(err)
-			return 0.0, err
+// At() returns an element at a given index.
+func (s Series) At(in Index) (interface{}, error) {
+	for i, index := range s.index.index {
+		isSame := true
+		for j := 0; j < len(index); j++ {
+			if index[j] != in[j] {
+				isSame = false
+				break
+			}
 		}
-		sum += v.(float64)
-	}
-	mean := sum / float64(len(s.data))
-
-	return mean, nil
-}
-
-// At() returns the element at a given index.
-func (s Series) Loc(index interface{}) (interface{}, error) {
-	for i, v := range s.index {
-		if v == index {
-			result := s.data[i]
-			return result, nil
+		if isSame {
+			return s.data[i], nil
 		}
 	}
-
-	return nil, fmt.Errorf("index %s is not found", index)
+	return nil, fmt.Errorf("the given index does not match any of the index in the series: %v", in)
 }
 
-// AtM() returns an array of elements at given indexes.
-func (s Series) LocM(indexArray []interface{}) ([]interface{}, error) {
-	resultArray := make([]interface{}, len(indexArray))
+// IAt() returns an element at a given integer index.
+func (s Series) IAt(in int) (interface{}, error) {
+	if in >= len(s.data) {
+		return nil, fmt.Errorf("index out of bounds: %v", in)
+	}
+	if in < 0 {
+		return nil, fmt.Errorf("index can't be less than 0")
+	}
+	return s.data[in], nil
+}
 
-	for i, v := range indexArray {
-		result, err := s.Loc(v)
+// Loc() returns a range of data at given rows.
+func (s Series) Loc(rows []Index) ([]interface{}, error) {
+	result := make([]interface{}, 0)
+	for _, row := range rows {
+		atData, err := s.At(row)
 		if err != nil {
 			return nil, err
 		}
-		resultArray[i] = result
+		result = append(result, atData)
 	}
 
-	return resultArray, nil
+	return result, nil
 }
 
-// AtR() returns an array of elements at a given index range.
-func (s Series) LocR(min, max int) ([]interface{}, error) {
-	resultArray := make([]interface{}, 0)
-
+// ILoc() returns an array of elements at a given integer index range.
+func (s Series) ILoc(min, max int) ([]interface{}, error) {
+	result := make([]interface{}, 0)
 	for i := min; i < max; i++ {
-		key := s.index[i]
-		result, err := s.Loc(key)
+		iatData, err := s.IAt(i)
 		if err != nil {
 			return nil, err
 		}
-		resultArray = append(resultArray, result)
+		result = append(result, iatData)
 	}
 
-	return resultArray, nil
+	return result, nil
 }
 
 // Summary statistics functions
