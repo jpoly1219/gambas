@@ -45,7 +45,7 @@ func TestSeriesAt(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0, 1, 2}},
+					[]Index{{0}, {1}, {2}},
 					[]string{""},
 				},
 				"People",
@@ -57,7 +57,7 @@ func TestSeriesAt(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a", "b", "c"}},
+					[]Index{{"a"}, {"b"}, {"c"}},
 					[]string{""},
 				},
 				"Fruit",
@@ -75,35 +75,41 @@ func TestSeriesAt(t *testing.T) {
 	}
 }
 
-func TestSeriesLocM(t *testing.T) {
+func TestSeriesLoc(t *testing.T) {
 	type atMTest struct {
 		arg1     Series
-		arg2     []interface{}
+		arg2     []Index
 		expected []interface{}
 	}
 	atMTests := []atMTest{
 		{
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
-				Index{0, 1, 2},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{""},
+				},
 				"People",
 			},
-			[]interface{}{0, 1},
+			[]Index{{0}, {1}},
 			[]interface{}{"alice", "bob"},
 		},
 		{
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
-				Index{"a", "b", "c"},
+				IndexData{
+					[]Index{{"a"}, {"b"}, {"c"}},
+					[]string{""},
+				},
 				"Fruit",
 			},
-			[]interface{}{"b", "c"},
+			[]Index{{"b"}, {"c"}},
 			[]interface{}{"banana", "cherry"},
 		},
 	}
 
 	for _, test := range atMTests {
-		output, err := test.arg1.LocM(test.arg2)
+		output, err := test.arg1.Loc(test.arg2)
 		if !cmp.Equal(output, test.expected) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
