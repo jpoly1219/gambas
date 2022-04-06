@@ -4,14 +4,19 @@ import "fmt"
 
 // CreateRangeIndex takes the length of an Index and creates a RangeIndex.
 // RangeIndex is an index that spans from 0 to the length of the index.
-func CreateRangeIndex(length int) Index {
-	rangeIndex := make(Index, length)
+func CreateRangeIndex(length int) IndexData {
+	rangeIndex := make([]Index, length)
 
 	for i := 0; i < length; i++ {
-		rangeIndex[i] = i
+		rangeIndex[i] = Index{i}
 	}
 
-	return rangeIndex
+	indexData := IndexData{
+		rangeIndex,
+		[]string{""},
+	}
+
+	return indexData
 }
 
 // NewSeries created a new Series object from given parameters.
