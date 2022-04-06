@@ -116,12 +116,12 @@ func TestSeriesIAt(t *testing.T) {
 	}
 }
 func TestSeriesLoc(t *testing.T) {
-	type atMTest struct {
+	type locTest struct {
 		arg1     Series
 		arg2     []Index
 		expected []interface{}
 	}
-	atMTests := []atMTest{
+	locTests := []locTest{
 		{
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
@@ -148,7 +148,7 @@ func TestSeriesLoc(t *testing.T) {
 		},
 	}
 
-	for _, test := range atMTests {
+	for _, test := range locTests {
 		output, err := test.arg1.Loc(test.arg2)
 		if !cmp.Equal(output, test.expected) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
@@ -156,18 +156,21 @@ func TestSeriesLoc(t *testing.T) {
 	}
 }
 
-func TestSeriesLocR(t *testing.T) {
-	type atRTest struct {
+func TestSeriesILoc(t *testing.T) {
+	type ilocTest struct {
 		arg1     Series
 		arg2     int
 		arg3     int
 		expected []interface{}
 	}
-	atRTests := []atRTest{
+	ilocTests := []ilocTest{
 		{
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
-				Index{0, 1, 2},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{""},
+				},
 				"People",
 			},
 			0,
@@ -177,7 +180,10 @@ func TestSeriesLocR(t *testing.T) {
 		{
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
-				Index{"a", "b", "c"},
+				IndexData{
+					[]Index{{"a"}, {"b"}, {"c"}},
+					[]string{""},
+				},
 				"Fruit",
 			},
 			0,
@@ -186,8 +192,8 @@ func TestSeriesLocR(t *testing.T) {
 		},
 	}
 
-	for _, test := range atRTests {
-		output, err := test.arg1.LocR(test.arg2, test.arg3)
+	for _, test := range ilocTests {
+		output, err := test.arg1.ILoc(test.arg2, test.arg3)
 		if !cmp.Equal(output, test.expected) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
