@@ -75,6 +75,46 @@ func TestSeriesAt(t *testing.T) {
 	}
 }
 
+func TestSeriesIAt(t *testing.T) {
+	type iatTest struct {
+		arg1     Series
+		arg2     int
+		expected interface{}
+	}
+	iatTests := []iatTest{
+		{
+			Series{
+				[]interface{}{"alice", "bob", "charlie"},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{""},
+				},
+				"People",
+			},
+			0,
+			"alice",
+		},
+		{
+			Series{
+				[]interface{}{"apple", "banana", "cherry"},
+				IndexData{
+					[]Index{{"a"}, {"b"}, {"c"}},
+					[]string{""},
+				},
+				"Fruit",
+			},
+			1,
+			"banana",
+		},
+	}
+
+	for _, test := range iatTests {
+		output, err := test.arg1.IAt(test.arg2)
+		if output != test.expected || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
 func TestSeriesLoc(t *testing.T) {
 	type atMTest struct {
 		arg1     Series
