@@ -85,17 +85,50 @@ func (s Series) IAt(in int) (interface{}, error) {
 }
 
 // Loc() returns a range of data at given rows.
-func (s Series) Loc(rows []Index) ([]interface{}, error) {
-	result := make([]interface{}, 0)
-	for _, row := range rows {
-		atData, err := s.At(row)
-		if err != nil {
-			return nil, err
+func (s Series) Loc(in []Index) ([]interface{}, error) {
+	// This makes sure that each index passed are the same length.
+	indexLength := len(in[0])
+	for i, eachIndex := range in {
+		if indexLength != len(eachIndex) {
+			return nil, fmt.Errorf("index length does not match: %v, %v", in[i-1], eachIndex)
 		}
-		result = append(result, atData)
 	}
 
-	return result, nil
+	result := make([]interface{}, 0)
+	for _, inputIndex := range in {
+		for j, seriesIndex := range s.index.index {
+			// Default cases.
+			if indexLength == 1 {
+				if inputIndex[0] == seriesIndex[0] {
+					result = append(result, s.data[j])
+				}
+			}
+			// Multiindex cases. Check if each item in inputIndex and seriesIndex are the same.
+			if indexLength > 1 {
+				isSame := true
+				for k := 0; k < indexLength; k++ {
+					if inputIndex[k] != seriesIndex[k] {
+						isSame = false
+						break
+					}
+				}
+				if isSame {
+					result = append(result, s.data[j])
+				}
+			}
+		}
+	}
+
+	// result := make([]interface{}, 0)
+	// for _, row := range rows {
+	// 	atData, err := s.At(row)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
+	// 	result = append(result, atData)
+	// }
+
+	// return result, nil
 }
 
 // ILoc() returns an array of elements at a given integer index range.
