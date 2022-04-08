@@ -336,22 +336,22 @@ func (s Series) Q3() (float64, error) {
 
 // SortByIndex() sorts the elements in a series by the index.
 // Multiindex support is coming, but this may require an overhaul.
-func (s *Series) SortByIndex(ascending bool) {
-	indDatMap := make(map[interface{}]interface{})
-	for i, data := range s.data {
-		indDatMap[s.index[i]] = data
-	}
+// func (s *Series) SortByIndex(ascending bool) {
+// 	indDatMap := make(map[interface{}]interface{})
+// 	for i, data := range s.data {
+// 		indDatMap[s.index[i]] = data
+// 	}
 
-	if ascending {
-		sort.Sort(s.index)
-	} else {
-		sort.Sort(sort.Reverse(s.index))
-	}
+// 	if ascending {
+// 		sort.Sort(s.index)
+// 	} else {
+// 		sort.Sort(sort.Reverse(s.index))
+// 	}
 
-	for i, index := range s.index {
-		s.data[i] = indDatMap[index]
-	}
-}
+// 	for i, index := range s.index {
+// 		s.data[i] = indDatMap[index]
+// 	}
+// }
 
 type DataFrame struct {
 	series    []Series
