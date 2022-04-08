@@ -48,7 +48,10 @@ func TestNewSeries(t *testing.T) {
 			"People",
 			&Series{
 				[]interface{}{"alice", "bob", "charlie"},
-				Index{0, 1, 2},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{""},
+				},
 				"People",
 			},
 		},
@@ -57,7 +60,10 @@ func TestNewSeries(t *testing.T) {
 			"Fruit",
 			&Series{
 				[]interface{}{"apple", "banana", "cherry"},
-				Index{0, 1, 2},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{""},
+				},
 				"Fruit",
 			},
 		},
@@ -93,17 +99,26 @@ func TestNewDataFrame(t *testing.T) {
 				[]Series{
 					{
 						[]interface{}{1, 2, 3},
-						Index{0, 1, 2},
+						IndexData{
+							[]Index{{0}, {1}, {2}},
+							[]string{"group a"},
+						},
 						"group a",
 					},
 					{
 						[]interface{}{4, 5, 6},
-						Index{0, 1, 2},
+						IndexData{
+							[]Index{{0}, {1}, {2}},
+							[]string{"group a"},
+						},
 						"group b",
 					},
 					{
 						[]interface{}{7, 8, 9},
-						Index{0, 1, 2},
+						IndexData{
+							[]Index{{0}, {1}, {2}},
+							[]string{"group a"},
+						},
 						"group c",
 					},
 				},
