@@ -57,6 +57,7 @@ func (s Series) PrintSeries() string {
 }
 
 // At() returns an element at a given index.
+// For multiindex, you need to pass in the whole index tuple.
 func (s Series) At(in Index) (interface{}, error) {
 	for i, index := range s.index.index {
 		isSame := true
@@ -85,7 +86,7 @@ func (s Series) IAt(in int) (interface{}, error) {
 }
 
 // Loc() returns a range of data at given rows.
-func (s Series) Loc(in []Index) ([]interface{}, error) {
+func (s Series) Loc(in []Index) (*Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(in[0])
 	for i, eachIndex := range in {
@@ -94,16 +95,15 @@ func (s Series) Loc(in []Index) ([]interface{}, error) {
 		}
 	}
 
-	result := make([]interface{}, 0)
+	filtered := make([]interface{}, 0)
 	for _, inputIndex := range in {
 		for j, seriesIndex := range s.index.index {
-			// Default cases.
 			if indexLength == 1 {
 				if inputIndex[0] == seriesIndex[0] {
-					result = append(result, s.data[j])
+					filtered = append(filtered, s.data[j])
 				}
 			}
-			// Multiindex cases. Check if each item in inputIndex and seriesIndex are the same.
+
 			if indexLength > 1 {
 				isSame := true
 				for k := 0; k < indexLength; k++ {
@@ -113,11 +113,17 @@ func (s Series) Loc(in []Index) ([]interface{}, error) {
 					}
 				}
 				if isSame {
-					result = append(result, s.data[j])
+					filtered = append(filtered, s.data[j])
 				}
 			}
 		}
 	}
+
+	result, err := NewSeries(filtered, s.name)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 
 	// result := make([]interface{}, 0)
 	// for _, row := range rows {
