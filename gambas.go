@@ -21,7 +21,9 @@ func CreateRangeIndex(length int) IndexData {
 
 // NewSeries created a new Series object from given parameters.
 // Generally, NewSeriesFromFile will be used more often.
-func NewSeries(data []interface{}, name string) (*Series, error) {
+// The index parameter can be set to nil when calling NewSeries on its own.
+// This field is for passing in the DataFrame's index data in NewDataFrame.
+func NewSeries(data []interface{}, name string, index *IndexData) (*Series, error) {
 	var s Series
 	ok, err := checkTypeIntegrity(data)
 	if err != nil {
@@ -31,7 +33,13 @@ func NewSeries(data []interface{}, name string) (*Series, error) {
 		return nil, fmt.Errorf("types do not match")
 	}
 	s.data = data
-	s.index = CreateRangeIndex(len(data))
+
+	if index == nil {
+		s.index = CreateRangeIndex(len(data))
+	} else {
+		s.index = *index
+	}
+
 	s.name = name
 	return &s, nil
 }
@@ -67,7 +75,7 @@ func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*
 	}
 
 	for i, v := range data {
-		series, err := NewSeries(v, fmt.Sprint(columns[i]))
+		series, err := NewSeries(v, fmt.Sprint(columns[i]), &df.index)
 		if err != nil {
 			return nil, err
 		}
