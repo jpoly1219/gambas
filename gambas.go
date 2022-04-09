@@ -38,24 +38,31 @@ func NewSeries(data []interface{}, name string) (*Series, error) {
 
 // NewDataFrame created a new DataFrame object from given parameters.
 // Generally, NewDataFrameFromFile will be used more often.
-func NewDataFrame(data [][]interface{}, columns []interface{}, indexCols []interface{}) (*DataFrame, error) {
+func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*DataFrame, error) {
 	if len(data) != len(columns) {
 		return nil, fmt.Errorf("length of data (%d) and columns (%d) does not match", len(data), len(columns))
 	}
 
 	var df DataFrame
 	df.series = make([]Series, len(data))
-	df.index = make([]Index, 0)
+	df.index = IndexData{}
+	df.index.names = indexCols
 	df.columns = columns
-	df.indexCols = indexCols
 
 	// create df.index
 	// find location of index column
+	indexColsIndex := make([]int, 0)
 	for i, col := range columns {
 		for _, indexCol := range indexCols {
 			if col == indexCol {
-				df.index = append(df.index, data[i])
+				indexColsIndex = append(indexColsIndex, i)
 			}
+		}
+	}
+
+	for i := 0; i < len(data[0]); i++ {
+		for _, location := range indexColsIndex {
+			df.index.index = append(df.index.index, Index{data[location][i]})
 		}
 	}
 
