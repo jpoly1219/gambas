@@ -45,9 +45,11 @@ func TestReadCsv(t *testing.T) {
 						"Sex",
 					},
 				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
+				IndexData{
+					[]Index{{"Avery", "Bradford", "Candice"}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
 			},
 		},
 		{
@@ -127,9 +129,11 @@ func TestReadCsv(t *testing.T) {
 						"Salary",
 					},
 				},
-				Index{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"}},
+				IndexData{
+					[]Index{{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
 			},
 		},
 	}
