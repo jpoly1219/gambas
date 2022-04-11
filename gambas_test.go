@@ -9,21 +9,30 @@ import (
 func TestCreateRangeIndex(t *testing.T) {
 	type createRangeIndexTest struct {
 		arg1     int
-		expected Index
+		expected IndexData
 	}
 
 	createRangeIndexTests := []createRangeIndexTest{
 		{
 			5,
-			Index{0, 1, 2, 3, 4},
+			IndexData{
+				[]Index{{0}, {1}, {2}, {3}, {4}, {5}},
+				[]string{""},
+			},
 		},
 		{
 			10,
-			Index{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			IndexData{
+				[]Index{{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}},
+				[]string{""},
+			},
 		},
 		{
 			1,
-			Index{0},
+			IndexData{
+				[]Index{{0}},
+				[]string{""},
+			},
 		},
 	}
 
@@ -39,6 +48,7 @@ func TestNewSeries(t *testing.T) {
 	type newSeriesTest struct {
 		arg1     []interface{}
 		arg2     string
+		arg3     *IndexData
 		expected *Series
 	}
 
@@ -46,6 +56,10 @@ func TestNewSeries(t *testing.T) {
 		{
 			[]interface{}{"alice", "bob", "charlie"},
 			"People",
+			&IndexData{
+				[]Index{{0}, {1}, {2}},
+				[]string{""},
+			},
 			&Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
@@ -58,6 +72,10 @@ func TestNewSeries(t *testing.T) {
 		{
 			[]interface{}{"apple", "banana", "cherry"},
 			"Fruit",
+			&IndexData{
+				[]Index{{0}, {1}, {2}},
+				[]string{""},
+			},
 			&Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
@@ -70,12 +88,16 @@ func TestNewSeries(t *testing.T) {
 		{
 			[]interface{}{"apple", 2, "cherry"},
 			"Fruit",
+			&IndexData{
+				[]Index{{0}, {1}, {2}},
+				[]string{""},
+			},
 			nil,
 		},
 	}
 
 	for _, test := range newSeriesTests {
-		output, err := NewSeries(test.arg1, test.arg2)
+		output, err := NewSeries(test.arg1, test.arg2, test.arg3)
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
@@ -85,16 +107,16 @@ func TestNewSeries(t *testing.T) {
 func TestNewDataFrame(t *testing.T) {
 	type newDataFrameTest struct {
 		arg1     [][]interface{}
-		arg2     []interface{}
-		arg3     []interface{}
+		arg2     []string
+		arg3     []string
 		expected *DataFrame
 	}
 
 	newDataFrameTests := []newDataFrameTest{
 		{
 			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
-			[]interface{}{"group a", "group b", "group c"},
-			[]interface{}{"group a"},
+			[]string{"group a", "group b", "group c"},
+			[]string{"group a"},
 			&DataFrame{
 				[]Series{
 					{
@@ -122,9 +144,11 @@ func TestNewDataFrame(t *testing.T) {
 						"group c",
 					},
 				},
-				Index{"group a", "group b", "group c"},
-				[]interface{}{"group a"},
-				[]Index{{1, 2, 3}},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{"group a"},
+				},
+				[]string{"group a", "group b", "group c"},
 			},
 		},
 	}
