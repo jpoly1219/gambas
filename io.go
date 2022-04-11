@@ -9,6 +9,7 @@ import (
 
 // ReadCsv reads a CSV file and returns a new DataFrame object.
 // Path to file should be generated using `filepath.Join`.
+// TODO: users should be able to define custom indices.
 func ReadCsv(pathToFile string) (*DataFrame, error) {
 	// read line by line
 	f, err := os.Open(pathToFile)
@@ -19,7 +20,7 @@ func ReadCsv(pathToFile string) (*DataFrame, error) {
 	csvr := csv.NewReader(f)
 
 	rowNum := 0
-	columnArray := make([]interface{}, 0)
+	columnArray := make([]string, 0)
 	data2DArray := make([][]interface{}, 0)
 	for {
 		row, err := csvr.Read()
@@ -51,7 +52,7 @@ func ReadCsv(pathToFile string) (*DataFrame, error) {
 		rowNum++
 	}
 	// create new DataFrame object and return it
-	df, err := NewDataFrame(data2DArray, columnArray, []interface{}{columnArray[0]})
+	df, err := NewDataFrame(data2DArray, columnArray, []string{columnArray[0]})
 	if err != nil {
 		return nil, err
 	}
