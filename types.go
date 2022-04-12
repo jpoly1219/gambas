@@ -96,30 +96,26 @@ func (s Series) Loc(in []Index) (*Series, error) {
 	}
 
 	filtered := make([]interface{}, 0)
+	filteredIndex := make([]Index, 0)
 	for _, inputIndex := range in {
 		for j, seriesIndex := range s.index.index {
-			if indexLength == 1 {
-				if inputIndex[0] == seriesIndex[0] {
-					filtered = append(filtered, s.data[j])
+			isSame := true
+			for k := 0; k < indexLength; k++ {
+				if inputIndex[k] != seriesIndex[k] {
+					isSame = false
+					break
 				}
 			}
-
-			if indexLength > 1 {
-				isSame := true
-				for k := 0; k < indexLength; k++ {
-					if inputIndex[k] != seriesIndex[k] {
-						isSame = false
-						break
-					}
-				}
-				if isSame {
-					filtered = append(filtered, s.data[j])
-				}
+			if isSame {
+				filtered = append(filtered, s.data[j])
+				filteredIndex = append(filteredIndex, seriesIndex)
 			}
 		}
 	}
 
-	result, err := NewSeries(filtered, s.name)
+	indexParam := IndexData{filteredIndex, s.index.names}
+
+	result, err := NewSeries(filtered, s.name, &indexParam)
 	if err != nil {
 		return nil, err
 	}
@@ -354,41 +350,54 @@ func (s Series) Q3() (float64, error) {
 // }
 
 type DataFrame struct {
-	series    []Series
-	columns   Index
-	indexCols []interface{}
-	index     []Index
+	series  []Series
+	index   IndexData
+	columns []string
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
-func (df DataFrame) LocRows(rows []interface{}) (*DataFrame, error) {
-	locations := make([]int, 0)
-
-	for _, row := range rows {
-		for _, index := range df.index {
-			for i, value := range index {
-				if row == value {
-					locations = append(locations, i)
-				}
-			}
-		}
-	}
-
-	filteredCols := make([][]interface{}, 0)
+func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
+	filteredData := make([][]interface{}, 0)
+	filteredColname := make([]string, 0)
+	filteredIndex := []IndexData{}
 	for _, series := range df.series {
-		filteredCol := make([]interface{}, 0)
-		for _, location := range locations {
-			filteredCol = append(filteredCol, series.data[location])
+		located, err := series.Loc(rows)
+		if err != nil {
+			return nil, err
 		}
-		filteredCols = append(filteredCols, filteredCol)
+		filteredData = append(filteredData, located.data)
+		filteredColname = append(filteredColname, located.name)
 	}
 
-	dataframe, err := NewDataFrame(filteredCols, df.columns, df.indexCols)
-	if err != nil {
-		return nil, err
-	}
+	NewDataFrame(filteredData, filteredColname)
 
-	return dataframe, nil
+	// locations := make([]int, 0)
+
+	// for _, row := range rows {
+	// 	for _, index := range df.index {
+	// 		for i, value := range index {
+	// 			if row == value {
+	// 				locations = append(locations, i)
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// filteredCols := make([][]interface{}, 0)
+	// for _, series := range df.series {
+	// 	filteredCol := make([]interface{}, 0)
+	// 	for _, location := range locations {
+	// 		filteredCol = append(filteredCol, series.data[location])
+	// 	}
+	// 	filteredCols = append(filteredCols, filteredCol)
+	// }
+
+	// dataframe, err := NewDataFrame(filteredCols, df.columns, df.indexCols)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// return dataframe, nil
 }
 
 // LocRows returns a set of columns as a new DataFrame object, given a list of labels.
