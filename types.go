@@ -598,7 +598,7 @@ func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 // To create a blank column, pass in a slice with zero values.
 // Use this in conjunction with operators, like this: df.NewCol().ColAdd()
 func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, error) {
-	newSeries, err := NewSeries(data, colname)
+	newSeries, err := NewSeries(data, colname, &df.index)
 	if err != nil {
 		return nil, err
 	}
