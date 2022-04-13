@@ -96,7 +96,7 @@ func (s Series) Loc(in []Index) (*Series, error) {
 	}
 
 	filtered := make([]interface{}, 0)
-	filteredIndex := make([]Index, 0)
+	filteredIndex := IndexData{}
 	for _, inputIndex := range in {
 		for j, seriesIndex := range s.index.index {
 			isSame := true
@@ -108,14 +108,13 @@ func (s Series) Loc(in []Index) (*Series, error) {
 			}
 			if isSame {
 				filtered = append(filtered, s.data[j])
-				filteredIndex = append(filteredIndex, seriesIndex)
+				filteredIndex.index = append(filteredIndex.index, seriesIndex)
+				filteredIndex.names = append(filteredIndex.names, s.index.names[j])
 			}
 		}
 	}
 
-	indexParam := IndexData{filteredIndex, s.index.names}
-
-	result, err := NewSeries(filtered, s.name, &indexParam)
+	result, err := NewSeries(filtered, s.name, &filteredIndex)
 	if err != nil {
 		return nil, err
 	}
@@ -359,7 +358,7 @@ type DataFrame struct {
 func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 	filteredData := make([][]interface{}, 0)
 	filteredColname := make([]string, 0)
-	filteredIndex := []IndexData{}
+	filteredIndex := IndexData{}
 	for _, series := range df.series {
 		located, err := series.Loc(rows)
 		if err != nil {
@@ -367,9 +366,10 @@ func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 		}
 		filteredData = append(filteredData, located.data)
 		filteredColname = append(filteredColname, located.name)
+		filteredIndex = located.index
 	}
 
-	NewDataFrame(filteredData, filteredColname)
+	NewDataFrame(filteredData, filteredColname, filteredIndex.names)
 
 	// locations := make([]int, 0)
 
