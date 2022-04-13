@@ -369,7 +369,12 @@ func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 		filteredIndex = located.index
 	}
 
-	NewDataFrame(filteredData, filteredColname, filteredIndex.names)
+	dataframe, err := NewDataFrame(filteredData, filteredColname, filteredIndex.names)
+	if err != nil {
+		return nil, err
+	}
+
+	return dataframe, nil
 
 	// locations := make([]int, 0)
 
