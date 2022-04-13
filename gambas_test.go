@@ -16,7 +16,7 @@ func TestCreateRangeIndex(t *testing.T) {
 		{
 			5,
 			IndexData{
-				[]Index{{0}, {1}, {2}, {3}, {4}, {5}},
+				[]Index{{0}, {1}, {2}, {3}, {4}},
 				[]string{""},
 			},
 		},
@@ -38,7 +38,7 @@ func TestCreateRangeIndex(t *testing.T) {
 
 	for _, test := range createRangeIndexTests {
 		output := CreateRangeIndex(test.arg1)
-		if !cmp.Equal(output, test.expected) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(IndexData{})) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
@@ -98,7 +98,7 @@ func TestNewSeries(t *testing.T) {
 
 	for _, test := range newSeriesTests {
 		output, err := NewSeries(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -122,7 +122,7 @@ func TestNewDataFrame(t *testing.T) {
 					{
 						[]interface{}{1, 2, 3},
 						IndexData{
-							[]Index{{0}, {1}, {2}},
+							[]Index{{1}, {2}, {3}},
 							[]string{"group a"},
 						},
 						"group a",
@@ -130,7 +130,7 @@ func TestNewDataFrame(t *testing.T) {
 					{
 						[]interface{}{4, 5, 6},
 						IndexData{
-							[]Index{{0}, {1}, {2}},
+							[]Index{{1}, {2}, {3}},
 							[]string{"group a"},
 						},
 						"group b",
@@ -138,14 +138,14 @@ func TestNewDataFrame(t *testing.T) {
 					{
 						[]interface{}{7, 8, 9},
 						IndexData{
-							[]Index{{0}, {1}, {2}},
+							[]Index{{1}, {2}, {3}},
 							[]string{"group a"},
 						},
 						"group c",
 					},
 				},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{{1}, {2}, {3}},
 					[]string{"group a"},
 				},
 				[]string{"group a", "group b", "group c"},
@@ -155,7 +155,7 @@ func TestNewDataFrame(t *testing.T) {
 
 	for _, test := range newDataFrameTests {
 		output, err := NewDataFrame(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
