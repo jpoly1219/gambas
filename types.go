@@ -425,7 +425,7 @@ func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
 }
 
 // Loc indexes the DataFrame object given a slice of row and column labels.
-func (df DataFrame) Loc(rows, cols []interface{}) (*DataFrame, error) {
+func (df DataFrame) Loc(rows []Index, cols []string) (*DataFrame, error) {
 	df1, err := df.LocCols(cols)
 	if err != nil {
 		return nil, err
