@@ -89,6 +89,7 @@ func (s Series) IAt(in int) (interface{}, error) {
 func (s Series) Loc(in []Index) (*Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(in[0])
+	fmt.Println(indexLength)
 	for i, eachIndex := range in {
 		if indexLength != len(eachIndex) {
 			return nil, fmt.Errorf("index length does not match: %v, %v", in[i-1], eachIndex)
@@ -109,10 +110,10 @@ func (s Series) Loc(in []Index) (*Series, error) {
 			if isSame {
 				filtered = append(filtered, s.data[j])
 				filteredIndex.index = append(filteredIndex.index, seriesIndex)
-				filteredIndex.names = append(filteredIndex.names, s.index.names[j])
 			}
 		}
 	}
+	filteredIndex.names = s.index.names
 
 	result, err := NewSeries(filtered, s.name, &filteredIndex)
 	if err != nil {
