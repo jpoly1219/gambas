@@ -28,8 +28,8 @@ func TestPrintSeries(t *testing.T) {
 		},
 	}
 	expectedArray := []string{
-		"data: [alice bob charlie] \nindexArray: [0 1 2] \nname: People\n",
-		"data: [apple banana cherry] \nindexArray: [a b c] \nname: Fruit\n",
+		"data: [alice bob charlie] \nindexArray: {[[0] [1] [2]] []} \nname: People\n",
+		"data: [apple banana cherry] \nindexArray: {[[a] [b] [c]] []} \nname: Fruit\n",
 	}
 
 	for i, test := range seriesArray {
@@ -125,7 +125,7 @@ func TestSeriesLoc(t *testing.T) {
 	type locTest struct {
 		arg1     Series
 		arg2     []Index
-		expected []interface{}
+		expected *Series
 	}
 	locTests := []locTest{
 		{
@@ -138,7 +138,14 @@ func TestSeriesLoc(t *testing.T) {
 				"People",
 			},
 			[]Index{{0}, {1}},
-			[]interface{}{"alice", "bob"},
+			&Series{
+				[]interface{}{"alice", "bob"},
+				IndexData{
+					[]Index{{0}, {1}},
+					[]string{""},
+				},
+				"People",
+			},
 		},
 		{
 			Series{
@@ -150,13 +157,20 @@ func TestSeriesLoc(t *testing.T) {
 				"Fruit",
 			},
 			[]Index{{"b"}, {"c"}},
-			[]interface{}{"banana", "cherry"},
+			&Series{
+				[]interface{}{"banana", "cherry"},
+				IndexData{
+					[]Index{{"b"}, {"c"}},
+					[]string{""},
+				},
+				"Fruit",
+			},
 		},
 	}
 
 	for _, test := range locTests {
 		output, err := test.arg1.Loc(test.arg2)
-		if !cmp.Equal(output, test.expected) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
