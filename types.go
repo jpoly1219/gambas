@@ -406,7 +406,7 @@ func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 }
 
 // LocRows returns a set of columns as a new DataFrame object, given a list of labels.
-func (df DataFrame) LocCols(cols []interface{}) (*DataFrame, error) {
+func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
 	filtered2D := make([][]interface{}, 0)
 	for _, column := range cols {
 		for _, series := range df.series {
@@ -416,7 +416,7 @@ func (df DataFrame) LocCols(cols []interface{}) (*DataFrame, error) {
 		}
 	}
 
-	dataframe, err := NewDataFrame(filtered2D, cols, []interface{}{cols[0]})
+	dataframe, err := NewDataFrame(filtered2D, cols, df.index.names)
 	if err != nil {
 		return nil, err
 	}
