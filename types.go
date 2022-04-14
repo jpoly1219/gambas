@@ -96,9 +96,13 @@ func (s Series) Loc(in []Index) (*Series, error) {
 		}
 	}
 
-	filtered := make([]interface{}, 0)
-	filteredIndex := IndexData{}
+	allFiltered := make([]interface{}, 0)
+	allFilteredIndex := IndexData{}
+
 	for _, inputIndex := range in {
+		filtered := make([]interface{}, 0)
+		filteredIndex := IndexData{}
+
 		for j, seriesIndex := range s.index.index {
 			isSame := true
 			for k := 0; k < indexLength; k++ {
@@ -112,10 +116,16 @@ func (s Series) Loc(in []Index) (*Series, error) {
 				filteredIndex.index = append(filteredIndex.index, seriesIndex)
 			}
 		}
-	}
-	filteredIndex.names = s.index.names
 
-	result, err := NewSeries(filtered, s.name, &filteredIndex)
+		if len(filtered) == 0 {
+			return nil, fmt.Errorf("no data found for index %v", inputIndex)
+		}
+		allFiltered = append(allFiltered, filtered...)
+		allFilteredIndex.index = append(allFilteredIndex.index, filteredIndex.index...)
+	}
+	allFilteredIndex.names = s.index.names
+
+	result, err := NewSeries(allFiltered, s.name, &allFilteredIndex)
 	if err != nil {
 		return nil, err
 	}
