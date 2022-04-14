@@ -123,9 +123,10 @@ func TestSeriesIAt(t *testing.T) {
 }
 func TestSeriesLoc(t *testing.T) {
 	type locTest struct {
-		arg1     Series
-		arg2     []Index
-		expected *Series
+		arg1          Series
+		arg2          []Index
+		expected      *Series
+		expectedError error
 	}
 	locTests := []locTest{
 		{
@@ -146,6 +147,7 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
+			nil,
 		},
 		{
 			Series{
@@ -165,12 +167,99 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"Fruit",
 			},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[]Index{{"female"}},
+			&Series{
+				[]interface{}{"clara", "anna"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"female", "volleyball"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[]Index{{"male", "volleyball"}},
+			&Series{
+				[]interface{}{"brian"},
+				IndexData{
+					[]Index{{"male", "volleyball"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[]Index{{"volleyball"}},
+			nil,
+			fmt.Errorf("no data found for index [volleyball]"),
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[]Index{{"female"}, {"male"}},
+			&Series{
+				[]interface{}{"clara", "anna", "brian", "dorian", "michael"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"female", "volleyball"}, {"male", "volleyball"}, {"male", "basketball"}, {"male", "swimming"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[]Index{{"female"}, {"volleyball"}},
+			nil,
+			fmt.Errorf("no data found for index [volleyball]"),
 		},
 	}
 
 	for _, test := range locTests {
 		output, err := test.arg1.Loc(test.arg2)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
