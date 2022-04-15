@@ -94,6 +94,22 @@ func TestNewSeries(t *testing.T) {
 			},
 			nil,
 		},
+		{
+			[]interface{}{"alice", "bob", "charlie"},
+			"People",
+			&IndexData{
+				[]Index{{0, "female"}, {1, "male"}, {2, "male"}},
+				[]string{"id", "sex"},
+			},
+			&Series{
+				[]interface{}{"alice", "bob", "charlie"},
+				IndexData{
+					[]Index{{0, "female"}, {1, "male"}, {2, "male"}},
+					[]string{"id", "sex"},
+				},
+				"People",
+			},
+		},
 	}
 
 	for _, test := range newSeriesTests {
@@ -147,6 +163,44 @@ func TestNewDataFrame(t *testing.T) {
 				IndexData{
 					[]Index{{1}, {2}, {3}},
 					[]string{"group a"},
+				},
+				[]string{"group a", "group b", "group c"},
+			},
+		},
+		{
+			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
+			[]string{"group a", "group b", "group c"},
+			[]string{"group a", "group c"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{1, 2, 3},
+						IndexData{
+							[]Index{{1, 7}, {2, 8}, {3, 9}},
+							[]string{"group a", "group c"},
+						},
+						"group a",
+					},
+					{
+						[]interface{}{4, 5, 6},
+						IndexData{
+							[]Index{{1, 7}, {2, 8}, {3, 9}},
+							[]string{"group a", "group c"},
+						},
+						"group b",
+					},
+					{
+						[]interface{}{7, 8, 9},
+						IndexData{
+							[]Index{{1, 7}, {2, 8}, {3, 9}},
+							[]string{"group a", "group c"},
+						},
+						"group c",
+					},
+				},
+				IndexData{
+					[]Index{{1, 7}, {2, 8}, {3, 9}},
+					[]string{"group a", "group c"},
 				},
 				[]string{"group a", "group b", "group c"},
 			},
