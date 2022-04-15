@@ -69,9 +69,13 @@ func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*
 	}
 
 	for i := 0; i < len(data[0]); i++ {
+		indexTuple := Index{}
+
 		for _, location := range indexColsIndex {
-			df.index.index = append(df.index.index, Index{data[location][i]})
+			indexTuple = append(indexTuple, data[location][i])
 		}
+
+		df.index.index = append(df.index.index, indexTuple)
 	}
 
 	for i, v := range data {
