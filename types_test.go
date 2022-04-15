@@ -1055,60 +1055,78 @@ func TestQ3(t *testing.T) {
 	}
 }
 
-// func TestSeriesSortByIndex(t *testing.T) {
-// 	type sortByIndexTest struct {
-// 		arg1     *Series
-// 		arg2     bool
-// 		expected *Series
-// 	}
-// 	sortByIndexTests := []sortByIndexTest{
-// 		{
-// 			&Series{
-// 				[]interface{}{"a", "b", "c", "d"},
-// 				Index{0, 1, 2, 3},
-// 				"col1",
-// 			},
-// 			true,
-// 			&Series{
-// 				[]interface{}{"a", "b", "c", "d"},
-// 				Index{0, 1, 2, 3},
-// 				"col1",
-// 			},
-// 		},
-// 		{
-// 			&Series{
-// 				[]interface{}{"a", "b", "c", "d"},
-// 				Index{1, 3, 2, 0},
-// 				"col1",
-// 			},
-// 			true,
-// 			&Series{
-// 				[]interface{}{"d", "a", "c", "b"},
-// 				Index{0, 1, 2, 3},
-// 				"col1",
-// 			},
-// 		},
-// 		{
-// 			&Series{
-// 				[]interface{}{"a", "b", "c", "d"},
-// 				Index{1, 3, 2, 0},
-// 				"col1",
-// 			},
-// 			false,
-// 			&Series{
-// 				[]interface{}{"b", "c", "a", "d"},
-// 				Index{3, 2, 1, 0},
-// 				"col1",
-// 			},
-// 		},
-// 	}
-// 	for _, test := range sortByIndexTests {
-// 		test.arg1.SortByIndex(test.arg2)
-// 		if !cmp.Equal(*test.arg1, *test.expected, cmp.AllowUnexported(Series{})) {
-// 			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
-// 		}
-// 	}
-// }
+func TestSeriesSortByIndex(t *testing.T) {
+	type sortByIndexTest struct {
+		arg1     *Series
+		arg2     bool
+		expected *Series
+	}
+	sortByIndexTests := []sortByIndexTest{
+		{
+			&Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{{0}, {1}, {2}, {3}},
+					[]string{""},
+				},
+				"col1",
+			},
+			true,
+			&Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{{0}, {1}, {2}, {3}},
+					[]string{""},
+				},
+				"col1",
+			},
+		},
+		{
+			&Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{{1}, {3}, {2}, {0}},
+					[]string{""},
+				},
+				"col1",
+			},
+			true,
+			&Series{
+				[]interface{}{"d", "a", "c", "b"},
+				IndexData{
+					[]Index{{0}, {1}, {2}, {3}},
+					[]string{""},
+				},
+				"col1",
+			},
+		},
+		{
+			&Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{{1}, {3}, {2}, {0}},
+					[]string{""},
+				},
+				"col1",
+			},
+			false,
+			&Series{
+				[]interface{}{"b", "c", "a", "d"},
+				IndexData{
+					[]Index{{3}, {2}, {1}, {0}},
+					[]string{""},
+				},
+				"col1",
+			},
+		},
+	}
+	for _, test := range sortByIndexTests {
+		test.arg1.SortByIndex(test.arg2)
+		if !cmp.Equal(*test.arg1, *test.expected, cmp.AllowUnexported(Series{})) {
+			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
+		}
+	}
+}
 
 /*
 DataFrame tests will be fixed after other parts are fixed. (4/6/2022)
