@@ -12,12 +12,14 @@ import (
 func TestReadCsv(t *testing.T) {
 	type readCsvTest struct {
 		arg1     string
+		arg2     []string
 		expected *DataFrame
 	}
 
 	readCsvTests := []readCsvTest{
 		{
 			filepath.Join("testfiles", "test1.csv"),
+			nil,
 			&DataFrame{
 				[]Series{
 					{
@@ -54,6 +56,7 @@ func TestReadCsv(t *testing.T) {
 		},
 		{
 			filepath.Join("testfiles", "test2.csv"),
+			nil,
 			&DataFrame{
 				[]Series{
 					{
@@ -139,7 +142,7 @@ func TestReadCsv(t *testing.T) {
 	}
 
 	for _, test := range readCsvTests {
-		output, err := ReadCsv(test.arg1)
+		output, err := ReadCsv(test.arg1, test.arg2)
 		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}), cmpopts.IgnoreTypes(0.0)) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
