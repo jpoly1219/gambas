@@ -139,6 +139,261 @@ func TestReadCsv(t *testing.T) {
 				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
 			},
 		},
+		{
+			filepath.Join("testfiles", "test2.csv"),
+			[]string{"Position"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{0.0, 99.0, 30.0, 28.0},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"PG", "SF", "SG", "SG"},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{180.0, 235.0, 205.0, 185.0},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
+						IndexData{
+							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]string{"Position"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+					[]string{"Position"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+		},
+		{
+			filepath.Join("testfiles", "test2.csv"),
+			nil,
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{0.0, 99.0, 30.0, 28.0},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"PG", "SF", "SG", "SG"},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{180.0, 235.0, 205.0, 185.0},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
+						IndexData{
+							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]string{"Name"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+		},
+		{
+			filepath.Join("testfiles", "test2.csv"),
+			[]string{"Position", "College"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{0.0, 99.0, 30.0, 28.0},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"PG", "SF", "SG", "SG"},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{180.0, 235.0, 205.0, 185.0},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
+						IndexData{
+							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]string{"Position", "College"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+					[]string{"Position", "College"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+		},
 	}
 
 	for _, test := range readCsvTests {
