@@ -45,7 +45,7 @@ func TestHashKey(t *testing.T) {
 	}
 	for _, test := range hashKeyTests {
 		output, err := test.arg1.hashKey()
-		if output != test.expected || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (output != nil && err != nil) {
 			t.Fatalf("expected: %s, got: %s, err: %s", *test.expected, *output, err)
 		}
 	}
@@ -1165,7 +1165,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 	}
 	for _, test := range sortByIndexTests {
 		test.arg1.SortByIndex(test.arg2)
-		if !cmp.Equal(*test.arg1, *test.expected, cmp.AllowUnexported(Series{})) {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) {
 			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
 		}
 	}
