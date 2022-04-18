@@ -44,6 +44,9 @@ func (id IndexData) Less(i, j int) bool {
 		case string:
 			iStrData = v
 			jStrData = id.index[j][a].(string)
+		case int:
+			iStrData = strconv.Itoa(v)
+			jStrData = strconv.Itoa(id.index[j][a].(int))
 		case float64:
 			iStrData = strconv.FormatFloat(v, 'f', -1, 64)
 			jStrData = strconv.FormatFloat(id.index[j][a].(float64), 'f', -1, 64)
@@ -55,6 +58,8 @@ func (id IndexData) Less(i, j int) bool {
 			break
 		}
 	}
+
+	fmt.Println(iStrData < jStrData)
 	return iStrData < jStrData
 }
 
@@ -370,11 +375,15 @@ func (s *Series) SortByIndex(ascending bool) error {
 		indDatMap[*key] = data
 	}
 
+	fmt.Println(s.index)
+
 	if ascending {
 		sort.Sort(s.index)
 	} else {
 		sort.Sort(sort.Reverse(s.index))
 	}
+
+	fmt.Println(s.index)
 
 	for i, index := range s.index.index {
 		key, err := index.hashKey()
