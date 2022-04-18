@@ -45,6 +45,7 @@ func (id IndexData) Less(i, j int) bool {
 			iStrData = v
 			jStrData = id.index[j][a].(string)
 		case int:
+			// TODO: so all numbers in the DataFrame should be float64, we need a way to check why there is an int in the first place
 			iStrData = strconv.Itoa(v)
 			jStrData = strconv.Itoa(id.index[j][a].(int))
 		case float64:
