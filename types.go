@@ -1,6 +1,7 @@
 package gambas
 
 import (
+	"crypto/sha512"
 	"fmt"
 	"math"
 	"sort"
@@ -8,6 +9,23 @@ import (
 )
 
 type Index []interface{}
+
+func (i Index) hashKey() (*string, error) {
+	if len(i) == 0 {
+		return nil, fmt.Errorf("no index")
+	}
+
+	byteSlice := []byte{}
+
+	for _, val := range i {
+		byteSlice = append(byteSlice, []byte(fmt.Sprint(val))...)
+	}
+	h := sha512.Sum512(byteSlice)
+
+	resultHex := fmt.Sprintf("%x\n", h)
+
+	return &resultHex, nil
+}
 
 type IndexData struct {
 	index []Index
