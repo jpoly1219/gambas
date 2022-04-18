@@ -22,7 +22,7 @@ func (i Index) hashKey() (*string, error) {
 	}
 	h := sha512.Sum512(byteSlice)
 
-	resultHex := fmt.Sprintf("%x\n", h)
+	resultHex := fmt.Sprintf("%x", h)
 
 	return &resultHex, nil
 }
@@ -360,11 +360,14 @@ func (s Series) Q3() (float64, error) {
 
 // SortByIndex() sorts the elements in a series by the index.
 // Multiindex support is coming, but this may require an overhaul.
-// TODO: Index is not a valid map key.
-func (s *Series) SortByIndex(ascending bool) {
-	indDatMap := make(map[interface{}]interface{})
+func (s *Series) SortByIndex(ascending bool) error {
+	indDatMap := make(map[string]interface{})
 	for i, data := range s.data {
-		indDatMap[s.index.index[i]] = data
+		key, err := s.index.index[i].hashKey()
+		if err != nil {
+			return err
+		}
+		indDatMap[*key] = data
 	}
 
 	if ascending {
@@ -374,8 +377,14 @@ func (s *Series) SortByIndex(ascending bool) {
 	}
 
 	for i, index := range s.index.index {
-		s.data[i] = indDatMap[index]
+		key, err := index.hashKey()
+		if err != nil {
+			return err
+		}
+		s.data[i] = indDatMap[*key]
 	}
+
+	return nil
 }
 
 type DataFrame struct {
