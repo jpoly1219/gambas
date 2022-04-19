@@ -1171,1429 +1171,1338 @@ func TestSeriesSortByIndex(t *testing.T) {
 	}
 }
 
-/*
-DataFrame tests will be fixed after other parts are fixed. (4/6/2022)
-
 func TestDataFrameLocRows(t *testing.T) {
 	type dataframeLocRowsTest struct {
 		arg1     DataFrame
-		arg2     []interface{}
+		arg2     []Index
 		expected *DataFrame
 	}
 	dataframeLocRowsTests := []dataframeLocRowsTest{
 		{
-			DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						IndexData{
-							[]Index{{0}, {1}, {2}},
-							[]string{""},
-						},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						IndexData{
-							[]Index{{0}, {1}, {2}},
-							[]string{""},
-						},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						IndexData{
-							[]Index{{0}, {1}, {2}},
-							[]string{""},
-						},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			[]interface{}{"Avery"},
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			[]Index{{"Avery"}},
 			&DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery"},
 						IndexData{
-							[]Index{{0}},
-							[]string{""},
+							[]Index{{"Avery"}},
+							[]string{"Name"},
 						},
 						"Name",
 					},
 					{
 						[]interface{}{19},
 						IndexData{
-							[]Index{{0},
-							[]string{""},
+							[]Index{{"Avery"}},
+							[]string{"Name"},
 						},
 						"Age",
 					},
 					{
 						[]interface{}{"Male"},
 						IndexData{
-							[]Index{{0}},
-							[]string{""},
+							[]Index{{"Avery"}},
+							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery"}},
-			},
-		},
-		{
-			DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						IndexData{
-							[]Index{{0}, {1}, {2}},
-							[]string{""},
-						},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						IndexData{
-							[]Index{{0}, {1}, {2}},
-							[]string{""},
-						},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						IndexData{
-							[]Index{{0}, {1}, {2}},
-							[]string{""},
-						},
-						"Sex",
-					},
+				IndexData{
+					[]Index{{"Avery"}},
+					[]string{"Name"},
 				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			[]interface{}{"Bradford", "Candice"},
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Bradford", "Candice"},
-						IndexData{
-							[]Index{{0}, {1}},
-							[]string{""},
-						},
-						"Name",
-					},
-					{
-						[]interface{}{25, 22},
-						IndexData{
-							[]Index{{0}, {1}},
-							[]string{""},
-						},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Female"},
-						IndexData{
-							[]Index{{0}, {1}},
-							[]string{""},
-						},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Bradford", "Candice"}},
+				[]string{"Name", "Age", "Sex"},
 			},
 		},
 	}
 
 	for _, test := range dataframeLocRowsTests {
 		output, err := test.arg1.LocRows(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
 }
 
-func TestDataFrameLocCols(t *testing.T) {
-	type dataframeLocColsTest struct {
-		arg1     DataFrame
-		arg2     []interface{}
-		expected *DataFrame
-	}
-	dataframeLocColsTests := []dataframeLocColsTest{
-		{
-			DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			[]interface{}{"Name"},
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-				},
-				Index{"Name"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			[]interface{}{"Age", "Sex"},
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Age", "Sex"},
-				[]interface{}{"Age"},
-				[]Index{{19, 25, 22}},
-			},
-		},
-	}
-	for _, test := range dataframeLocColsTests {
-		output, err := test.arg1.LocCols(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// func TestDataFrameLocCols(t *testing.T) {
+// 	type dataframeLocColsTest struct {
+// 		arg1     DataFrame
+// 		arg2     []interface{}
+// 		expected *DataFrame
+// 	}
+// 	dataframeLocColsTests := []dataframeLocColsTest{
+// 		{
+// 			DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			[]interface{}{"Name"},
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 				},
+// 				Index{"Name"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			[]interface{}{"Age", "Sex"},
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Age", "Sex"},
+// 				[]interface{}{"Age"},
+// 				[]Index{{19, 25, 22}},
+// 			},
+// 		},
+// 	}
+// 	for _, test := range dataframeLocColsTests {
+// 		output, err := test.arg1.LocCols(test.arg2)
+// 		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestDataFrameLoc(t *testing.T) {
-	type dataframeLocTest struct {
-		arg1     DataFrame
-		arg2     []interface{}
-		arg3     []interface{}
-		expected *DataFrame
-	}
-	dataframeLocTests := []dataframeLocTest{
-		{
-			DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			[]interface{}{"Bradford", "Candice"},
-			[]interface{}{"Name"},
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Bradford", "Candice"},
-						Index{0, 1},
-						"Name",
-					},
-				},
-				Index{"Name"},
-				[]interface{}{"Name"},
-				[]Index{{"Bradford", "Candice"}},
-			},
-		},
-		{
-			DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			[]interface{}{"Avery", "Bradford", "Candice"},
-			[]interface{}{"Name", "Sex"},
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-	}
-	for _, test := range dataframeLocTests {
-		output, err := test.arg1.Loc(test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// func TestDataFrameLoc(t *testing.T) {
+// 	type dataframeLocTest struct {
+// 		arg1     DataFrame
+// 		arg2     []interface{}
+// 		arg3     []interface{}
+// 		expected *DataFrame
+// 	}
+// 	dataframeLocTests := []dataframeLocTest{
+// 		{
+// 			DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			[]interface{}{"Bradford", "Candice"},
+// 			[]interface{}{"Name"},
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Bradford", "Candice"},
+// 						Index{0, 1},
+// 						"Name",
+// 					},
+// 				},
+// 				Index{"Name"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			[]interface{}{"Avery", "Bradford", "Candice"},
+// 			[]interface{}{"Name", "Sex"},
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 	}
+// 	for _, test := range dataframeLocTests {
+// 		output, err := test.arg1.Loc(test.arg2, test.arg3)
+// 		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColAdd(t *testing.T) {
-	type colAddTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColAdd(t *testing.T) {
+// 	type colAddTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colAddTests := []colAddTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			5.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{24.0, 30.0, 27.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colAddTests {
-		output, err := test.arg1.ColAdd(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colAddTests := []colAddTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			5.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{24.0, 30.0, 27.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colAddTests {
+// 		output, err := test.arg1.ColAdd(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColSub(t *testing.T) {
-	type colSubTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColSub(t *testing.T) {
+// 	type colSubTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colSubTests := []colSubTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			5.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{14.0, 20.0, 17.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colSubTests {
-		output, err := test.arg1.ColSub(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colSubTests := []colSubTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			5.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{14.0, 20.0, 17.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colSubTests {
+// 		output, err := test.arg1.ColSub(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColMul(t *testing.T) {
-	type colMulTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColMul(t *testing.T) {
+// 	type colMulTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colMulTests := []colMulTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			5.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{95.0, 125.0, 110.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colMulTests {
-		output, err := test.arg1.ColMul(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colMulTests := []colMulTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			5.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{95.0, 125.0, 110.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colMulTests {
+// 		output, err := test.arg1.ColMul(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColDiv(t *testing.T) {
-	type colDivTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColDiv(t *testing.T) {
+// 	type colDivTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colDivTests := []colDivTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			5.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{3.8, 5.0, 4.4},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colDivTests {
-		output, err := test.arg1.ColDiv(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colDivTests := []colDivTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			5.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{3.8, 5.0, 4.4},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colDivTests {
+// 		output, err := test.arg1.ColDiv(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColMod(t *testing.T) {
-	type colModTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColMod(t *testing.T) {
+// 	type colModTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colModTests := []colModTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			5.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{4.0, 0.0, 2.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colModTests {
-		output, err := test.arg1.ColMod(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colModTests := []colModTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			5.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{4.0, 0.0, 2.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colModTests {
+// 		output, err := test.arg1.ColMod(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColGt(t *testing.T) {
-	type colGtTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColGt(t *testing.T) {
+// 	type colGtTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colGtTests := []colGtTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			20.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{false, true, true},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colGtTests {
-		output, err := test.arg1.ColGt(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colGtTests := []colGtTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			20.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{false, true, true},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colGtTests {
+// 		output, err := test.arg1.ColGt(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColLt(t *testing.T) {
-	type colLtTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColLt(t *testing.T) {
+// 	type colLtTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colLtTests := []colLtTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			20.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{true, false, false},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colLtTests {
-		output, err := test.arg1.ColLt(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colLtTests := []colLtTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			20.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{true, false, false},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colLtTests {
+// 		output, err := test.arg1.ColLt(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestColEq(t *testing.T) {
-	type colEqTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     float64
-		expected *DataFrame
-	}
+// func TestColEq(t *testing.T) {
+// 	type colEqTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     float64
+// 		expected *DataFrame
+// 	}
 
-	colEqTests := []colEqTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Name",
-			5.0,
-			nil,
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19.0, 25.0, 22.0},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age",
-			25.0,
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{false, true, false},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"RandomName",
-			5.0,
-			nil,
-		},
-	}
-	for _, test := range colEqTests {
-		output, err := test.arg1.ColEq(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
+// 	colEqTests := []colEqTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Name",
+// 			5.0,
+// 			nil,
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19.0, 25.0, 22.0},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age",
+// 			25.0,
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{false, true, false},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"RandomName",
+// 			5.0,
+// 			nil,
+// 		},
+// 	}
+// 	for _, test := range colEqTests {
+// 		output, err := test.arg1.ColEq(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || (output != nil && err != nil) {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
 
-func TestNewCol(t *testing.T) {
-	type newColTest struct {
-		arg1     *DataFrame
-		arg2     string
-		arg3     []interface{}
-		expected *DataFrame
-	}
-	newColTests := []newColTest{
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Nationality",
-			[]interface{}{"USA", "UK", "Canada"},
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-					{
-						[]interface{}{"USA", "UK", "Canada"},
-						Index{0, 1, 2},
-						"Nationality",
-					},
-				},
-				Index{"Name", "Age", "Sex", "Nationality"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-		{
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-				},
-				Index{"Name", "Age", "Sex"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-			"Age+5",
-			make([]interface{}, 3),
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{"Avery", "Bradford", "Candice"},
-						Index{0, 1, 2},
-						"Name",
-					},
-					{
-						[]interface{}{19, 25, 22},
-						Index{0, 1, 2},
-						"Age",
-					},
-					{
-						[]interface{}{"Male", "Male", "Female"},
-						Index{0, 1, 2},
-						"Sex",
-					},
-					{
-						[]interface{}{nil, nil, nil},
-						Index{0, 1, 2},
-						"Age+5",
-					},
-				},
-				Index{"Name", "Age", "Sex", "Age+5"},
-				[]interface{}{"Name"},
-				[]Index{{"Avery", "Bradford", "Candice"}},
-			},
-		},
-	}
-	for _, test := range newColTests {
-		output, err := test.arg1.NewCol(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
-*/
+// func TestNewCol(t *testing.T) {
+// 	type newColTest struct {
+// 		arg1     *DataFrame
+// 		arg2     string
+// 		arg3     []interface{}
+// 		expected *DataFrame
+// 	}
+// 	newColTests := []newColTest{
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Nationality",
+// 			[]interface{}{"USA", "UK", "Canada"},
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 					{
+// 						[]interface{}{"USA", "UK", "Canada"},
+// 						Index{0, 1, 2},
+// 						"Nationality",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex", "Nationality"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 		{
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 			"Age+5",
+// 			make([]interface{}, 3),
+// 			&DataFrame{
+// 				[]Series{
+// 					{
+// 						[]interface{}{"Avery", "Bradford", "Candice"},
+// 						Index{0, 1, 2},
+// 						"Name",
+// 					},
+// 					{
+// 						[]interface{}{19, 25, 22},
+// 						Index{0, 1, 2},
+// 						"Age",
+// 					},
+// 					{
+// 						[]interface{}{"Male", "Male", "Female"},
+// 						Index{0, 1, 2},
+// 						"Sex",
+// 					},
+// 					{
+// 						[]interface{}{nil, nil, nil},
+// 						Index{0, 1, 2},
+// 						"Age+5",
+// 					},
+// 				},
+// 				Index{"Name", "Age", "Sex", "Age+5"},
+// 				[]interface{}{"Name"},
+// 				[]Index{{"Avery", "Bradford", "Candice"}},
+// 			},
+// 		},
+// 	}
+// 	for _, test := range newColTests {
+// 		output, err := test.arg1.NewCol(test.arg2, test.arg3)
+// 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
+// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+// 		}
+// 	}
+// }
