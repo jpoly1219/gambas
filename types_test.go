@@ -1274,103 +1274,50 @@ func TestDataFrameLocCols(t *testing.T) {
 	}
 }
 
-// func TestDataFrameLoc(t *testing.T) {
-// 	type dataframeLocTest struct {
-// 		arg1     DataFrame
-// 		arg2     []interface{}
-// 		arg3     []interface{}
-// 		expected *DataFrame
-// 	}
-// 	dataframeLocTests := []dataframeLocTest{
-// 		{
-// 			DataFrame{
-// 				[]Series{
-// 					{
-// 						[]interface{}{"Avery", "Bradford", "Candice"},
-// 						Index{0, 1, 2},
-// 						"Name",
-// 					},
-// 					{
-// 						[]interface{}{19, 25, 22},
-// 						Index{0, 1, 2},
-// 						"Age",
-// 					},
-// 					{
-// 						[]interface{}{"Male", "Male", "Female"},
-// 						Index{0, 1, 2},
-// 						"Sex",
-// 					},
-// 				},
-// 				Index{"Name", "Age", "Sex"},
-// 				[]interface{}{"Name"},
-// 				[]Index{{"Avery", "Bradford", "Candice"}},
-// 			},
-// 			[]interface{}{"Bradford", "Candice"},
-// 			[]interface{}{"Name"},
-// 			&DataFrame{
-// 				[]Series{
-// 					{
-// 						[]interface{}{"Bradford", "Candice"},
-// 						Index{0, 1},
-// 						"Name",
-// 					},
-// 				},
-// 				Index{"Name"},
-// 				[]interface{}{"Name"},
-// 				[]Index{{"Bradford", "Candice"}},
-// 			},
-// 		},
-// 		{
-// 			DataFrame{
-// 				[]Series{
-// 					{
-// 						[]interface{}{"Avery", "Bradford", "Candice"},
-// 						Index{0, 1, 2},
-// 						"Name",
-// 					},
-// 					{
-// 						[]interface{}{19, 25, 22},
-// 						Index{0, 1, 2},
-// 						"Age",
-// 					},
-// 					{
-// 						[]interface{}{"Male", "Male", "Female"},
-// 						Index{0, 1, 2},
-// 						"Sex",
-// 					},
-// 				},
-// 				Index{"Name", "Age", "Sex"},
-// 				[]interface{}{"Name"},
-// 				[]Index{{"Avery", "Bradford", "Candice"}},
-// 			},
-// 			[]interface{}{"Avery", "Bradford", "Candice"},
-// 			[]interface{}{"Name", "Sex"},
-// 			&DataFrame{
-// 				[]Series{
-// 					{
-// 						[]interface{}{"Avery", "Bradford", "Candice"},
-// 						Index{0, 1, 2},
-// 						"Name",
-// 					},
-// 					{
-// 						[]interface{}{"Male", "Male", "Female"},
-// 						Index{0, 1, 2},
-// 						"Sex",
-// 					},
-// 				},
-// 				Index{"Name", "Sex"},
-// 				[]interface{}{"Name"},
-// 				[]Index{{"Avery", "Bradford", "Candice"}},
-// 			},
-// 		},
-// 	}
-// 	for _, test := range dataframeLocTests {
-// 		output, err := test.arg1.Loc(test.arg2, test.arg3)
-// 		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{})) || err != nil {
-// 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-// 		}
-// 	}
-// }
+func TestDataFrameLoc(t *testing.T) {
+	type dataframeLocTest struct {
+		arg1     DataFrame
+		arg2     []Index
+		arg3     []string
+		expected *DataFrame
+	}
+	dataframeLocTests := []dataframeLocTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			[]Index{{"Bradley"}},
+			[]string{"Age"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{27},
+						IndexData{
+							[]Index{{"Bradley"}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+				},
+				IndexData{
+					[]Index{{"Bradley"}},
+					[]string{"Name"},
+				},
+				[]string{"Age"},
+			},
+		},
+	}
+	for _, test := range dataframeLocTests {
+		output, err := test.arg1.Loc(test.arg2, test.arg3)
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
 
 // func TestColAdd(t *testing.T) {
 // 	type colAddTest struct {
