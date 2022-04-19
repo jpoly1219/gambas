@@ -423,6 +423,14 @@ func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 		return nil, err
 	}
 
+	// When NewDataFrame is called, the resulting dataframe may have empty index values.
+	// This is because NewDataFrame searches for index values in filtered2D,
+	// but if the columns in the dataframe does not match filteredIndex.names,
+	// there would be no matching columns, thus returning empty indexes.
+	for i := range dataframe.index.index {
+		dataframe.index.index[i] = rows[i]
+	}
+
 	return dataframe, nil
 
 	// locations := make([]int, 0)
