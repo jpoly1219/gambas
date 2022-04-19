@@ -470,6 +470,14 @@ func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
 		return nil, err
 	}
 
+	// When NewDataFrame is called, the resulting dataframe may have empty index values.
+	// This is because NewDataFrame searches for index values in filtered2D,
+	// but if the index column name is different from the column the user is trying to LocCols,
+	// there would be no matching columns.
+	for i := range dataframe.index.index {
+		dataframe.index.index[i] = df.index.index[i]
+	}
+
 	return dataframe, nil
 }
 
