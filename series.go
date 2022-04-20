@@ -153,14 +153,13 @@ func (s Series) Mean() (float64, error) {
 	}
 
 	mean /= float64(len(data))
+	roundedMean := math.Round(mean*1000) / 1000
 
-	return mean, nil
+	return roundedMean, nil
 }
 
 // Median() returns the median of the elements in a column.
 func (s Series) Median() (float64, error) {
-	median := 0.0
-
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return math.NaN(), err
@@ -175,13 +174,16 @@ func (s Series) Median() (float64, error) {
 		lower := data[total/2-1]
 		upper := data[total/2]
 
-		median = (lower + upper) / 2
+		median := (lower + upper) / 2
+		roundedMedian := math.Round(median*1000) / 1000
+
+		return roundedMedian, nil
 	} else {
 		median := data[(total+1)/2-1]
-		return median, nil
-	}
+		roundedMedian := math.Round(median*1000) / 1000
 
-	return median, nil
+		return roundedMedian, nil
+	}
 }
 
 // Std() returns the sample standard deviation of the elements in a column.
@@ -204,8 +206,9 @@ func (s Series) Std() (float64, error) {
 		numerator += temp
 	}
 	std = math.Sqrt(numerator / float64(len(data)-1))
+	roundedStd := math.Round(std*1000) / 1000
 
-	return std, nil
+	return roundedStd, nil
 }
 
 // Min() returns the smallest element in a column.
@@ -300,6 +303,63 @@ func (s Series) Q3() (float64, error) {
 		}
 		return q3, nil
 	}
+}
+
+func (s Series) Describe() ([]interface{}, error) {
+	count := s.Count()
+	fmt.Println("Count:", count)
+
+	mean, err := s.Mean()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Mean:", mean)
+
+	median, err := s.Median()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Median:", median)
+
+	std, err := s.Std()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Std:", std)
+
+	min, err := s.Min()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Min:", min)
+
+	max, err := s.Max()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Max:", max)
+
+	q1, err := s.Q1()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Q1:", q1)
+
+	q2, err := s.Q2()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Q2:", q2)
+
+	q3, err := s.Q3()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("Q3:", q3)
+
+	result := []interface{}{count, mean, median, std, min, max, q1, q2, q3}
+
+	return result, nil
 }
 
 // SortByIndex() sorts the elements in a series by the index.
