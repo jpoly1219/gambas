@@ -531,7 +531,7 @@ func TestStd(t *testing.T) {
 				},
 				"Age",
 			},
-			5.5677643628300215,
+			5.568,
 			nil,
 		},
 		{
@@ -552,7 +552,7 @@ func TestStd(t *testing.T) {
 				},
 				"Height",
 			},
-			7.913437938089859,
+			7.913,
 			nil,
 		},
 		{
@@ -564,7 +564,7 @@ func TestStd(t *testing.T) {
 				},
 				"Height",
 			},
-			9.600694419328905,
+			9.601,
 			nil,
 		},
 		{
@@ -576,7 +576,7 @@ func TestStd(t *testing.T) {
 				},
 				"Height",
 			},
-			10.182337649086268,
+			10.182,
 			nil,
 		},
 	}
@@ -1051,6 +1051,43 @@ func TestQ3(t *testing.T) {
 			} else {
 				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
 			}
+		}
+	}
+}
+
+func TestDescribe(t *testing.T) {
+	type describeTest struct {
+		arg1     Series
+		expected []interface{}
+	}
+	describeTests := []describeTest{
+		{
+			Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{{0}, {1}, {2}, {3}},
+					[]string{""},
+				},
+				"col1",
+			},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{123.123, 456.456, 789.789},
+				IndexData{
+					[]Index{{0}, {1}, {2}, {3}},
+					[]string{""},
+				},
+				"col1",
+			},
+			[]interface{}{3, 456.456, 456.456, 333.333, 123.123, 789.789, 123.123, 456.456, 789.789},
+		},
+	}
+	for _, test := range describeTests {
+		output, err := test.arg1.Describe()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (output != nil && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
 }
