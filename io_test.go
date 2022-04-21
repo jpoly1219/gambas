@@ -403,3 +403,42 @@ func TestReadCsv(t *testing.T) {
 		}
 	}
 }
+
+func TestWriteCsv(t *testing.T) {
+	type writeCsvTest struct {
+		arg1     DataFrame
+		arg2     string
+		expected error
+	}
+	writeCsvTests := []writeCsvTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			filepath.Join("testfiles", "writeCsvTest1.csv"),
+			nil,
+		},
+		{
+			func() DataFrame {
+				df, err := ReadCsv(filepath.Join("testfiles", "nba.csv"), nil)
+				if err != nil {
+					t.Error(err)
+				}
+				return *df
+			}(),
+			filepath.Join("testfiles", "writeCsvTest2.csv"),
+			nil,
+		},
+	}
+
+	for _, test := range writeCsvTests {
+		output, err := WriteCsv(test.arg1, test.arg2)
+		if output != nil && err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
