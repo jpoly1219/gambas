@@ -40,7 +40,7 @@ func TestPrintSeries(t *testing.T) {
 	}
 }
 
-func TestHead(t *testing.T) {
+func TestSeriesHead(t *testing.T) {
 	type headTest struct {
 		arg1 Series
 	}
