@@ -14,6 +14,9 @@ func checkTypeIntegrity(data []interface{}) (bool, error) {
 	for _, v := range data {
 		switch t := v.(type) {
 		case float64:
+			if math.IsNaN(t) {
+				continue
+			}
 			isFloat64 = 1
 		case string:
 			isString = 1
@@ -75,8 +78,7 @@ func i2f(data interface{}) (float64, error) {
 // checkType checks to see if the data can be represented as a float64.
 // Because CSV is read as an array of strings, there has to be a way to check the type.
 func checkCSVDataType(data string) interface{} {
-	if data == "NaN" {
-		fmt.Println("NaN detected")
+	if data == "NaN" || data == "" {
 		return math.NaN()
 	}
 	v, ok := strconv.ParseFloat(data, 64)
