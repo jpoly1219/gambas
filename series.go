@@ -18,6 +18,15 @@ func (s Series) PrintSeries() string {
 	return message
 }
 
+// Head prints the first n items in the series.
+func (s Series) Head(howMany int) {
+	fmt.Println(s.index.names, s.name)
+	for i := 0; i < howMany; i++ {
+		fmt.Print(s.index.index[i], " ", s.data[i])
+		fmt.Println()
+	}
+}
+
 // At() returns an element at a given index.
 // For multiindex, you need to pass in the whole index tuple.
 func (s Series) At(in Index) (interface{}, error) {
