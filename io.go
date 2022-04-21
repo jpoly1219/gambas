@@ -1,7 +1,9 @@
 package gambas
 
 import (
+	"bufio"
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -45,6 +47,7 @@ func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 			}
 			// each data should be checked to see what type it is
 			vChecked := checkCSVDataType(v)
+			// fmt.Print(vChecked, ", ")
 			data2DArray[i] = append(data2DArray[i], vChecked)
 		}
 		rowNum++
@@ -64,4 +67,56 @@ func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 	}
 
 	return df, nil
+}
+
+func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
+	f, err := os.Create(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	w := bufio.NewWriter(f)
+	// write column names in the first row
+	for i, col := range df.columns {
+		_, err := w.WriteString(col)
+		if err != nil {
+			return nil, err
+		}
+
+		if i+1 != len(df.columns) {
+			_, err := w.WriteString(",")
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+	w.WriteString("\n")
+
+	// write the data in the following rows
+	for i := range df.series[0].data {
+		for j, ser := range df.series {
+			_, err := w.WriteString(fmt.Sprint(ser.data[i]))
+			if err != nil {
+				return nil, err
+			}
+
+			if j+1 != len(df.series) {
+				_, err := w.WriteString(",")
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
+
+		w.WriteString("\n")
+	}
+
+	w.Flush()
+
+	info, err := os.Stat(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
 }
