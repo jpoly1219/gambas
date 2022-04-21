@@ -10,7 +10,7 @@ import (
 )
 
 // ReadCsv reads a CSV file and returns a new DataFrame object.
-// Path to file should be generated using `filepath.Join`.
+// It is recommended to generate pathToFile using `filepath.Join`.
 // TODO: users should be able to define custom indices.
 func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 	// read line by line
@@ -69,6 +69,8 @@ func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 	return df, nil
 }
 
+// WriteCsv writes a DataFrame object to CSV file.
+// It is recommended to generate pathToFile using `filepath.Join`.
 func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
 	f, err := os.Create(pathToFile)
 	if err != nil {
