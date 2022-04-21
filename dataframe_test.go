@@ -6,6 +6,26 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestDataFrameHead(t *testing.T) {
+	type headTest struct {
+		arg1 DataFrame
+	}
+	headTests := []headTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+		},
+	}
+
+	for _, test := range headTests {
+		test.arg1.Head(2)
+	}
+}
 func TestDataFrameLocRows(t *testing.T) {
 	type dataframeLocRowsTest struct {
 		arg1     DataFrame
