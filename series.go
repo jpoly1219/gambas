@@ -371,6 +371,34 @@ func (s Series) Describe() ([]interface{}, error) {
 	return result, nil
 }
 
+// ValueCounts returns a Series containing the number of unique values in a given Series.
+func (s Series) ValueCounts() (*Series, error) {
+	valueCountMap := make(map[interface{}]int, 0)
+	for _, data := range s.data {
+		// if key doesn't exist, create a new key and set initial value as 1.
+		// if key exists, look up the data associated with the key and add 1.
+		valueCountMap[data] += 1
+	}
+
+	newSeriesValue := make([]interface{}, 0)
+	newSeriesIndex := IndexData{}
+	newSeriesIndex.names = []string{"Data"}
+	for k := range valueCountMap {
+		newSeriesIndex.index = append(newSeriesIndex.index, Index{k})
+	}
+	sort.Sort(newSeriesIndex)
+
+	for _, v := range newSeriesIndex.index {
+		newSeriesValue = append(newSeriesValue, valueCountMap[v[0]])
+	}
+
+	newS, err := NewSeries(newSeriesValue, fmt.Sprintf("Unique Value Count of %v", s.name), &newSeriesIndex)
+	if err != nil {
+		return nil, err
+	}
+	return newS, nil
+}
+
 // SortByIndex() sorts the elements in a series by the index.
 // Multiindex support is coming, but this may require an overhaul.
 func (s *Series) SortByIndex(ascending bool) error {
