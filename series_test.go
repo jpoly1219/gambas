@@ -1221,6 +1221,25 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 		},
+		{
+			&Series{
+				[]interface{}{"Alice", "Michael", "William", "Gina", "Emily", "Chris"},
+				IndexData{
+					[]Index{{"Female", 40}, {"Male", 19}, {"Male", 25}, {"Female", 16}, {"Female", 34}, {"Male", 50}},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			true,
+			&Series{
+				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
+				IndexData{
+					[]Index{{"Female", 16}, {"Female", 34}, {"Female", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+		},
 	}
 	for _, test := range sortByIndexTests {
 		test.arg1.SortByIndex(test.arg2)
