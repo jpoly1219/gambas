@@ -1124,6 +1124,39 @@ func TestDescribe(t *testing.T) {
 	}
 }
 
+func TestValueCounts(t *testing.T) {
+	type valueCountsTest struct {
+		arg1     Series
+		expected *Series
+	}
+	valueCountsTests := []valueCountsTest{
+		{
+			Series{
+				[]interface{}{"Amazon", "Amazon", "Google", "Apple", "Apple", "Apple", "Facebook"},
+				IndexData{
+					[]Index{{0}, {1}, {2}, {3}, {4}, {5}, {6}},
+					[]string{"RangeIndex"},
+				},
+				"Workplaces",
+			},
+			&Series{
+				[]interface{}{2, 3, 1, 1},
+				IndexData{
+					[]Index{{"Amazon"}, {"Apple"}, {"Facebook"}, {"Google"}},
+					[]string{"Data"},
+				},
+				"Unique Value Count of Workplaces",
+			},
+		},
+	}
+	for _, test := range valueCountsTests {
+		output, err := test.arg1.ValueCounts()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (output != nil && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
 func TestSeriesSortByIndex(t *testing.T) {
 	type sortByIndexTest struct {
 		arg1     *Series
