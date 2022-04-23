@@ -3,6 +3,7 @@ package gambas
 import (
 	"crypto/sha512"
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -41,14 +42,29 @@ func (id IndexData) Less(i, j int) bool {
 		switch v := id.index[i][a].(type) {
 		case string:
 			iStrData = v
-			jStrData = id.index[j][a].(string)
 		case int:
 			// TODO: so all numbers in the DataFrame should be float64, we need a way to check why there is an int in the first place
 			iStrData = strconv.Itoa(v)
-			jStrData = strconv.Itoa(id.index[j][a].(int))
 		case float64:
+			if math.IsNaN(v) {
+				iStrData = "~NaN"
+				break
+			}
 			iStrData = strconv.FormatFloat(v, 'f', -1, 64)
-			jStrData = strconv.FormatFloat(id.index[j][a].(float64), 'f', -1, 64)
+		}
+
+		switch v := id.index[j][a].(type) {
+		case string:
+			jStrData = v
+		case int:
+			// TODO: so all numbers in the DataFrame should be float64, we need a way to check why there is an int in the first place
+			jStrData = strconv.Itoa(v)
+		case float64:
+			if math.IsNaN(v) {
+				jStrData = "~NaN"
+				break
+			}
+			jStrData = strconv.FormatFloat(v, 'f', -1, 64)
 		}
 
 		if iStrData == jStrData {
@@ -58,7 +74,6 @@ func (id IndexData) Less(i, j int) bool {
 		}
 	}
 
-	fmt.Println(iStrData < jStrData)
 	return iStrData < jStrData
 }
 
