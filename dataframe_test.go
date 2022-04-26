@@ -886,3 +886,36 @@ func TestNewCol(t *testing.T) {
 		}
 	}
 }
+
+func TestDataFrameSortByIndex(t *testing.T) {
+	type sortByIndexTest struct {
+		arg1     DataFrame
+		arg2     bool
+		expected DataFrame
+	}
+	sortByIndexTests := []sortByIndexTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Bradley", "Candice", "Avery"}, {27.0, 22.0, 19.0}, {"Male", "Female", "Male"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			true,
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+		},
+	}
+	for _, test := range sortByIndexTests {
+		err := test.arg1.SortByIndex(test.arg2)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		}
+	}
+}

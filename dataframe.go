@@ -293,3 +293,14 @@ func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, err
 
 	return df, nil
 }
+
+func (df *DataFrame) SortByIndex(ascending bool) error {
+	fmt.Println("before:", df)
+	if len(df.series) > 0 {
+		for i := range df.series {
+			df.series[i].SortByIndex(ascending)
+		}
+	}
+	fmt.Println("after:", df)
+	return nil
+}
