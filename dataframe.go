@@ -302,5 +302,6 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 		}
 	}
 	fmt.Println("after:", df)
+	df.index = df.series[0].index
 	return nil
 }
