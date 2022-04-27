@@ -37,7 +37,10 @@ func NewSeries(data []interface{}, name string, index *IndexData) (*Series, erro
 	if index == nil {
 		s.index = CreateRangeIndex(len(data))
 	} else {
-		s.index = *index
+		s.index.index = make([]Index, len(index.index))
+		s.index.names = make([]string, len(index.names))
+		copy(s.index.index, index.index)
+		copy(s.index.names, index.names)
 	}
 
 	s.name = name
