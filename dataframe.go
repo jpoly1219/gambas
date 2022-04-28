@@ -299,33 +299,35 @@ func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, err
 	return df, nil
 }
 
-// RenameCol renames a column in a DataFrame.
-func (df *DataFrame) RenameCol(oldColname, newColname string) error {
-	for i, col := range df.columns {
-		if col == oldColname {
-			df.columns[i] = newColname
-			break
+// RenameCol renames columns in a DataFrame.
+func (df *DataFrame) RenameCol(colnames map[string]string) error {
+	for oldName, newName := range colnames {
+		exists := false
+		for i, col := range df.columns {
+			if col == oldName {
+				df.columns[i] = newName
+				exists = true
+			}
+		}
+		if !exists {
+			return fmt.Errorf("column does not exist: %v", oldName)
 		}
 
-		if i+1 == len(df.columns) {
-			return fmt.Errorf("column %v does not exist", oldColname)
-		}
-	}
-
-	for i, name := range df.index.names {
-		if name == oldColname {
-			df.index.names[i] = newColname
-		}
-	}
-
-	for i, series := range df.series {
-		if series.name == oldColname {
-			df.series[i].name = newColname
+		for i, name := range df.index.names {
+			if name == oldName {
+				df.index.names[i] = newName
+			}
 		}
 
-		for j, name := range series.index.names {
-			if name == oldColname {
-				df.series[i].index.names[j] = newColname
+		for i, series := range df.series {
+			if series.name == oldName {
+				df.series[i].name = newName
+			}
+
+			for j, serIndName := range series.index.names {
+				if serIndName == oldName {
+					df.series[i].index.names[j] = newName
+				}
 			}
 		}
 	}
