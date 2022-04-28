@@ -318,6 +318,18 @@ func (df *DataFrame) RenameCol(oldColname, newColname string) error {
 		}
 	}
 
+	for i, series := range df.series {
+		if series.name == oldColname {
+			df.series[i].name = newColname
+		}
+
+		for j, name := range series.index.names {
+			if name == oldColname {
+				df.series[i].index.names[j] = newColname
+			}
+		}
+	}
+
 	return nil
 }
 
