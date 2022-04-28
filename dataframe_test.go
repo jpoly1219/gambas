@@ -1,6 +1,7 @@
 package gambas
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -890,8 +891,7 @@ func TestNewCol(t *testing.T) {
 func TestRenameCol(t *testing.T) {
 	type renameColTest struct {
 		arg1     DataFrame
-		arg2     string
-		arg3     string
+		arg2     map[string]string
 		expected DataFrame
 	}
 	renameColTests := []renameColTest{
@@ -903,8 +903,7 @@ func TestRenameCol(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
-			"Name",
-			"Names",
+			map[string]string{"Name": "Names"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
@@ -921,8 +920,7 @@ func TestRenameCol(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
-			"Age",
-			"HowOld",
+			map[string]string{"Age": "HowOld"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
@@ -939,8 +937,7 @@ func TestRenameCol(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
-			"Name",
-			"Names",
+			map[string]string{"Name": "Names"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
@@ -949,11 +946,31 @@ func TestRenameCol(t *testing.T) {
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "Age", "Sex"}, []string{"Names", "Sex"}),
 		},
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
+			map[string]string{"Names": "Name"},
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
+		},
 	}
 
 	for _, test := range renameColTests {
-		err := test.arg1.RenameCol(test.arg2, test.arg3)
+		err := test.arg1.RenameCol(test.arg2)
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+			if fmt.Sprint(err)[:22] == "column does not exist:" {
+				continue
+			}
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}
 	}
