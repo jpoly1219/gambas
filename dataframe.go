@@ -102,8 +102,11 @@ func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
 	// This is because NewDataFrame searches for index values in filtered2D,
 	// but if the index column name is different from the column the user is trying to LocCols,
 	// there would be no matching columns.
-	for i := range dataframe.index.index {
-		dataframe.index.index[i] = df.index.index[i]
+
+	copy(dataframe.index.index, df.index.index)
+
+	for _, ser := range dataframe.series {
+		copy(ser.index.index, df.index.index)
 	}
 
 	return dataframe, nil
@@ -292,6 +295,28 @@ func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, err
 	df.columns = append(df.columns, colname)
 
 	return df, nil
+}
+
+// RenameCol renames a column in a DataFrame.
+func (df *DataFrame) RenameCol(oldColname, newColname string) error {
+	for i, col := range df.columns {
+		if col == oldColname {
+			df.columns[i] = newColname
+			break
+		}
+
+		if i+1 == len(df.columns) {
+			return fmt.Errorf("column %v does not exist", oldColname)
+		}
+	}
+
+	for i, name := range df.index.names {
+		if name == oldColname {
+			df.index.names[i] = newColname
+		}
+	}
+
+	return nil
 }
 
 func (df *DataFrame) SortByIndex(ascending bool) error {
