@@ -887,6 +887,78 @@ func TestNewCol(t *testing.T) {
 	}
 }
 
+func TestRenameCol(t *testing.T) {
+	type renameColTest struct {
+		arg1     DataFrame
+		arg2     string
+		arg3     string
+		expected DataFrame
+	}
+	renameColTests := []renameColTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			"Name",
+			"Names",
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "Age", "Sex"}, []string{"Names"}),
+		},
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			"Age",
+			"HowOld",
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "HowOld", "Sex"}, []string{"Names"}),
+		},
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
+			"Name",
+			"Names",
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "Age", "Sex"}, []string{"Names", "Sex"}),
+		},
+	}
+
+	for _, test := range renameColTests {
+		err := test.arg1.RenameCol(test.arg2, test.arg3)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		}
+	}
+}
+
 func TestDataFrameSortByIndex(t *testing.T) {
 	type sortByIndexTest struct {
 		arg1     DataFrame
