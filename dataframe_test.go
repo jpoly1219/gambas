@@ -929,7 +929,7 @@ func TestRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newDf
-			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "HowOld", "Sex"}, []string{"Names"}),
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "HowOld", "Sex"}, []string{"Name"}),
 		},
 		{
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
