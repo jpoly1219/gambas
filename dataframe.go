@@ -47,8 +47,10 @@ func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 	// This is because NewDataFrame searches for index values in filtered2D,
 	// but if the columns in the dataframe does not match filteredIndex.names,
 	// there would be no matching columns, thus returning empty indexes.
-	for i := range dataframe.index.index {
-		dataframe.index.index[i] = rows[i]
+	copy(dataframe.index.index, rows)
+
+	for _, ser := range dataframe.series {
+		copy(ser.index.index, rows)
 	}
 
 	return dataframe, nil
