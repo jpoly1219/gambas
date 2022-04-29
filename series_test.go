@@ -1208,6 +1208,77 @@ func TestSeriesRenameCol(t *testing.T) {
 	}
 }
 
+func TestSeriesRenameIndex(t *testing.T) {
+	type renameIndexTest struct {
+		arg1     Series
+		arg2     map[string]string
+		expected Series
+	}
+	renameIndexTests := []renameIndexTest{
+		{
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Name"}}),
+			map[string]string{"Name": "Names"},
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Names"}}),
+		},
+		{
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			map[string]string{"Name": "Names"},
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Names", "Age"}}),
+		},
+		{
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			map[string]string{"Names": "Name"},
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+		},
+	}
+
+	for _, test := range renameIndexTests {
+		err := test.arg1.RenameIndex(test.arg2)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || err != nil {
+			if fmt.Sprint(err)[:21] == "index does not exist:" {
+				continue
+			}
+			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
+		}
+	}
+}
+
 func TestSeriesSortByIndex(t *testing.T) {
 	type sortByIndexTest struct {
 		arg1     *Series
