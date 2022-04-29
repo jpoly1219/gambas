@@ -399,15 +399,24 @@ func (s Series) ValueCounts() (*Series, error) {
 	return newS, nil
 }
 
-func (s *Series) RenameCol(colname string) error {
-	for i, indexName := range s.index.names {
-		fmt.Println(indexName)
-		if indexName == s.name {
-			s.index.names[i] = colname
+func (s *Series) RenameCol(newName string) {
+	s.name = newName
+}
+
+func (s *Series) RenameIndex(newNames map[string]string) error {
+	exists := false
+	for oldName, newName := range newNames {
+		exists = false
+		for i, indexName := range s.index.names {
+			if indexName == oldName {
+				s.index.names[i] = newName
+				exists = true
+			}
+		}
+		if !exists {
+			return fmt.Errorf("index does not exist: %v", oldName)
 		}
 	}
-
-	s.name = colname
 
 	return nil
 }
