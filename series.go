@@ -399,6 +399,19 @@ func (s Series) ValueCounts() (*Series, error) {
 	return newS, nil
 }
 
+func (s *Series) RenameCol(colname string) error {
+	for i, indexName := range s.index.names {
+		fmt.Println(indexName)
+		if indexName == s.name {
+			s.index.names[i] = colname
+		}
+	}
+
+	s.name = colname
+
+	return nil
+}
+
 // SortByIndex() sorts the elements in a series by the index.
 // Multiindex support is coming, but this may require an overhaul.
 func (s *Series) SortByIndex(ascending bool) error {
