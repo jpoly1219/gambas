@@ -1179,7 +1179,7 @@ func TestSeriesRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Names"}}),
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Name"}}),
 		},
 		{
 			func(data []interface{}, name string, index *IndexData) Series {
@@ -1196,14 +1196,14 @@ func TestSeriesRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Names", "Age"}}),
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
 		},
 	}
 
 	for _, test := range renameColTests {
-		err := test.arg1.RenameCol(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || err != nil {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		test.arg1.RenameCol(test.arg2)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) {
+			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
 		}
 	}
 }
