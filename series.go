@@ -399,10 +399,13 @@ func (s Series) ValueCounts() (*Series, error) {
 	return newS, nil
 }
 
+// RenameCol renames the series.
 func (s *Series) RenameCol(newName string) {
 	s.name = newName
 }
 
+// RenameIndex renames the index of the series.
+// Input should be a map, where key is the index name to change and value is a new name.
 func (s *Series) RenameIndex(newNames map[string]string) error {
 	exists := false
 	for oldName, newName := range newNames {
