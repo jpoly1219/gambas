@@ -968,7 +968,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 	for _, test := range renameColTests {
 		err := test.arg1.RenameCol(test.arg2)
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
-			if fmt.Sprint(err)[:22] == "column does not exist:" {
+			if fmt.Sprint(err)[:22] == "column does not exist:" || fmt.Sprint(err)[:21] == "index does not exist:" {
 				continue
 			}
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
