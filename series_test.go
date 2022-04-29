@@ -1157,6 +1157,57 @@ func TestValueCounts(t *testing.T) {
 	}
 }
 
+func TestSeriesRenameCol(t *testing.T) {
+	type renameColTest struct {
+		arg1     Series
+		arg2     string
+		expected Series
+	}
+	renameColTests := []renameColTest{
+		{
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Name"}}),
+			"Names",
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Names"}}),
+		},
+		{
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			"Names",
+			func(data []interface{}, name string, index *IndexData) Series {
+				newSer, err := NewSeries(data, name, index)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newSer
+			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Names", "Age"}}),
+		},
+	}
+
+	for _, test := range renameColTests {
+		err := test.arg1.RenameCol(test.arg2)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		}
+	}
+}
+
 func TestSeriesSortByIndex(t *testing.T) {
 	type sortByIndexTest struct {
 		arg1     *Series
