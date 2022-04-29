@@ -321,15 +321,25 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 
 		for i, series := range df.series {
 			if series.name == oldName {
-				df.series[i].name = newName
+				df.series[i].RenameCol(newName)
 			}
-
-			for j, serIndName := range series.index.names {
-				if serIndName == oldName {
-					df.series[i].index.names[j] = newName
-				}
+			err := df.series[i].RenameIndex(colnames)
+			if err != nil {
+				return err
 			}
 		}
+
+		// for i, series := range df.series {
+		// 	if series.name == oldName {
+		// 		df.series[i].name = newName
+		// 	}
+
+		// 	for j, serIndName := range series.index.names {
+		// 		if serIndName == oldName {
+		// 			df.series[i].index.names[j] = newName
+		// 		}
+		// 	}
+		// }
 	}
 
 	return nil
