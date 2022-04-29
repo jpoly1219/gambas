@@ -888,7 +888,7 @@ func TestNewCol(t *testing.T) {
 	}
 }
 
-func TestRenameCol(t *testing.T) {
+func TestDataFrameRenameCol(t *testing.T) {
 	type renameColTest struct {
 		arg1     DataFrame
 		arg2     map[string]string
