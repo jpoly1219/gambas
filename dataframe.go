@@ -3,6 +3,7 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 type DataFrame struct {
@@ -354,5 +355,65 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	}
 	fmt.Println("after:", df)
 	df.index = df.series[0].index
+	return nil
+}
+
+// DropNa drops rows or columns with NaN values.
+// Specify axis to choose whether to remove rows with NaN or columns with NaN.
+// axis=0 is row, axis=1 is column.
+func (df *DataFrame) DropNaN(axis int) error {
+	if axis > 1 || axis < 0 {
+		return fmt.Errorf("axis can only be either 0 or 1")
+	}
+
+	// for each series, iterate through the series until NaN is found
+	// if NaN, save NaN index
+	// sort the NaNindex slice
+
+	indexSlice := make([]int, 0)
+	seriesHasNaNSlice := make([]bool, len(df.series))
+	for i, ser := range df.series {
+		for j, data := range ser.data {
+			if math.IsNaN(data.(float64)) || data == "NaN" {
+				indexSlice = append(indexSlice, j)
+				seriesHasNaNSlice[i] = true
+			}
+		}
+	}
+
+	sort.Ints(indexSlice)
+
+	// deleting rows containing NaN
+	// for each series, remove data at the index. length of df.series.data will decrease by 1.
+	// subtract 1 from each index so that it matches the new length df.series.data.
+	if axis == 0 {
+		for i := range df.series {
+			iSlice := make([]int, len(indexSlice))
+			copy(iSlice, indexSlice)
+
+			for j, index := range iSlice {
+				df.series[i].index.index = append(df.series[i].index.index[:index], df.series[i].index.index[index+1:]...)
+				df.series[i].data = append(df.series[i].data[:index], df.series[i].data[index+1:]...)
+
+				for k := j + 1; k < len(iSlice); k++ {
+					iSlice[k] -= 1
+				}
+			}
+		}
+		copy(df.index.index, df.series[0].index.index)
+	}
+
+	// deleting columns containing NaN
+	// for each series, remove data at the index. length of df.series.data will decrease by 1.
+	// subtract 1 from each index so that it matches the new length df.series.data.
+	if axis == 1 {
+		for i, hasNaN := range seriesHasNaNSlice {
+			if hasNaN {
+				df.series = append(df.series[:i], df.series[i+1:]...)
+				seriesHasNaNSlice = append(seriesHasNaNSlice[:i], seriesHasNaNSlice[i+1:]...)
+			}
+		}
+	}
+
 	return nil
 }
