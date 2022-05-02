@@ -3,13 +3,34 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"os"
 	"sort"
+	"text/tabwriter"
 )
 
 type DataFrame struct {
 	series  []Series
 	index   IndexData
 	columns []string
+}
+
+func (df *DataFrame) PrettyPrint() {
+	w := new(tabwriter.Writer)
+
+	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
+
+	for i := range df.columns {
+		fmt.Fprint(w, df.columns[i], "\t")
+	}
+	fmt.Fprintln(w)
+
+	for i := 0; i < len(df.series[0].data); i++ {
+		for j := range df.columns {
+			fmt.Fprint(w, df.series[j].data[i], "\t")
+		}
+		fmt.Fprintln(w)
+	}
+	w.Flush()
 }
 
 // Head prints the first n items in the dataframe.
