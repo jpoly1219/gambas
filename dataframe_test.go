@@ -7,6 +7,27 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestPrettyPrint(t *testing.T) {
+	type prettyPrintTest struct {
+		arg1 DataFrame
+	}
+	prettyPrintTests := []prettyPrintTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+		},
+	}
+
+	for _, test := range prettyPrintTests {
+		test.arg1.PrettyPrint()
+	}
+}
+
 func TestDataFrameHead(t *testing.T) {
 	type headTest struct {
 		arg1 DataFrame
