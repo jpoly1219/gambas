@@ -368,13 +368,11 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 }
 
 func (df *DataFrame) SortByIndex(ascending bool) error {
-	fmt.Println("before:", df)
 	if len(df.series) > 0 {
 		for i := range df.series {
 			df.series[i].SortByIndex(ascending)
 		}
 	}
-	fmt.Println("after:", df)
 	df.index = df.series[0].index
 	return nil
 }

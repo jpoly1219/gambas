@@ -60,7 +60,6 @@ func (s Series) IAt(in int) (interface{}, error) {
 func (s Series) Loc(in []Index) (*Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(in[0])
-	fmt.Println(indexLength)
 	for i, eachIndex := range in {
 		if indexLength != len(eachIndex) {
 			return nil, fmt.Errorf("index length does not match: %v, %v", in[i-1], eachIndex)
@@ -436,15 +435,11 @@ func (s *Series) SortByIndex(ascending bool) error {
 		indDatMap[*key] = data
 	}
 
-	fmt.Println(s.index)
-
 	if ascending {
 		sort.Sort(s.index)
 	} else {
 		sort.Sort(sort.Reverse(s.index))
 	}
-
-	fmt.Println(s.index)
 
 	for i, index := range s.index.index {
 		key, err := index.hashKey()
