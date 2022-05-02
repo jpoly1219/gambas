@@ -1008,3 +1008,54 @@ func TestDataFrameSortByIndex(t *testing.T) {
 		}
 	}
 }
+
+func TestDropNaN(t *testing.T) {
+	type dropNaNTest struct {
+		arg1     DataFrame
+		arg2     int
+		expected DataFrame
+	}
+	dropNaNTests := []dropNaNTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			0,
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan1after.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan2.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			1,
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan2after.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+		},
+	}
+
+	for _, test := range dropNaNTests {
+		err := test.arg1.DropNaN(test.arg2)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		}
+	}
+}
