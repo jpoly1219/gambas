@@ -61,6 +61,11 @@ func (df *DataFrame) Head(howMany int) {
 	df.PrintRange(0, howMany)
 }
 
+// Tail prints the last n items in the dataframe.
+func (df *DataFrame) Tail(howMany int) {
+	df.PrintRange(len(df.series[0].data)-howMany, len(df.series[0].data))
+}
+
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
 func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 	filteredData := make([][]interface{}, 0)

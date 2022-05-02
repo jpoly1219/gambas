@@ -69,6 +69,27 @@ func TestDataFrameHead(t *testing.T) {
 		test.arg1.Head(2)
 	}
 }
+
+func TestDataFrameTail(t *testing.T) {
+	type tailTest struct {
+		arg1 DataFrame
+	}
+	tailTests := []tailTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+		},
+	}
+
+	for _, test := range tailTests {
+		test.arg1.Tail(3)
+	}
+}
 func TestDataFrameLocRows(t *testing.T) {
 	type dataframeLocRowsTest struct {
 		arg1     DataFrame
