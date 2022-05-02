@@ -34,8 +34,30 @@ func (df *DataFrame) Print() {
 	w.Flush()
 }
 
+// PrintRange prints x at a given range.
+// Index starts at 0.
+// For example, to print 3 elements starting from the 2nd element, use PrintRange(2, 5).
+func (df *DataFrame) PrintRange(start, end int) {
+	w := new(tabwriter.Writer)
+
+	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
+
+	for i := range df.columns {
+		fmt.Fprint(w, df.columns[i], "\t")
+	}
+	fmt.Fprintln(w)
+
+	for i := start; i < end; i++ {
+		for j := range df.columns {
+			fmt.Fprint(w, df.series[j].data[i], "\t")
+		}
+		fmt.Fprintln(w)
+	}
+	w.Flush()
+}
+
 // Head prints the first n items in the dataframe.
-func (df DataFrame) Head(howMany int) {
+func (df *DataFrame) Head(howMany int) {
 	w := new(tabwriter.Writer)
 
 	w.Init(os.Stdout, 5, 0, 4, ' ', 0)

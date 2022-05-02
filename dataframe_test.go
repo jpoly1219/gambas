@@ -28,6 +28,27 @@ func TestPrint(t *testing.T) {
 	}
 }
 
+func TestPrintRange(t *testing.T) {
+	type printRangeTest struct {
+		arg1 DataFrame
+	}
+	printRangeTests := []printRangeTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdropnan1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+		},
+	}
+
+	for _, test := range printRangeTests {
+		test.arg1.PrintRange(1, 2)
+	}
+}
+
 func TestDataFrameHead(t *testing.T) {
 	type headTest struct {
 		arg1 DataFrame
