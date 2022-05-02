@@ -14,7 +14,8 @@ type DataFrame struct {
 	columns []string
 }
 
-func (df *DataFrame) PrettyPrint() {
+// Print prints all data in a DataFrame object.
+func (df *DataFrame) Print() {
 	w := new(tabwriter.Writer)
 
 	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
@@ -35,14 +36,22 @@ func (df *DataFrame) PrettyPrint() {
 
 // Head prints the first n items in the dataframe.
 func (df DataFrame) Head(howMany int) {
-	fmt.Println(df.index.names, df.columns)
-	for i := 0; i < howMany; i++ {
-		fmt.Print(df.index.index[i], " ")
-		for _, ser := range df.series {
-			fmt.Print(ser.data[i], " ")
-		}
-		fmt.Println()
+	w := new(tabwriter.Writer)
+
+	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
+
+	for i := range df.columns {
+		fmt.Fprint(w, df.columns[i], "\t")
 	}
+	fmt.Fprintln(w)
+
+	for i := 0; i < howMany; i++ {
+		for j := range df.columns {
+			fmt.Fprint(w, df.series[j].data[i], "\t")
+		}
+		fmt.Fprintln(w)
+	}
+	w.Flush()
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.

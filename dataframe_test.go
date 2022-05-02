@@ -7,11 +7,11 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestPrettyPrint(t *testing.T) {
-	type prettyPrintTest struct {
+func TestPrint(t *testing.T) {
+	type printTest struct {
 		arg1 DataFrame
 	}
-	prettyPrintTests := []prettyPrintTest{
+	printTests := []printTest{
 		{
 			func() DataFrame {
 				newDf, err := ReadCsv("./testfiles/testdropnan1.csv", []string{"Name"})
@@ -23,8 +23,8 @@ func TestPrettyPrint(t *testing.T) {
 		},
 	}
 
-	for _, test := range prettyPrintTests {
-		test.arg1.PrettyPrint()
+	for _, test := range printTests {
+		test.arg1.Print()
 	}
 }
 
