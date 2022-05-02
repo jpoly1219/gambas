@@ -358,7 +358,7 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	return nil
 }
 
-// DropNa drops rows or columns with NaN values.
+// DropNaN drops rows or columns with NaN values.
 // Specify axis to choose whether to remove rows with NaN or columns with NaN.
 // axis=0 is row, axis=1 is column.
 func (df *DataFrame) DropNaN(axis int) error {
@@ -374,9 +374,17 @@ func (df *DataFrame) DropNaN(axis int) error {
 	seriesHasNaNSlice := make([]bool, len(df.series))
 	for i, ser := range df.series {
 		for j, data := range ser.data {
-			if math.IsNaN(data.(float64)) || data == "NaN" {
-				indexSlice = append(indexSlice, j)
-				seriesHasNaNSlice[i] = true
+			switch v := data.(type) {
+			case string:
+				if v == "NaN" {
+					indexSlice = append(indexSlice, j)
+					seriesHasNaNSlice[i] = true
+				}
+			case float64:
+				if math.IsNaN(v) {
+					indexSlice = append(indexSlice, j)
+					seriesHasNaNSlice[i] = true
+				}
 			}
 		}
 	}
@@ -400,7 +408,7 @@ func (df *DataFrame) DropNaN(axis int) error {
 				}
 			}
 		}
-		copy(df.index.index, df.series[0].index.index)
+		df.index.index = df.series[0].index.index
 	}
 
 	// deleting columns containing NaN
@@ -409,6 +417,7 @@ func (df *DataFrame) DropNaN(axis int) error {
 	if axis == 1 {
 		for i, hasNaN := range seriesHasNaNSlice {
 			if hasNaN {
+				df.columns = append(df.columns[:i], df.columns[i+1:]...)
 				df.series = append(df.series[:i], df.series[i+1:]...)
 				seriesHasNaNSlice = append(seriesHasNaNSlice[:i], seriesHasNaNSlice[i+1:]...)
 			}
