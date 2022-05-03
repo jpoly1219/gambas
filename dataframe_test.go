@@ -7,7 +7,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestPrint(t *testing.T) {
+func TestDataFramePrint(t *testing.T) {
 	type printTest struct {
 		arg1 DataFrame
 	}
@@ -28,7 +28,7 @@ func TestPrint(t *testing.T) {
 	}
 }
 
-func TestPrintRange(t *testing.T) {
+func TestDataFramePrintRange(t *testing.T) {
 	type printRangeTest struct {
 		arg1 DataFrame
 	}
