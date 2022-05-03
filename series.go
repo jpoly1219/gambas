@@ -69,12 +69,13 @@ func (s *Series) PrintRange(start, end int) {
 }
 
 // Head prints the first n items in the series.
-func (s Series) Head(howMany int) {
-	fmt.Println(s.index.names, s.name)
-	for i := 0; i < howMany; i++ {
-		fmt.Print(s.index.index[i], " ", s.data[i])
-		fmt.Println()
-	}
+func (s *Series) Head(howMany int) {
+	s.PrintRange(0, howMany)
+}
+
+// Tail prints the last n items in the dataframe.
+func (s *Series) Tail(howMany int) {
+	s.PrintRange(len(s.data)-howMany, len(s.data))
 }
 
 // At() returns an element at a given index.

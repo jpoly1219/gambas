@@ -104,6 +104,38 @@ func TestSeriesHead(t *testing.T) {
 	}
 }
 
+func TestSeriesTail(t *testing.T) {
+	type tailTest struct {
+		arg1 Series
+	}
+	tailTests := []tailTest{
+		{
+			Series{
+				[]interface{}{"alice", "bob", "charlie"},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{"RangeIndex"},
+				},
+				"People",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"apple", "banana", "cherry"},
+				IndexData{
+					[]Index{{"a"}, {"b"}, {"c"}},
+					[]string{"Index"},
+				},
+				"Fruit",
+			},
+		},
+	}
+
+	for _, test := range tailTests {
+		test.arg1.Tail(2)
+	}
+}
+
 func TestSeriesAt(t *testing.T) {
 	type atTest struct {
 		arg1     Series
