@@ -40,6 +40,34 @@ func (s *Series) Print() {
 	w.Flush()
 }
 
+// PrintRange prints x at a given range.
+// Index starts at 0.
+// For example, to print 3 elements starting from the 2nd element, use PrintRange(2, 5).
+func (s *Series) PrintRange(start, end int) {
+	w := new(tabwriter.Writer)
+
+	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
+
+	for i := range s.index.names {
+		fmt.Fprint(w, s.index.names[i], "\t")
+	}
+	fmt.Fprintln(w, s.name, "\t")
+
+	for i := start; i < end; i++ {
+		if len(s.index.index[i]) > 1 {
+			for j := range s.index.index[i] {
+				fmt.Fprint(w, s.index.index[i][j], "\t")
+			}
+		} else {
+			fmt.Fprint(w, s.index.index[i][0], "\t")
+		}
+
+		fmt.Fprint(w, s.data[i], "\t")
+		fmt.Fprintln(w)
+	}
+	w.Flush()
+}
+
 // Head prints the first n items in the series.
 func (s Series) Head(howMany int) {
 	fmt.Println(s.index.names, s.name)

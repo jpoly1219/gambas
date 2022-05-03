@@ -40,6 +40,38 @@ func TestSeriesPrint(t *testing.T) {
 	}
 }
 
+func TestSeriesPrintRange(t *testing.T) {
+	type printRangeTest struct {
+		arg1 Series
+	}
+	printRangeTests := []printRangeTest{
+		{
+			Series{
+				[]interface{}{"alice", "bob", "charlie"},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{"RangeIndex"},
+				},
+				"People",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"apple", "banana", "cherry"},
+				IndexData{
+					[]Index{{"a", "red"}, {"b", "yellow"}, {"c", "red"}},
+					[]string{"ID", "Color"},
+				},
+				"Fruit",
+			},
+		},
+	}
+
+	for _, test := range printRangeTests {
+		test.arg1.PrintRange(1, 3)
+	}
+}
+
 func TestSeriesHead(t *testing.T) {
 	type headTest struct {
 		arg1 Series
