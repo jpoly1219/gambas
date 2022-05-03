@@ -3,7 +3,9 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"os"
 	"sort"
+	"text/tabwriter"
 )
 
 type Series struct {
@@ -12,10 +14,30 @@ type Series struct {
 	name  string
 }
 
-func (s Series) PrintSeries() string {
-	message := fmt.Sprintln("data:", s.data, "\nindexArray:", s.index, "\nname:", s.name)
-	fmt.Println(message)
-	return message
+// Print prints all data in a Series object.
+func (s *Series) Print() {
+	w := new(tabwriter.Writer)
+
+	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
+
+	for i := range s.index.names {
+		fmt.Fprint(w, s.index.names[i], "\t")
+	}
+	fmt.Fprintln(w, s.name, "\t")
+
+	for i := 0; i < len(s.data); i++ {
+		if len(s.index.index[i]) > 1 {
+			for j := range s.index.index[i] {
+				fmt.Fprint(w, s.index.index[i][j], "\t")
+			}
+		} else {
+			fmt.Fprint(w, s.index.index[i][0], "\t")
+		}
+
+		fmt.Fprint(w, s.data[i], "\t")
+		fmt.Fprintln(w)
+	}
+	w.Flush()
 }
 
 // Head prints the first n items in the series.

@@ -8,35 +8,35 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestPrintSeries(t *testing.T) {
-	seriesArray := []Series{
-		{
-			[]interface{}{"alice", "bob", "charlie"},
-			IndexData{
-				[]Index{{0}, {1}, {2}},
-				[]string{""},
-			},
-			"People",
-		},
-		{
-			[]interface{}{"apple", "banana", "cherry"},
-			IndexData{
-				[]Index{{"a"}, {"b"}, {"c"}},
-				[]string{""},
-			},
-			"Fruit",
-		},
+func TestSeriesPrint(t *testing.T) {
+	type seriesPrintTest struct {
+		arg1 Series
 	}
-	expectedArray := []string{
-		"data: [alice bob charlie] \nindexArray: {[[0] [1] [2]] []} \nname: People\n",
-		"data: [apple banana cherry] \nindexArray: {[[a] [b] [c]] []} \nname: Fruit\n",
+	seriesPrintTests := []seriesPrintTest{
+		{
+			Series{
+				[]interface{}{"alice", "bob", "charlie"},
+				IndexData{
+					[]Index{{0}, {1}, {2}},
+					[]string{"RangeIndex"},
+				},
+				"People",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"apple", "banana", "cherry"},
+				IndexData{
+					[]Index{{"a", "red"}, {"b", "yellow"}, {"c", "red"}},
+					[]string{"ID", "Color"},
+				},
+				"Fruit",
+			},
+		},
 	}
 
-	for i, test := range seriesArray {
-		output := test.PrintSeries()
-		if output != expectedArray[i] {
-			t.Fatalf("expected: %s, got: %s", expectedArray[i], output)
-		}
+	for _, test := range seriesPrintTests {
+		test.arg1.Print()
 	}
 }
 
