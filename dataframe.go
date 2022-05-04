@@ -398,6 +398,22 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	return nil
 }
 
+func (df *DataFrame) SortByValues(by string, ascending bool) error {
+	// approach 1:
+	// create a map[index]value for each series
+	// sort the selected series, the index should follow as well
+	// for each series, re-index the value in map
+
+	// approach 2:
+	// save a map[value]index of the selected series
+	// set the selected series as s.index
+	// change other series' indexes as s.index as well
+	// df.SortByIndex
+	// for each series, re-index the index in map
+
+	return nil
+}
+
 // DropNaN drops rows or columns with NaN values.
 // Specify axis to choose whether to remove rows with NaN or columns with NaN.
 // axis=0 is row, axis=1 is column.
