@@ -1063,9 +1063,29 @@ func TestDataFrameSortByIndex(t *testing.T) {
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Salary"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			true,
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Salary"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+		},
 	}
 	for _, test := range sortByIndexTests {
+		test.arg1.Print()
 		err := test.arg1.SortByIndex(test.arg2)
+		test.arg1.Print()
+		fmt.Println("----------")
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}

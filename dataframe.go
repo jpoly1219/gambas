@@ -398,21 +398,51 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	return nil
 }
 
-func (df *DataFrame) SortByValues(by string, ascending bool) error {
-	// approach 1:
-	// create a map[index]value for each series
-	// sort the selected series, the index should follow as well
-	// for each series, re-index the value in map
+// func (df *DataFrame) SortByValues(by string, ascending bool) error {
+// 	// approach 1:
+// 	// create a map[index]value for each series
+// 	indDatMapSlice := make([]map[string]interface{}, 0)
+// 	for _, ser := range df.series {
+// 		indDatMap := make(map[string]interface{}, 0)
 
-	// approach 2:
-	// save a map[value]index of the selected series
-	// set the selected series as s.index
-	// change other series' indexes as s.index as well
-	// df.SortByIndex
-	// for each series, re-index the index in map
+// 		for j, data := range ser.data {
+// 			key, err := ser.index.index[j].hashKey()
+// 			if err != nil {
+// 				return err
+// 			}
 
-	return nil
-}
+// 			indDatMap[*key] = data
+// 		}
+// 		indDatMapSlice = append(indDatMapSlice, indDatMap)
+// 	}
+// 	// sort the selected series, the index should follow as well
+// 	columnPosition := 0
+// 	for i := range df.series {
+// 		if df.series[i].name == by {
+// 			columnPosition = i
+
+// 			// sort
+// 			switch df.series[i].data[0].(type) {
+// 			case float64:
+// 				if ascending {
+// 					sort.Sort(df.series[i])
+// 				} else {
+// 					sort.Sort(sort.Reverse(df.series[i]))
+// 				}
+// 			}
+// 		}
+// 	}
+// 	// for each series, re-index the value in map
+
+// 	// approach 2:
+// 	// save a map[value]index of the selected series
+// 	// set the selected series as s.index
+// 	// change other series' indexes as s.index as well
+// 	// df.SortByIndex
+// 	// for each series, re-index the index in map
+
+// 	return nil
+// }
 
 // DropNaN drops rows or columns with NaN values.
 // Specify axis to choose whether to remove rows with NaN or columns with NaN.
