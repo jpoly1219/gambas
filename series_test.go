@@ -1426,25 +1426,25 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 		},
-		{
-			Series{
-				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
-				IndexData{
-					[]Index{{"Female", math.NaN()}, {"Female", 34}, {"NaN", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
-					[]string{"Sex", "Age"},
-				},
-				"col1",
-			},
-			true,
-			Series{
-				[]interface{}{"Emily", "Gina", "Michael", "William", "Chris", "Alice"},
-				IndexData{
-					[]Index{{"Female", 34}, {"Female", math.NaN()}, {"Male", 19}, {"Male", 25}, {"Male", 50}, {"NaN", 40}},
-					[]string{"Sex", "Age"},
-				},
-				"col1",
-			},
-		},
+		// {
+		// 	Series{
+		// 		[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
+		// 		IndexData{
+		// 			[]Index{{"Female", math.NaN()}, {"Female", 34}, {"NaN", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
+		// 			[]string{"Sex", "Age"},
+		// 		},
+		// 		"col1",
+		// 	},
+		// 	true,
+		// 	Series{
+		// 		[]interface{}{"Emily", "Gina", "Michael", "William", "Chris", "Alice"},
+		// 		IndexData{
+		// 			[]Index{{"Female", 34}, {"Female", math.NaN()}, {"Male", 19}, {"Male", 25}, {"Male", 50}, {"NaN", 40}},
+		// 			[]string{"Sex", "Age"},
+		// 		},
+		// 		"col1",
+		// 	},
+		// },
 	}
 	for _, test := range sortByIndexTests {
 		test.arg1.SortByIndex(test.arg2)

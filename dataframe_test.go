@@ -1063,23 +1063,23 @@ func TestDataFrameSortByIndex(t *testing.T) {
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 		},
-		{
-			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Team"})
-				if err != nil {
-					t.Error(err)
-				}
-				return *newDf
-			}(),
-			true,
-			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Team"})
-				if err != nil {
-					t.Error(err)
-				}
-				return *newDf
-			}(),
-		},
+		// {
+		// 	func() DataFrame {
+		// 		newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Team"})
+		// 		if err != nil {
+		// 			t.Error(err)
+		// 		}
+		// 		return *newDf
+		// 	}(),
+		// 	true,
+		// 	func() DataFrame {
+		// 		newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Team"})
+		// 		if err != nil {
+		// 			t.Error(err)
+		// 		}
+		// 		return *newDf
+		// 	}(),
+		// },
 	}
 	for _, test := range sortByIndexTests {
 		test.arg1.Print()
