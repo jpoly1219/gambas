@@ -1345,13 +1345,13 @@ func TestSeriesRenameIndex(t *testing.T) {
 
 func TestSeriesSortByIndex(t *testing.T) {
 	type sortByIndexTest struct {
-		arg1     *Series
+		arg1     Series
 		arg2     bool
-		expected *Series
+		expected Series
 	}
 	sortByIndexTests := []sortByIndexTest{
 		{
-			&Series{
+			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
 					[]Index{{0}, {1}, {2}, {3}},
@@ -1360,7 +1360,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 			true,
-			&Series{
+			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
 					[]Index{{0}, {1}, {2}, {3}},
@@ -1370,7 +1370,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 			},
 		},
 		{
-			&Series{
+			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
 					[]Index{{1}, {3}, {2}, {0}},
@@ -1379,7 +1379,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 			true,
-			&Series{
+			Series{
 				[]interface{}{"d", "a", "c", "b"},
 				IndexData{
 					[]Index{{0}, {1}, {2}, {3}},
@@ -1389,7 +1389,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 			},
 		},
 		{
-			&Series{
+			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
 					[]Index{{1}, {3}, {2}, {0}},
@@ -1398,7 +1398,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 			false,
-			&Series{
+			Series{
 				[]interface{}{"b", "c", "a", "d"},
 				IndexData{
 					[]Index{{3}, {2}, {1}, {0}},
@@ -1408,7 +1408,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 			},
 		},
 		{
-			&Series{
+			Series{
 				[]interface{}{"Alice", "Michael", "William", "Gina", "Emily", "Chris"},
 				IndexData{
 					[]Index{{"Female", 40}, {"Male", 19}, {"Male", 25}, {"Female", 16}, {"Female", 34}, {"Male", 50}},
@@ -1417,10 +1417,29 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 			true,
-			&Series{
+			Series{
 				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
 				IndexData{
 					[]Index{{"Female", 16}, {"Female", 34}, {"Female", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
+				IndexData{
+					[]Index{{"Female", math.NaN()}, {"Female", 34}, {"NaN", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			true,
+			Series{
+				[]interface{}{"Emily", "Gina", "Michael", "William", "Chris", "Alice"},
+				IndexData{
+					[]Index{{"Female", 34}, {"Female", math.NaN()}, {"Male", 19}, {"Male", 25}, {"Male", 50}, {"NaN", 40}},
 					[]string{"Sex", "Age"},
 				},
 				"col1",

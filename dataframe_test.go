@@ -1065,7 +1065,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 		},
 		{
 			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Salary"})
+				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Team"})
 				if err != nil {
 					t.Error(err)
 				}
@@ -1073,7 +1073,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 			}(),
 			true,
 			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Salary"})
+				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Team"})
 				if err != nil {
 					t.Error(err)
 				}
