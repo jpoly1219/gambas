@@ -7,6 +7,11 @@ import (
 	"strconv"
 )
 
+// Index stores the index values of a series and dataframe.
+// The 0th element must be the ID of the index.
+// For example, if your data includes a column of names that you have set to be the index,
+// the index may look like this: Index{0, "Alice"}, Index{1, "Bob"}, Index{2, "Charlie"}.
+// Index{} with more than one value (not including the ID) is considered a multi-index.
 type Index []interface{}
 
 func (i Index) hashKey() (*string, error) {
