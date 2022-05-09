@@ -97,7 +97,11 @@ func TestSeriesHead(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{"RangeIndex"},
 				},
 				"People",
@@ -107,7 +111,11 @@ func TestSeriesHead(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a"}, {"b"}, {"c"}},
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{"Index"},
 				},
 				"Fruit",
@@ -129,7 +137,11 @@ func TestSeriesTail(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{"RangeIndex"},
 				},
 				"People",
@@ -139,7 +151,11 @@ func TestSeriesTail(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a"}, {"b"}, {"c"}},
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{"Index"},
 				},
 				"Fruit",
