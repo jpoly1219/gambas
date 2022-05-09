@@ -80,11 +80,11 @@ func (s *Series) Tail(howMany int) {
 
 // At() returns an element at a given index.
 // For multiindex, you need to pass in the whole index tuple.
-func (s Series) At(in Index) (interface{}, error) {
+func (s Series) At(ind Index) (interface{}, error) {
 	for i, index := range s.index.index {
 		isSame := true
-		for j := 0; j < len(index); j++ {
-			if index[j] != in[j] {
+		for j := 0; j < len(index.value); j++ {
+			if index.value[j] != ind.value[j] {
 				isSame = false
 				break
 			}
@@ -97,37 +97,37 @@ func (s Series) At(in Index) (interface{}, error) {
 }
 
 // IAt() returns an element at a given integer index.
-func (s Series) IAt(in int) (interface{}, error) {
-	if in >= len(s.data) {
-		return nil, fmt.Errorf("index out of bounds: %v", in)
+func (s Series) IAt(ind int) (interface{}, error) {
+	if ind >= len(s.data) {
+		return nil, fmt.Errorf("index out of bounds: %v", ind)
 	}
-	if in < 0 {
+	if ind < 0 {
 		return nil, fmt.Errorf("index can't be less than 0")
 	}
-	return s.data[in], nil
+	return s.data[ind], nil
 }
 
 // Loc() returns a range of data at given rows.
-func (s Series) Loc(in []Index) (*Series, error) {
+func (s Series) Loc(ind []Index) (*Series, error) {
 	// This makes sure that each index passed are the same length.
-	indexLength := len(in[0])
-	for i, eachIndex := range in {
-		if indexLength != len(eachIndex) {
-			return nil, fmt.Errorf("index length does not match: %v, %v", in[i-1], eachIndex)
+	indexLength := len(ind[0].value)
+	for i, eachIndex := range ind {
+		if indexLength != len(eachIndex.value) {
+			return nil, fmt.Errorf("index length does not match: %v, %v", ind[i-1].value, eachIndex.value)
 		}
 	}
 
 	allFiltered := make([]interface{}, 0)
 	allFilteredIndex := IndexData{}
 
-	for _, inputIndex := range in {
+	for _, inputIndex := range ind {
 		filtered := make([]interface{}, 0)
 		filteredIndex := IndexData{}
 
 		for j, seriesIndex := range s.index.index {
 			isSame := true
 			for k := 0; k < indexLength; k++ {
-				if inputIndex[k] != seriesIndex[k] {
+				if inputIndex.value[k] != seriesIndex.value[k] {
 					isSame = false
 					break
 				}
