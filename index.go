@@ -12,18 +12,23 @@ import (
 // For example, if your data includes a column of names that you have set to be the index,
 // the index may look like this: Index{0, "Alice"}, Index{1, "Bob"}, Index{2, "Charlie"}.
 // Index{} with more than one value (not including the ID) is considered a multi-index.
-type Index []interface{}
+type Index struct {
+	id    int
+	value []interface{}
+}
 
 func (i Index) hashKey() (*string, error) {
-	if len(i) == 0 {
+	if len(i.value) == 0 {
 		return nil, fmt.Errorf("no index")
 	}
 
 	byteSlice := []byte{}
+	byteSlice = append(byteSlice, []byte(strconv.Itoa(i.id))...)
 
-	for _, val := range i {
+	for _, val := range i.value {
 		byteSlice = append(byteSlice, []byte(fmt.Sprint(val))...)
 	}
+
 	h := sha512.Sum512(byteSlice)
 
 	resultHex := fmt.Sprintf("%x", h)
@@ -43,8 +48,8 @@ func (id IndexData) Len() int {
 func (id IndexData) Less(i, j int) bool {
 	var iStrData, jStrData string
 
-	for a := range id.index[0] {
-		switch v := id.index[i][a].(type) {
+	for a := range id.index[0].value {
+		switch v := id.index[i].value[a].(type) {
 		case string:
 			iStrData = v
 		case int:
@@ -58,7 +63,7 @@ func (id IndexData) Less(i, j int) bool {
 			iStrData = strconv.FormatFloat(v, 'f', -1, 64)
 		}
 
-		switch v := id.index[j][a].(type) {
+		switch v := id.index[j].value[a].(type) {
 		case string:
 			jStrData = v
 		case int:
