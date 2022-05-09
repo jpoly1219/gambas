@@ -93,7 +93,7 @@ func (s Series) At(ind Index) (interface{}, error) {
 			return s.data[i], nil
 		}
 	}
-	return nil, fmt.Errorf("the given index does not match any of the index in the series: %v", in)
+	return nil, fmt.Errorf("the given index does not match any of the index in the series: %v", ind)
 }
 
 // IAt() returns an element at a given integer index.
@@ -433,13 +433,16 @@ func (s Series) ValueCounts() (*Series, error) {
 	newSeriesValue := make([]interface{}, 0)
 	newSeriesIndex := IndexData{}
 	newSeriesIndex.names = []string{"Data"}
+
+	i := 0
 	for k := range valueCountMap {
-		newSeriesIndex.index = append(newSeriesIndex.index, Index{k})
+		newSeriesIndex.index = append(newSeriesIndex.index, Index{i, []interface{}{k}})
+		i++
 	}
 	sort.Sort(newSeriesIndex)
 
 	for _, v := range newSeriesIndex.index {
-		newSeriesValue = append(newSeriesValue, valueCountMap[v[0]])
+		newSeriesValue = append(newSeriesValue, valueCountMap[v.value[0]])
 	}
 
 	newS, err := NewSeries(newSeriesValue, fmt.Sprintf("Unique Value Count of %v", s.name), &newSeriesIndex)
