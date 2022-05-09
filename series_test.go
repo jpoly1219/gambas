@@ -524,7 +524,12 @@ func TestCount(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -535,7 +540,11 @@ func TestCount(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -571,7 +580,11 @@ func TestMean(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -583,7 +596,11 @@ func TestMean(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -627,7 +644,11 @@ func TestMedian(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -639,7 +660,11 @@ func TestMedian(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -660,7 +685,12 @@ func TestMedian(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -672,7 +702,12 @@ func TestMedian(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -684,7 +719,11 @@ func TestMedian(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -719,7 +758,12 @@ func TestStd(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -731,7 +775,11 @@ func TestStd(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -752,7 +800,12 @@ func TestStd(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -764,7 +817,12 @@ func TestStd(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -776,7 +834,11 @@ func TestStd(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -811,7 +873,12 @@ func TestMin(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -823,7 +890,11 @@ func TestMin(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -844,7 +915,12 @@ func TestMin(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -856,7 +932,12 @@ func TestMin(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -868,7 +949,11 @@ func TestMin(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -903,7 +988,12 @@ func TestMax(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -915,7 +1005,11 @@ func TestMax(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -936,7 +1030,12 @@ func TestMax(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -948,7 +1047,12 @@ func TestMax(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -960,7 +1064,11 @@ func TestMax(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -995,7 +1103,12 @@ func TestQ1(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -1007,7 +1120,11 @@ func TestQ1(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -1028,7 +1145,12 @@ func TestQ1(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1040,7 +1162,12 @@ func TestQ1(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1052,7 +1179,11 @@ func TestQ1(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1087,7 +1218,12 @@ func TestQ2(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -1099,7 +1235,11 @@ func TestQ2(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -1120,7 +1260,12 @@ func TestQ2(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1132,7 +1277,12 @@ func TestQ2(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1144,7 +1294,11 @@ func TestQ2(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1179,7 +1333,12 @@ func TestQ3(t *testing.T) {
 			Series{
 				[]interface{}{"Avery", "Bradley", "Candice", "Diana"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Name",
@@ -1191,7 +1350,11 @@ func TestQ3(t *testing.T) {
 			Series{
 				[]interface{}{30.0, 23.0, 19.0},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Age",
@@ -1212,7 +1375,12 @@ func TestQ3(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, 173.0, 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1224,7 +1392,12 @@ func TestQ3(t *testing.T) {
 			Series{
 				[]interface{}{164.3, 182.5, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1236,7 +1409,11 @@ func TestQ3(t *testing.T) {
 			Series{
 				[]interface{}{164.3, math.NaN(), 178.7},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"Height",
@@ -1270,7 +1447,12 @@ func TestDescribe(t *testing.T) {
 			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1281,7 +1463,12 @@ func TestDescribe(t *testing.T) {
 			Series{
 				[]interface{}{123.123, 456.456, 789.789},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"col1",
