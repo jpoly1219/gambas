@@ -17,7 +17,11 @@ func TestSeriesPrint(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{"RangeIndex"},
 				},
 				"People",
@@ -27,7 +31,11 @@ func TestSeriesPrint(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a", "red"}, {"b", "yellow"}, {"c", "red"}},
+					[]Index{
+						{0, []interface{}{"a", "red"}},
+						{1, []interface{}{"b", "yellow"}},
+						{2, []interface{}{"c", "red"}},
+					},
 					[]string{"ID", "Color"},
 				},
 				"Fruit",
