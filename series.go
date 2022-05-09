@@ -5,7 +5,6 @@ import (
 	"math"
 	"os"
 	"sort"
-	"strconv"
 	"text/tabwriter"
 )
 
@@ -13,55 +12,6 @@ type Series struct {
 	data  []interface{}
 	index IndexData
 	name  string
-}
-
-func (s Series) Len() int {
-	return len(s.data)
-}
-
-func (s Series) Less(i, j int) bool {
-	var iStrData, jStrData string
-
-	for a := range s.data {
-		switch v := s.data[a].(type) {
-		case string:
-			iStrData = v
-		case int:
-			iStrData = strconv.Itoa(v)
-		case float64:
-			if math.IsNaN(v) {
-				iStrData = "~NaN"
-				break
-			}
-			iStrData = strconv.FormatFloat(v, 'f', -1, 64)
-		}
-
-		switch v := s.data[a].(type) {
-		case string:
-			jStrData = v
-		case int:
-			// TODO: so all numbers in the DataFrame should be float64, we need a way to check why there is an int in the first place
-			jStrData = strconv.Itoa(v)
-		case float64:
-			if math.IsNaN(v) {
-				jStrData = "~NaN"
-				break
-			}
-			jStrData = strconv.FormatFloat(v, 'f', -1, 64)
-		}
-
-		if iStrData == jStrData {
-			continue
-		} else {
-			break
-		}
-	}
-
-	return iStrData < jStrData
-}
-
-func (s Series) Swap(i, j int) {
-	s.data[i], s.data[j] = s.data[j], s.data[i]
 }
 
 // Print prints all data in a Series object.
@@ -76,12 +26,12 @@ func (s *Series) Print() {
 	fmt.Fprintln(w, s.name, "\t")
 
 	for i := 0; i < len(s.data); i++ {
-		if len(s.index.index[i]) > 1 {
-			for j := range s.index.index[i] {
-				fmt.Fprint(w, s.index.index[i][j], "\t")
+		if len(s.index.index[i].value) > 1 {
+			for j := range s.index.index[i].value {
+				fmt.Fprint(w, s.index.index[i].value[j], "\t")
 			}
 		} else {
-			fmt.Fprint(w, s.index.index[i][0], "\t")
+			fmt.Fprint(w, s.index.index[i].value[0], "\t")
 		}
 
 		fmt.Fprint(w, s.data[i], "\t")
@@ -104,12 +54,12 @@ func (s *Series) PrintRange(start, end int) {
 	fmt.Fprintln(w, s.name, "\t")
 
 	for i := start; i < end; i++ {
-		if len(s.index.index[i]) > 1 {
-			for j := range s.index.index[i] {
-				fmt.Fprint(w, s.index.index[i][j], "\t")
+		if len(s.index.index[i].value) > 1 {
+			for j := range s.index.index[i].value {
+				fmt.Fprint(w, s.index.index[i].value[j], "\t")
 			}
 		} else {
-			fmt.Fprint(w, s.index.index[i][0], "\t")
+			fmt.Fprint(w, s.index.index[i].value[0], "\t")
 		}
 
 		fmt.Fprint(w, s.data[i], "\t")
