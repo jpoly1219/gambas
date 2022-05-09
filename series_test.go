@@ -179,24 +179,32 @@ func TestSeriesAt(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"People",
 			},
-			Index{0},
+			Index{0, []interface{}{0}},
 			"alice",
 		},
 		{
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a"}, {"b"}, {"c"}},
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{""},
 				},
 				"Fruit",
 			},
-			Index{"b"},
+			Index{0, []interface{}{"b"}},
 			"banana",
 		},
 	}
@@ -220,7 +228,11 @@ func TestSeriesIAt(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"People",
@@ -232,7 +244,11 @@ func TestSeriesIAt(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a"}, {"b"}, {"c"}},
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{""},
 				},
 				"Fruit",
@@ -261,16 +277,23 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"People",
 			},
-			[]Index{{0}, {1}},
+			[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}},
 			&Series{
 				[]interface{}{"alice", "bob"},
 				IndexData{
-					[]Index{{0}, {1}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+					},
 					[]string{""},
 				},
 				"People",
@@ -281,16 +304,23 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a"}, {"b"}, {"c"}},
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{""},
 				},
 				"Fruit",
 			},
-			[]Index{{"b"}, {"c"}},
+			[]Index{{0, []interface{}{"b"}}, {1, []interface{}{"c"}}},
 			&Series{
 				[]interface{}{"banana", "cherry"},
 				IndexData{
-					[]Index{{"b"}, {"c"}},
+					[]Index{
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{""},
 				},
 				"Fruit",
@@ -301,16 +331,25 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
 			},
-			[]Index{{"female"}},
+			[]Index{{0, []interface{}{"female"}}},
 			&Series{
 				[]interface{}{"clara", "anna"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"female", "volleyball"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
@@ -321,16 +360,22 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
 			},
-			[]Index{{"male", "volleyball"}},
+			[]Index{{0, []interface{}{"male", "volleyball"}}},
 			&Series{
 				[]interface{}{"brian"},
 				IndexData{
-					[]Index{{"male", "volleyball"}},
+					[]Index{{1, []interface{}{"male", "volleyball"}}},
 					[]string{"sex", "sports"},
 				},
 				"People",
@@ -341,12 +386,18 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
 			},
-			[]Index{{"volleyball"}},
+			[]Index{{0, []interface{}{"volleyball"}}},
 			nil,
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
@@ -354,16 +405,28 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
 			},
-			[]Index{{"female"}, {"male"}},
+			[]Index{{0, []interface{}{"female"}}, {1, []interface{}{"male"}}},
 			&Series{
 				[]interface{}{"clara", "anna", "brian", "dorian", "michael"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"female", "volleyball"}, {"male", "volleyball"}, {"male", "basketball"}, {"male", "swimming"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
@@ -374,12 +437,18 @@ func TestSeriesLoc(t *testing.T) {
 			Series{
 				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
 				IndexData{
-					[]Index{{"female", "basketball"}, {"male", "volleyball"}, {"male", "basketball"}, {"female", "volleyball"}, {"male", "swimming"}},
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
 					[]string{"sex", "sports"},
 				},
 				"People",
 			},
-			[]Index{{"female"}, {"volleyball"}},
+			[]Index{{0, []interface{}{"female"}}, {1, []interface{}{"volleyball"}}},
 			nil,
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
@@ -405,7 +474,11 @@ func TestSeriesILoc(t *testing.T) {
 			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
-					[]Index{{0}, {1}, {2}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
 					[]string{""},
 				},
 				"People",
@@ -418,7 +491,11 @@ func TestSeriesILoc(t *testing.T) {
 			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
-					[]Index{{"a"}, {"b"}, {"c"}},
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
 					[]string{""},
 				},
 				"Fruit",
