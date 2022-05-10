@@ -105,13 +105,13 @@ func TestDataFrameLocRows(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
-			[]Index{{"Avery"}},
+			[]Index{{0, []interface{}{"Avery"}}},
 			&DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery"},
 						IndexData{
-							[]Index{{"Avery"}},
+							[]Index{{0, []interface{}{"Avery"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -119,7 +119,7 @@ func TestDataFrameLocRows(t *testing.T) {
 					{
 						[]interface{}{19},
 						IndexData{
-							[]Index{{"Avery"}},
+							[]Index{{0, []interface{}{"Avery"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -127,14 +127,14 @@ func TestDataFrameLocRows(t *testing.T) {
 					{
 						[]interface{}{"Male"},
 						IndexData{
-							[]Index{{"Avery"}},
+							[]Index{{0, []interface{}{"Avery"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}},
+					[]Index{{0, []interface{}{"Avery"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -171,14 +171,14 @@ func TestDataFrameLocCols(t *testing.T) {
 					{
 						[]interface{}{19, 27, 22},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Age"},
@@ -209,21 +209,21 @@ func TestDataFrameLoc(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
-			[]Index{{"Bradley"}},
+			[]Index{{1, []interface{}{"Bradley"}}},
 			[]string{"Age"},
 			&DataFrame{
 				[]Series{
 					{
 						[]interface{}{27},
 						IndexData{
-							[]Index{{"Bradley"}},
+							[]Index{{1, []interface{}{"Bradley"}}},
 							[]string{"Name"},
 						},
 						"Age",
 					},
 				},
 				IndexData{
-					[]Index{{"Bradley"}},
+					[]Index{{1, []interface{}{"Bradley"}}},
 					[]string{"Name"},
 				},
 				[]string{"Age"},
@@ -274,7 +274,7 @@ func TestColAdd(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -282,7 +282,7 @@ func TestColAdd(t *testing.T) {
 					{
 						[]interface{}{24.0, 32.0, 27.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -290,14 +290,14 @@ func TestColAdd(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -348,7 +348,7 @@ func TestColSub(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -356,7 +356,7 @@ func TestColSub(t *testing.T) {
 					{
 						[]interface{}{14.0, 22.0, 17.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -364,14 +364,14 @@ func TestColSub(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -422,7 +422,7 @@ func TestColMul(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -430,7 +430,7 @@ func TestColMul(t *testing.T) {
 					{
 						[]interface{}{38.0, 54.0, 44.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -438,14 +438,14 @@ func TestColMul(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -496,7 +496,7 @@ func TestColDiv(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -504,7 +504,7 @@ func TestColDiv(t *testing.T) {
 					{
 						[]interface{}{3.8, 5.4, 4.4},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -512,14 +512,14 @@ func TestColDiv(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -570,7 +570,7 @@ func TestColMod(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -578,7 +578,7 @@ func TestColMod(t *testing.T) {
 					{
 						[]interface{}{4.0, 2.0, 2.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -586,14 +586,14 @@ func TestColMod(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -644,7 +644,7 @@ func TestColGt(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -652,7 +652,7 @@ func TestColGt(t *testing.T) {
 					{
 						[]interface{}{false, true, false},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -660,14 +660,14 @@ func TestColGt(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -718,7 +718,7 @@ func TestColLt(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -726,7 +726,7 @@ func TestColLt(t *testing.T) {
 					{
 						[]interface{}{true, false, false},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -734,14 +734,14 @@ func TestColLt(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -792,7 +792,7 @@ func TestColEq(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -800,7 +800,7 @@ func TestColEq(t *testing.T) {
 					{
 						[]interface{}{true, false, false},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -808,14 +808,14 @@ func TestColEq(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -853,7 +853,7 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -861,7 +861,7 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{19.0, 27.0, 22.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -869,7 +869,7 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
@@ -877,14 +877,14 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{"USA", "UK", "Canada"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Nationality",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex", "Nationality"},
@@ -905,7 +905,7 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -913,7 +913,7 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{19.0, 27.0, 22.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -921,7 +921,7 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
@@ -929,14 +929,14 @@ func TestNewCol(t *testing.T) {
 					{
 						[]interface{}{nil, nil, nil},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age+5",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradley"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex", "Age+5"},
