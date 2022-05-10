@@ -25,7 +25,7 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradford", "Candice"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradford"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Name",
@@ -33,7 +33,7 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{19.0, 25.0, 22.0},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradford"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
@@ -41,14 +41,14 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{"Avery"}, {"Bradford"}, {"Candice"}},
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Sex",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery"}, {"Bradford"}, {"Candice"}},
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Age", "Sex"},
@@ -62,7 +62,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Name",
@@ -70,7 +75,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Team",
@@ -78,7 +88,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Number",
@@ -86,7 +101,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Position",
@@ -94,7 +114,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Age",
@@ -102,7 +127,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Height",
@@ -110,7 +140,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Weight",
@@ -118,7 +153,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"College",
@@ -126,14 +166,24 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Salary",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+					[]Index{
+						{0, []interface{}{"Avery Bradley"}},
+						{1, []interface{}{"Jae Crowder"}},
+						{2, []interface{}{"John Holland"}},
+						{3, []interface{}{"R.J. Hunter"}},
+					},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
@@ -147,7 +197,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Name",
@@ -155,7 +210,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Team",
@@ -163,7 +223,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Number",
@@ -171,7 +236,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Position",
@@ -179,7 +249,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Age",
@@ -187,7 +262,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Height",
@@ -195,7 +275,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Weight",
@@ -203,7 +288,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"College",
@@ -211,14 +301,24 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
 						IndexData{
-							[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+							[]Index{
+								{0, []interface{}{"PG"}},
+								{1, []interface{}{"SF"}},
+								{2, []interface{}{"SG"}},
+								{3, []interface{}{"SG"}},
+							},
 							[]string{"Position"},
 						},
 						"Salary",
 					},
 				},
 				IndexData{
-					[]Index{{"PG"}, {"SF"}, {"SG"}, {"SG"}},
+					[]Index{
+						{0, []interface{}{"PG"}},
+						{1, []interface{}{"SF"}},
+						{2, []interface{}{"SG"}},
+						{3, []interface{}{"SG"}},
+					},
 					[]string{"Position"},
 				},
 				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
@@ -232,7 +332,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Name",
@@ -240,7 +345,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Team",
@@ -248,7 +358,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Number",
@@ -256,7 +371,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Position",
@@ -264,7 +384,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Age",
@@ -272,7 +397,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Height",
@@ -280,7 +410,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Weight",
@@ -288,7 +423,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"College",
@@ -296,14 +436,24 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
 						IndexData{
-							[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
 							[]string{"Name"},
 						},
 						"Salary",
 					},
 				},
 				IndexData{
-					[]Index{{"Avery Bradley"}, {"Jae Crowder"}, {"John Holland"}, {"R.J. Hunter"}},
+					[]Index{
+						{0, []interface{}{"Avery Bradley"}},
+						{1, []interface{}{"Jae Crowder"}},
+						{2, []interface{}{"John Holland"}},
+						{3, []interface{}{"R.J. Hunter"}},
+					},
 					[]string{"Name"},
 				},
 				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
@@ -317,7 +467,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Name",
@@ -325,7 +480,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Team",
@@ -333,7 +493,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Number",
@@ -341,7 +506,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Position",
@@ -349,7 +519,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Age",
@@ -357,7 +532,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Height",
@@ -365,7 +545,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Weight",
@@ -373,7 +558,12 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"College",
@@ -381,14 +571,24 @@ func TestReadCsv(t *testing.T) {
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
 						IndexData{
-							[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", "Boston University"}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
 							[]string{"Position", "College"},
 						},
 						"Salary",
 					},
 				},
 				IndexData{
-					[]Index{{"PG", "Texas"}, {"SF", "Marquette"}, {"SG", "Boston University"}, {"SG", "Georgia State"}},
+					[]Index{
+						{0, []interface{}{"PG", "Texas"}},
+						{1, []interface{}{"SF", "Marquette"}},
+						{2, []interface{}{"SG", "Boston University"}},
+						{3, []interface{}{"SG", "Georgia State"}},
+					},
 					[]string{"Position", "College"},
 				},
 				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
@@ -418,7 +618,11 @@ func TestWriteCsv(t *testing.T) {
 					t.Error(err)
 				}
 				return *newDf
-			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			}(
+				[][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}},
+				[]string{"Name", "Age", "Sex"},
+				[]string{"Name"},
+			),
 			filepath.Join("testfiles", "writeCsvTest1.csv"),
 			nil,
 		},
