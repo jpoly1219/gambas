@@ -8,7 +8,7 @@ func CreateRangeIndex(length int) IndexData {
 	rangeIndex := make([]Index, length)
 
 	for i := 0; i < length; i++ {
-		rangeIndex[i] = Index{i}
+		rangeIndex[i] = Index{i, []interface{}{i}}
 	}
 
 	indexData := IndexData{
@@ -75,7 +75,8 @@ func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*
 		indexTuple := Index{}
 
 		for _, location := range indexColsIndex {
-			indexTuple = append(indexTuple, data[location][i])
+			indexTuple.id = i
+			indexTuple.value = append(indexTuple.value, data[location][i])
 		}
 
 		df.index.index = append(df.index.index, indexTuple)
