@@ -1494,7 +1494,15 @@ func TestValueCounts(t *testing.T) {
 			Series{
 				[]interface{}{"Amazon", "Amazon", "Google", "Apple", "Apple", "Apple", "Facebook"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}, {4}, {5}, {6}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+						{4, []interface{}{4}},
+						{5, []interface{}{5}},
+						{6, []interface{}{6}},
+					},
 					[]string{"RangeIndex"},
 				},
 				"Workplaces",
@@ -1502,7 +1510,12 @@ func TestValueCounts(t *testing.T) {
 			&Series{
 				[]interface{}{2, 3, 1, 1},
 				IndexData{
-					[]Index{{"Amazon"}, {"Apple"}, {"Facebook"}, {"Google"}},
+					[]Index{
+						{0, []interface{}{"Amazon"}},
+						{1, []interface{}{"Apple"}},
+						{2, []interface{}{"Facebook"}},
+						{3, []interface{}{"Google"}},
+					},
 					[]string{"Data"},
 				},
 				"Unique Value Count of Workplaces",
@@ -1531,7 +1544,14 @@ func TestSeriesRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Name"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+					[]string{"Name"},
+				},
+			),
 			"Names",
 			func(data []interface{}, name string, index *IndexData) Series {
 				newSer, err := NewSeries(data, name, index)
@@ -1539,7 +1559,14 @@ func TestSeriesRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Name"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Names",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+					[]string{"Name"},
+				},
+			),
 		},
 		{
 			func(data []interface{}, name string, index *IndexData) Series {
@@ -1548,7 +1575,14 @@ func TestSeriesRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery", 13}}, {1, []interface{}{"Bradley", 25}}, {2, []interface{}{"Candice", 29}}},
+					[]string{"Name", "Age"},
+				},
+			),
 			"Names",
 			func(data []interface{}, name string, index *IndexData) Series {
 				newSer, err := NewSeries(data, name, index)
@@ -1556,7 +1590,14 @@ func TestSeriesRenameCol(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Names", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Names",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery", 13}}, {1, []interface{}{"Bradley", 25}}, {2, []interface{}{"Candice", 29}}},
+					[]string{"Name", "Age"},
+				},
+			),
 		},
 	}
 
@@ -1582,7 +1623,13 @@ func TestSeriesRenameIndex(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Name"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+					[]string{"Name"}},
+			),
 			map[string]string{"Name": "Names"},
 			func(data []interface{}, name string, index *IndexData) Series {
 				newSer, err := NewSeries(data, name, index)
@@ -1590,7 +1637,14 @@ func TestSeriesRenameIndex(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery"}, {"Bradley"}, {"Candice"}}, []string{"Names"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+					[]string{"Names"},
+				},
+			),
 		},
 		{
 			func(data []interface{}, name string, index *IndexData) Series {
@@ -1599,7 +1653,14 @@ func TestSeriesRenameIndex(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery", 13}}, {1, []interface{}{"Bradley", 25}}, {2, []interface{}{"Candice", 29}}},
+					[]string{"Name", "Age"},
+				},
+			),
 			map[string]string{"Name": "Names"},
 			func(data []interface{}, name string, index *IndexData) Series {
 				newSer, err := NewSeries(data, name, index)
@@ -1607,7 +1668,14 @@ func TestSeriesRenameIndex(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Names", "Age"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery", 13}}, {1, []interface{}{"Bradley", 25}}, {2, []interface{}{"Candice", 29}}},
+					[]string{"Names", "Age"},
+				},
+			),
 		},
 		{
 			func(data []interface{}, name string, index *IndexData) Series {
@@ -1616,7 +1684,14 @@ func TestSeriesRenameIndex(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery", 13}}, {1, []interface{}{"Bradley", 25}}, {2, []interface{}{"Candice", 29}}},
+					[]string{"Name", "Age"},
+				},
+			),
 			map[string]string{"Names": "Name"},
 			func(data []interface{}, name string, index *IndexData) Series {
 				newSer, err := NewSeries(data, name, index)
@@ -1624,7 +1699,14 @@ func TestSeriesRenameIndex(t *testing.T) {
 					t.Error(err)
 				}
 				return *newSer
-			}([]interface{}{"Avery", "Bradley", "Candice"}, "Name", &IndexData{[]Index{{"Avery", 13}, {"Bradley", 25}, {"Candice", 29}}, []string{"Name", "Age"}}),
+			}(
+				[]interface{}{"Avery", "Bradley", "Candice"},
+				"Name",
+				&IndexData{
+					[]Index{{0, []interface{}{"Avery", 13}}, {1, []interface{}{"Bradley", 25}}, {2, []interface{}{"Candice", 29}}},
+					[]string{"Name", "Age"},
+				},
+			),
 		},
 	}
 
@@ -1650,7 +1732,12 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1659,7 +1746,12 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1669,7 +1761,12 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
-					[]Index{{1}, {3}, {2}, {0}},
+					[]Index{
+						{1, []interface{}{1}},
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{0, []interface{}{0}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1678,7 +1775,12 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"d", "a", "c", "b"},
 				IndexData{
-					[]Index{{0}, {1}, {2}, {3}},
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1688,7 +1790,12 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"a", "b", "c", "d"},
 				IndexData{
-					[]Index{{1}, {3}, {2}, {0}},
+					[]Index{
+						{1, []interface{}{1}},
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{0, []interface{}{0}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1697,7 +1804,12 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"b", "c", "a", "d"},
 				IndexData{
-					[]Index{{3}, {2}, {1}, {0}},
+					[]Index{
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{1, []interface{}{1}},
+						{0, []interface{}{0}},
+					},
 					[]string{""},
 				},
 				"col1",
@@ -1707,7 +1819,14 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"Alice", "Michael", "William", "Gina", "Emily", "Chris"},
 				IndexData{
-					[]Index{{"Female", 40}, {"Male", 19}, {"Male", 25}, {"Female", 16}, {"Female", 34}, {"Male", 50}},
+					[]Index{
+						{0, []interface{}{"Female", 40}},
+						{1, []interface{}{"Male", 19}},
+						{2, []interface{}{"Male", 25}},
+						{3, []interface{}{"Female", 16}},
+						{4, []interface{}{"Female", 34}},
+						{5, []interface{}{"Male", 50}},
+					},
 					[]string{"Sex", "Age"},
 				},
 				"col1",
@@ -1716,7 +1835,14 @@ func TestSeriesSortByIndex(t *testing.T) {
 			Series{
 				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
 				IndexData{
-					[]Index{{"Female", 16}, {"Female", 34}, {"Female", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
+					[]Index{
+						{0, []interface{}{"Female", 16}},
+						{1, []interface{}{"Female", 34}},
+						{2, []interface{}{"Female", 40}},
+						{3, []interface{}{"Male", 19}},
+						{4, []interface{}{"Male", 25}},
+						{5, []interface{}{"Male", 50}},
+					},
 					[]string{"Sex", "Age"},
 				},
 				"col1",
