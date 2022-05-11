@@ -1856,11 +1856,11 @@ func TestSeriesSortByIndex(t *testing.T) {
 				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
 				IndexData{
 					[]Index{
-						{0, []interface{}{"Female", 16}},
-						{1, []interface{}{"Female", 34}},
-						{2, []interface{}{"Female", 40}},
-						{3, []interface{}{"Male", 19}},
-						{4, []interface{}{"Male", 25}},
+						{3, []interface{}{"Female", 16}},
+						{4, []interface{}{"Female", 34}},
+						{0, []interface{}{"Female", 40}},
+						{1, []interface{}{"Male", 19}},
+						{2, []interface{}{"Male", 25}},
 						{5, []interface{}{"Male", 50}},
 					},
 					[]string{"Sex", "Age"},
