@@ -67,12 +67,12 @@ func (df *DataFrame) Tail(howMany int) {
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
-func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
+func (df DataFrame) LocRows(rows ...[]interface{}) (*DataFrame, error) {
 	filteredData := make([][]interface{}, 0)
 	filteredColname := make([]string, 0)
 	filteredIndex := IndexData{}
 	for _, series := range df.series {
-		located, err := series.Loc(rows)
+		located, err := series.Loc(rows...)
 		if err != nil {
 			return nil, err
 		}
@@ -90,41 +90,12 @@ func (df DataFrame) LocRows(rows []Index) (*DataFrame, error) {
 	// This is because NewDataFrame searches for index values in filtered2D,
 	// but if the columns in the dataframe does not match filteredIndex.names,
 	// there would be no matching columns, thus returning empty indexes.
-	copy(dataframe.index.index, rows)
-
-	for _, ser := range dataframe.series {
-		copy(ser.index.index, rows)
+	dataframe.index = filteredIndex
+	for i := range dataframe.series {
+		dataframe.series[i].index = filteredIndex
 	}
 
 	return dataframe, nil
-
-	// locations := make([]int, 0)
-
-	// for _, row := range rows {
-	// 	for _, index := range df.index {
-	// 		for i, value := range index {
-	// 			if row == value {
-	// 				locations = append(locations, i)
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// filteredCols := make([][]interface{}, 0)
-	// for _, series := range df.series {
-	// 	filteredCol := make([]interface{}, 0)
-	// 	for _, location := range locations {
-	// 		filteredCol = append(filteredCol, series.data[location])
-	// 	}
-	// 	filteredCols = append(filteredCols, filteredCol)
-	// }
-
-	// dataframe, err := NewDataFrame(filteredCols, df.columns, df.indexCols)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// return dataframe, nil
 }
 
 // LocRows returns a set of columns as a new DataFrame object, given a list of labels.
@@ -158,13 +129,13 @@ func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
 }
 
 // Loc indexes the DataFrame object given a slice of row and column labels.
-func (df DataFrame) Loc(rows []Index, cols []string) (*DataFrame, error) {
+func (df DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, error) {
 	df1, err := df.LocCols(cols)
 	if err != nil {
 		return nil, err
 	}
 
-	df2, err := df1.LocRows(rows)
+	df2, err := df1.LocRows(rows...)
 	if err != nil {
 		return nil, err
 	}
