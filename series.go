@@ -80,16 +80,16 @@ func (s *Series) Tail(howMany int) {
 
 // At() returns an element at a given index.
 // For multiindex, you need to pass in the whole index tuple.
-func (s Series) At(ind Index) (interface{}, error) {
+func (s Series) At(ind ...interface{}) (interface{}, error) {
 	for i, index := range s.index.index {
-		isSame := true
+		matchExists := false
 		for j := 0; j < len(index.value); j++ {
-			if index.value[j] != ind.value[j] {
-				isSame = false
+			if index.value[j] == ind[j] {
+				matchExists = true
 				break
 			}
 		}
-		if isSame {
+		if matchExists {
 			return s.data[i], nil
 		}
 	}
@@ -108,12 +108,12 @@ func (s Series) IAt(ind int) (interface{}, error) {
 }
 
 // Loc() returns a range of data at given rows.
-func (s Series) Loc(ind []Index) (*Series, error) {
+func (s Series) Loc(ind ...[]interface{}) (*Series, error) {
 	// This makes sure that each index passed are the same length.
-	indexLength := len(ind[0].value)
+	indexLength := len(ind[0])
 	for i, eachIndex := range ind {
-		if indexLength != len(eachIndex.value) {
-			return nil, fmt.Errorf("index length does not match: %v, %v", ind[i-1].value, eachIndex.value)
+		if indexLength != len(eachIndex) {
+			return nil, fmt.Errorf("index length does not match: %v, %v", ind[i-1], eachIndex)
 		}
 	}
 
@@ -127,7 +127,7 @@ func (s Series) Loc(ind []Index) (*Series, error) {
 		for j, seriesIndex := range s.index.index {
 			isSame := true
 			for k := 0; k < indexLength; k++ {
-				if inputIndex.value[k] != seriesIndex.value[k] {
+				if inputIndex[k] != seriesIndex.value[k] {
 					isSame = false
 					break
 				}
