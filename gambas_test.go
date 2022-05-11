@@ -55,7 +55,7 @@ func TestCreateRangeIndex(t *testing.T) {
 
 	for _, test := range createRangeIndexTests {
 		output := CreateRangeIndex(test.arg1)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(IndexData{})) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(IndexData{}, Index{})) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
@@ -131,7 +131,7 @@ func TestNewSeries(t *testing.T) {
 
 	for _, test := range newSeriesTests {
 		output, err := NewSeries(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -226,7 +226,7 @@ func TestNewDataFrame(t *testing.T) {
 
 	for _, test := range newDataFrameTests {
 		output, err := NewDataFrame(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}

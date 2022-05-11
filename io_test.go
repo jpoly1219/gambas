@@ -598,7 +598,7 @@ func TestReadCsv(t *testing.T) {
 
 	for _, test := range readCsvTests {
 		output, err := ReadCsv(test.arg1, test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}), cmpopts.IgnoreTypes(0.0)) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.IgnoreTypes(0.0)) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}

@@ -171,7 +171,7 @@ func TestSeriesTail(t *testing.T) {
 func TestSeriesAt(t *testing.T) {
 	type atTest struct {
 		arg1     Series
-		arg2     Index
+		arg2     []interface{}
 		expected interface{}
 	}
 	atTests := []atTest{
@@ -188,7 +188,7 @@ func TestSeriesAt(t *testing.T) {
 				},
 				"People",
 			},
-			Index{0, []interface{}{0}},
+			[]interface{}{0},
 			"alice",
 		},
 		{
@@ -204,13 +204,13 @@ func TestSeriesAt(t *testing.T) {
 				},
 				"Fruit",
 			},
-			Index{0, []interface{}{"b"}},
+			[]interface{}{"b"},
 			"banana",
 		},
 	}
 
 	for _, test := range atTests {
-		output, err := test.arg1.At(test.arg2)
+		output, err := test.arg1.At(test.arg2...)
 		if output != test.expected || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
@@ -268,7 +268,7 @@ func TestSeriesIAt(t *testing.T) {
 func TestSeriesLoc(t *testing.T) {
 	type locTest struct {
 		arg1          Series
-		arg2          []Index
+		arg2          [][]interface{}
 		expected      *Series
 		expectedError error
 	}
@@ -286,7 +286,7 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
-			[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}},
+			[][]interface{}{{0}, {1}},
 			&Series{
 				[]interface{}{"alice", "bob"},
 				IndexData{
@@ -313,7 +313,7 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"Fruit",
 			},
-			[]Index{{0, []interface{}{"b"}}, {1, []interface{}{"c"}}},
+			[][]interface{}{{"b"}, {"c"}},
 			&Series{
 				[]interface{}{"banana", "cherry"},
 				IndexData{
@@ -342,13 +342,13 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
-			[]Index{{0, []interface{}{"female"}}},
+			[][]interface{}{{"female"}},
 			&Series{
 				[]interface{}{"clara", "anna"},
 				IndexData{
 					[]Index{
 						{0, []interface{}{"female", "basketball"}},
-						{1, []interface{}{"male", "volleyball"}},
+						{3, []interface{}{"female", "volleyball"}},
 					},
 					[]string{"sex", "sports"},
 				},
@@ -371,7 +371,7 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
-			[]Index{{0, []interface{}{"male", "volleyball"}}},
+			[][]interface{}{{"male", "volleyball"}},
 			&Series{
 				[]interface{}{"brian"},
 				IndexData{
@@ -397,7 +397,7 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
-			[]Index{{0, []interface{}{"volleyball"}}},
+			[][]interface{}{{"male"}, {"volleyball"}},
 			nil,
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
@@ -416,7 +416,26 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
-			[]Index{{0, []interface{}{"female"}}, {1, []interface{}{"male"}}},
+			[][]interface{}{{"volleyball"}},
+			nil,
+			fmt.Errorf("no data found for index [volleyball]"),
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"female"}, {"male"}},
 			&Series{
 				[]interface{}{"clara", "anna", "brian", "dorian", "michael"},
 				IndexData{
@@ -448,15 +467,15 @@ func TestSeriesLoc(t *testing.T) {
 				},
 				"People",
 			},
-			[]Index{{0, []interface{}{"female"}}, {1, []interface{}{"volleyball"}}},
+			[][]interface{}{{"female"}, {"volleyball"}},
 			nil,
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
 	}
 
 	for _, test := range locTests {
-		output, err := test.arg1.Loc(test.arg2)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+		output, err := test.arg1.Loc(test.arg2...)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1524,7 +1543,7 @@ func TestValueCounts(t *testing.T) {
 	}
 	for _, test := range valueCountsTests {
 		output, err := test.arg1.ValueCounts()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1603,7 +1622,7 @@ func TestSeriesRenameCol(t *testing.T) {
 
 	for _, test := range renameColTests {
 		test.arg1.RenameCol(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) {
 			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
 		}
 	}
@@ -1712,7 +1731,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 
 	for _, test := range renameIndexTests {
 		err := test.arg1.RenameIndex(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || err != nil {
 			if fmt.Sprint(err)[:21] == "index does not exist:" {
 				continue
 			}
@@ -1870,7 +1889,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 	}
 	for _, test := range sortByIndexTests {
 		test.arg1.SortByIndex(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{})) {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) {
 			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
 		}
 	}

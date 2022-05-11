@@ -93,7 +93,7 @@ func TestDataFrameTail(t *testing.T) {
 func TestDataFrameLocRows(t *testing.T) {
 	type dataframeLocRowsTest struct {
 		arg1     DataFrame
-		arg2     []Index
+		arg2     [][]interface{}
 		expected *DataFrame
 	}
 	dataframeLocRowsTests := []dataframeLocRowsTest{
@@ -105,7 +105,7 @@ func TestDataFrameLocRows(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
-			[]Index{{0, []interface{}{"Avery"}}},
+			[][]interface{}{{"Avery"}},
 			&DataFrame{
 				[]Series{
 					{
@@ -143,8 +143,8 @@ func TestDataFrameLocRows(t *testing.T) {
 	}
 
 	for _, test := range dataframeLocRowsTests {
-		output, err := test.arg1.LocRows(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		output, err := test.arg1.LocRows(test.arg2...)
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -187,7 +187,7 @@ func TestDataFrameLocCols(t *testing.T) {
 	}
 	for _, test := range dataframeLocColsTests {
 		output, err := test.arg1.LocCols(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -196,8 +196,8 @@ func TestDataFrameLocCols(t *testing.T) {
 func TestDataFrameLoc(t *testing.T) {
 	type dataframeLocTest struct {
 		arg1     DataFrame
-		arg2     []Index
-		arg3     []string
+		arg2     []string
+		arg3     [][]interface{}
 		expected *DataFrame
 	}
 	dataframeLocTests := []dataframeLocTest{
@@ -209,8 +209,8 @@ func TestDataFrameLoc(t *testing.T) {
 				}
 				return *newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
-			[]Index{{1, []interface{}{"Bradley"}}},
 			[]string{"Age"},
+			[][]interface{}{{"Bradley"}},
 			&DataFrame{
 				[]Series{
 					{
@@ -231,8 +231,8 @@ func TestDataFrameLoc(t *testing.T) {
 		},
 	}
 	for _, test := range dataframeLocTests {
-		output, err := test.arg1.Loc(test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		output, err := test.arg1.Loc(test.arg2, test.arg3...)
+		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -306,7 +306,7 @@ func TestColAdd(t *testing.T) {
 	}
 	for _, test := range colAddTests {
 		output, err := test.arg1.ColAdd(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -380,7 +380,7 @@ func TestColSub(t *testing.T) {
 	}
 	for _, test := range colSubTests {
 		output, err := test.arg1.ColSub(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -454,7 +454,7 @@ func TestColMul(t *testing.T) {
 	}
 	for _, test := range colMulTests {
 		output, err := test.arg1.ColMul(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -528,7 +528,7 @@ func TestColDiv(t *testing.T) {
 	}
 	for _, test := range colDivTests {
 		output, err := test.arg1.ColDiv(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -602,7 +602,7 @@ func TestColMod(t *testing.T) {
 	}
 	for _, test := range colModTests {
 		output, err := test.arg1.ColMod(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -676,7 +676,7 @@ func TestColGt(t *testing.T) {
 	}
 	for _, test := range colGtTests {
 		output, err := test.arg1.ColGt(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -750,7 +750,7 @@ func TestColLt(t *testing.T) {
 	}
 	for _, test := range colLtTests {
 		output, err := test.arg1.ColLt(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -824,7 +824,7 @@ func TestColEq(t *testing.T) {
 	}
 	for _, test := range colEqTests {
 		output, err := test.arg1.ColEq(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -945,7 +945,7 @@ func TestNewCol(t *testing.T) {
 	}
 	for _, test := range newColTests {
 		output, err := test.arg1.NewCol(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1030,7 +1030,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 
 	for _, test := range renameColTests {
 		err := test.arg1.RenameCol(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			if fmt.Sprint(err)[:22] == "column does not exist:" || fmt.Sprint(err)[:21] == "index does not exist:" {
 				continue
 			}
@@ -1086,7 +1086,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 		err := test.arg1.SortByIndex(test.arg2)
 		test.arg1.Print()
 		fmt.Println("----------")
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}
 	}
@@ -1137,7 +1137,7 @@ func TestDropNaN(t *testing.T) {
 
 	for _, test := range dropNaNTests {
 		err := test.arg1.DropNaN(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{})) || err != nil {
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}
 	}
