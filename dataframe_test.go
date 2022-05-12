@@ -1055,13 +1055,39 @@ func TestDataFrameSortByIndex(t *testing.T) {
 				return *newDf
 			}([][]interface{}{{"Bradley", "Candice", "Avery"}, {27.0, 22.0, 19.0}, {"Male", "Female", "Male"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			true,
-			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
-				newDf, err := NewDataFrame(data, columns, indexCols)
-				if err != nil {
-					t.Error(err)
-				}
-				return *newDf
-			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradley", "Candice"},
+						IndexData{
+							[]Index{{2, []interface{}{"Avery"}}, {0, []interface{}{"Bradley"}}, {1, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{19.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{2, []interface{}{"Avery"}}, {0, []interface{}{"Bradley"}}, {1, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						IndexData{
+							[]Index{{2, []interface{}{"Avery"}}, {0, []interface{}{"Bradley"}}, {1, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Sex",
+					},
+				},
+				IndexData{
+					[]Index{{2, []interface{}{"Avery"}}, {0, []interface{}{"Bradley"}}, {1, []interface{}{"Candice"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
 		},
 		// {
 		// 	func() DataFrame {
@@ -1108,13 +1134,87 @@ func TestDropNaN(t *testing.T) {
 				return *newDf
 			}(),
 			0,
-			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/testdropnan1after.csv", []string{"Name"})
-				if err != nil {
-					t.Error(err)
-				}
-				return *newDf
-			}(),
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "R.J. Hunter"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{0.0, 99.0, 28.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"PG", "SF", "SG"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0, 22.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-2", "6-6", "6-5"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{180.0, 235.0, 185.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", "Georgia State"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{7730337.0, 6796117.0, 1148640.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {3, []interface{}{"R.J. Hunter"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
 		},
 		{
 			func() DataFrame {
@@ -1125,13 +1225,79 @@ func TestDropNaN(t *testing.T) {
 				return *newDf
 			}(),
 			1,
-			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/testdropnan2after.csv", []string{"Name"})
-				if err != nil {
-					t.Error(err)
-				}
-				return *newDf
-			}(),
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{"PG", "SF", "SG", "SG"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{180.0, 235.0, 205.0, 185.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{7730337.0, 6796117.0, 5000000.0, 1148640.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+							[]string{"Name"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"Avery Bradley"}}, {1, []interface{}{"Jae Crowder"}}, {2, []interface{}{"John Holland"}}, {3, []interface{}{"R.J. Hunter"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Team", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
 		},
 	}
 
