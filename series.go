@@ -14,6 +14,22 @@ type Series struct {
 	name  string
 }
 
+func (s Series) Len() int {
+	return len(s.data)
+}
+
+func (s Series) Less(i, j int) bool {
+	if fmt.Sprint(s.data[i]) == "NaN" || fmt.Sprint(s.data[j]) == "NaN" {
+		return false
+	}
+
+	return fmt.Sprint(s.data[i]) < fmt.Sprint(s.data[j])
+}
+
+func (s Series) Swap(i, j int) {
+	s.data[i], s.data[j] = s.data[j], s.data[i]
+}
+
 // Print prints all data in a Series object.
 func (s *Series) Print() {
 	w := new(tabwriter.Writer)
@@ -501,6 +517,29 @@ func (s *Series) SortByIndex(ascending bool) error {
 			return err
 		}
 		s.data[i] = indDatMap[*key]
+	}
+
+	return nil
+}
+
+func (s *Series) SortByValues(ascending bool) error {
+	rowMap := make(map[interface{}]Index, 0)
+	keyStore := make(sort.StringSlice, 0)
+	for i := range s.data {
+		keyStore = append(keyStore, fmt.Sprint(s.data[i], s.index.index[i].id))
+		rowMap[fmt.Sprint(s.data[i], s.index.index[i].id)] = s.index.index[i]
+	}
+
+	if ascending {
+		sort.Sort(s)
+		sort.Sort(keyStore)
+	} else {
+		sort.Sort(sort.Reverse(s))
+		sort.Sort(sort.Reverse(keyStore))
+	}
+
+	for i := range s.data {
+		s.index.index[i] = rowMap[keyStore[i]]
 	}
 
 	return nil
