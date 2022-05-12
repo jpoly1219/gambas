@@ -19,8 +19,12 @@ func (s Series) Len() int {
 }
 
 func (s Series) Less(i, j int) bool {
-	if fmt.Sprint(s.data[i]) == "NaN" || fmt.Sprint(s.data[j]) == "NaN" {
+	if fmt.Sprint(s.data[i]) == "NaN" {
 		return false
+	}
+
+	if fmt.Sprint(s.data[j]) == "NaN" {
+		return true
 	}
 
 	return fmt.Sprint(s.data[i]) < fmt.Sprint(s.data[j])
@@ -526,8 +530,14 @@ func (s *Series) SortByValues(ascending bool) error {
 	rowMap := make(map[interface{}]Index, 0)
 	keyStore := make(sort.StringSlice, 0)
 	for i := range s.data {
-		keyStore = append(keyStore, fmt.Sprint(s.data[i], s.index.index[i].id))
-		rowMap[fmt.Sprint(s.data[i], s.index.index[i].id)] = s.index.index[i]
+		var key string
+		if fmt.Sprint(s.data[i]) == "NaN" {
+			key = fmt.Sprint("~", s.data[i], s.index.index[i].id)
+		} else {
+			key = fmt.Sprint(s.data[i], s.index.index[i].id)
+		}
+		keyStore = append(keyStore, key)
+		rowMap[key] = s.index.index[i]
 	}
 
 	if ascending {
