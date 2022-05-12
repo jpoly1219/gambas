@@ -359,6 +359,9 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 	return nil
 }
 
+// Sorting functions
+
+// SortByIndex sorts the items by index.
 func (df *DataFrame) SortByIndex(ascending bool) error {
 	if len(df.series) > 0 {
 		for i := range df.series {
