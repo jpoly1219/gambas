@@ -372,6 +372,24 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	return nil
 }
 
+func (df *DataFrame) SortByValues(by string, ascending bool) error {
+	var index IndexData
+	for i := range df.series {
+		if df.series[i].name == by {
+			df.series[i].SortByValues(ascending)
+			index = df.series[i].index
+			break
+		}
+	}
+
+	for i := range df.series {
+		df.series[i].SortByGivenIndex(index)
+	}
+
+	df.index = index
+	return nil
+}
+
 // func (df *DataFrame) SortByValues(by string, ascending bool) error {
 // 	// approach 1:
 // 	// create a map[index]value for each series
