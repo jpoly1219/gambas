@@ -1789,7 +1789,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					},
 					[]string{""},
 				},
-				"col1",
+				"col2",
 			},
 			true,
 			Series{
@@ -1803,7 +1803,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					},
 					[]string{""},
 				},
-				"col1",
+				"col2",
 			},
 		},
 		{
@@ -1818,7 +1818,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					},
 					[]string{""},
 				},
-				"col1",
+				"col3",
 			},
 			false,
 			Series{
@@ -1832,7 +1832,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					},
 					[]string{""},
 				},
-				"col1",
+				"col3",
 			},
 		},
 		{
@@ -1868,28 +1868,224 @@ func TestSeriesSortByIndex(t *testing.T) {
 				"col1",
 			},
 		},
-		// {
-		// 	Series{
-		// 		[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
-		// 		IndexData{
-		// 			[]Index{{"Female", math.NaN()}, {"Female", 34}, {"NaN", 40}, {"Male", 19}, {"Male", 25}, {"Male", 50}},
-		// 			[]string{"Sex", "Age"},
-		// 		},
-		// 		"col1",
-		// 	},
-		// 	true,
-		// 	Series{
-		// 		[]interface{}{"Emily", "Gina", "Michael", "William", "Chris", "Alice"},
-		// 		IndexData{
-		// 			[]Index{{"Female", 34}, {"Female", math.NaN()}, {"Male", 19}, {"Male", 25}, {"Male", 50}, {"NaN", 40}},
-		// 			[]string{"Sex", "Age"},
-		// 		},
-		// 		"col1",
-		// 	},
-		// },
+		{
+			Series{
+				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Female", math.NaN()}},
+						{1, []interface{}{"Female", 34}},
+						{2, []interface{}{"NaN", 40}},
+						{3, []interface{}{"Male", 19}},
+						{4, []interface{}{"Male", 25}},
+						{5, []interface{}{"Male", 50}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			true,
+			Series{
+				[]interface{}{"Emily", "Gina", "Michael", "William", "Chris", "Alice"},
+				IndexData{
+					[]Index{
+						{1, []interface{}{"Female", 34}},
+						{0, []interface{}{"Female", math.NaN()}},
+						{3, []interface{}{"Male", 19}},
+						{4, []interface{}{"Male", 25}},
+						{5, []interface{}{"Male", 50}},
+						{2, []interface{}{"NaN", 40}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Female", math.NaN()}},
+						{1, []interface{}{"Female", 34}},
+						{2, []interface{}{"NaN", 40}},
+						{3, []interface{}{"Male", 19}},
+						{4, []interface{}{"Male", 19}},
+						{5, []interface{}{"Male", 50}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			true,
+			Series{
+				[]interface{}{"Emily", "Gina", "Michael", "William", "Chris", "Alice"},
+				IndexData{
+					[]Index{
+						{1, []interface{}{"Female", 34}},
+						{0, []interface{}{"Female", math.NaN()}},
+						{3, []interface{}{"Male", 19}},
+						{4, []interface{}{"Male", 19}},
+						{5, []interface{}{"Male", 50}},
+						{2, []interface{}{"NaN", 40}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+		},
 	}
 	for _, test := range sortByIndexTests {
 		test.arg1.SortByIndex(test.arg2)
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) {
+			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
+		}
+	}
+}
+
+func TestSeriesSortByGivenIndex(t *testing.T) {
+	type sortByGivenIndexTest struct {
+		arg1     Series
+		arg2     IndexData
+		expected Series
+	}
+	sortByGivenIndexTests := []sortByGivenIndexTest{
+		{
+			Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{3, []interface{}{3}},
+					},
+					[]string{""},
+				},
+				"col1",
+			},
+			IndexData{
+				[]Index{{0, []interface{}{0}}, {3, []interface{}{3}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+				[]string{""},
+			},
+			Series{
+				[]interface{}{"a", "d", "b", "c"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{3, []interface{}{3}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
+					[]string{""},
+				},
+				"col1",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{
+						{1, []interface{}{1}},
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{0, []interface{}{0}},
+					},
+					[]string{""},
+				},
+				"col1",
+			},
+			IndexData{
+				[]Index{{1, []interface{}{1}}, {3, []interface{}{3}}, {2, []interface{}{2}}, {0, []interface{}{0}}},
+				[]string{""},
+			},
+			Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{
+						{1, []interface{}{1}},
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{0, []interface{}{0}},
+					},
+					[]string{""},
+				},
+				"col1",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"a", "b", "c", "d"},
+				IndexData{
+					[]Index{
+						{1, []interface{}{1}},
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{0, []interface{}{0}},
+					},
+					[]string{""},
+				},
+				"col1",
+			},
+			IndexData{
+				[]Index{{3, []interface{}{3}}, {2, []interface{}{2}}, {1, []interface{}{1}}, {0, []interface{}{0}}},
+				[]string{""},
+			},
+			Series{
+				[]interface{}{"b", "c", "a", "d"},
+				IndexData{
+					[]Index{
+						{3, []interface{}{3}},
+						{2, []interface{}{2}},
+						{1, []interface{}{1}},
+						{0, []interface{}{0}},
+					},
+					[]string{""},
+				},
+				"col1",
+			},
+		},
+		{
+			Series{
+				[]interface{}{"Alice", "Michael", "William", "Gina", "Emily", "Chris"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Female", 40}},
+						{1, []interface{}{"Male", 19}},
+						{2, []interface{}{"Male", 25}},
+						{3, []interface{}{"Female", 16}},
+						{4, []interface{}{"Female", 34}},
+						{5, []interface{}{"Male", 50}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			IndexData{
+				[]Index{{3, []interface{}{"Female", 16}}, {4, []interface{}{"Female", 34}}, {0, []interface{}{"Female", 40}}, {1, []interface{}{"Male", 19}}, {2, []interface{}{"Male", 25}}, {5, []interface{}{"Male", 50}}},
+				[]string{"Sex", "Age"},
+			},
+			Series{
+				[]interface{}{"Gina", "Emily", "Alice", "Michael", "William", "Chris"},
+				IndexData{
+					[]Index{
+						{3, []interface{}{"Female", 16}},
+						{4, []interface{}{"Female", 34}},
+						{0, []interface{}{"Female", 40}},
+						{1, []interface{}{"Male", 19}},
+						{2, []interface{}{"Male", 25}},
+						{5, []interface{}{"Male", 50}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+		},
+	}
+
+	for _, test := range sortByGivenIndexTests {
+		test.arg1.SortByGivenIndex(test.arg2)
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) {
 			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
 		}
