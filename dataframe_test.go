@@ -1118,6 +1118,71 @@ func TestDataFrameSortByIndex(t *testing.T) {
 	}
 }
 
+func TestDataFrameSortByValues(t *testing.T) {
+	type sortByValuesTest struct {
+		arg1     DataFrame
+		arg2     string
+		arg3     bool
+		expected DataFrame
+	}
+	sortByValuesTests := []sortByValuesTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Bradley", "Candice", "Avery"}, {27.0, 22.0, 19.0}, {"Male", "Female", "Male"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			"Age",
+			true,
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Candice", "Bradley"},
+						IndexData{
+							[]Index{{2, []interface{}{"Avery"}}, {1, []interface{}{"Candice"}}, {0, []interface{}{"Bradley"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{19.0, 22.0, 27.0},
+						IndexData{
+							[]Index{{2, []interface{}{"Avery"}}, {1, []interface{}{"Candice"}}, {0, []interface{}{"Bradley"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Female", "Male"},
+						IndexData{
+							[]Index{{2, []interface{}{"Avery"}}, {1, []interface{}{"Candice"}}, {0, []interface{}{"Bradley"}}},
+							[]string{"Name"},
+						},
+						"Sex",
+					},
+				},
+				IndexData{
+					[]Index{{2, []interface{}{"Avery"}}, {1, []interface{}{"Candice"}}, {0, []interface{}{"Bradley"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+	}
+
+	for _, test := range sortByValuesTests {
+		test.arg1.Print()
+		err := test.arg1.SortByValues(test.arg2, test.arg3)
+		test.arg1.Print()
+		fmt.Println("----------")
+		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		}
+	}
+}
+
 func TestDropNaN(t *testing.T) {
 	type dropNaNTest struct {
 		arg1     DataFrame
