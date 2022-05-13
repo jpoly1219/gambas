@@ -526,6 +526,29 @@ func (s *Series) SortByIndex(ascending bool) error {
 	return nil
 }
 
+func (s *Series) SortByGivenIndex(index IndexData) error {
+	rowMap := make(map[string]interface{}, 0)
+	for i, data := range s.data {
+		key, err := s.index.index[i].hashKey()
+		if err != nil {
+			return err
+		}
+		rowMap[*key] = data
+	}
+
+	s.index = index
+
+	for i, index := range s.index.index {
+		key, err := index.hashKey()
+		if err != nil {
+			return err
+		}
+		s.data[i] = rowMap[*key]
+	}
+
+	return nil
+}
+
 func (s *Series) SortByValues(ascending bool) error {
 	rowMap := make(map[interface{}]Index, 0)
 	keyStore := make(sort.StringSlice, 0)
