@@ -1,13 +1,15 @@
 # gambas
 ---
 
-**gambas** is a data analysis library for Go, inspired by the famous Python library **pandas**. It provides an intuitive way to malipulate tabular data.
+**gambas** is a data analysis package for Go, inspired by the famous Python library **pandas**. It provides an intuitive way to malipulate tabular data.
 
-gambas was created to serve the needs of Go developers. I thought it would be cool and helpful to have a data analysis library that is easy to use.
+gambas was created to serve the needs of Go developers. We can all agree that pandas is an amazing tool, and can be considered the industry standard when it comes to data analysis. However, some of us may not enjoy using Python very much. Go is a very attractive language with a very loyal userbase (including me!). You might be a Gopher, but you also might love the features Python provides. You may have jumped ship and used Go for some time now, but you also might miss some of the libraries you used when you were using Python 
+
+gambas aims to scratch that itch. You will be able to tap into the superpowers of pandas while using your favorite language Go. Gophers cannot into data analysis? No, of course we can! Hope you enjoy using this package.
 
 ### MVP Goals
 ---
-- Provide basic features, from the pandas tutorial.
+- Provide basic features from the pandas tutorial.
   - [x] Providing `Series` and `DataFrame` data types
   - [ ] Reading and writing tabular data
     - [x] Reading CSV files
@@ -46,3 +48,5 @@ gambas was created to serve the needs of Go developers. I thought it would be co
     - [ ] ToDatetime
   - [ ] Manipulating textual data
   - [x] Multiindex
+
+- Extensive, easy to follow documentation
