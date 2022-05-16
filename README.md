@@ -13,7 +13,7 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
   - [x] Providing `Series` and `DataFrame` data types
   - [ ] Reading and writing tabular data
     - [x] Reading CSV files
-    - [ ] Writing to CSV files
+    - [x] Writing to CSV files
     - [ ] Reading Excel files
     - [ ] Writing to Excel files
     - [ ] Reading JSON files
@@ -22,9 +22,9 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] At, IAt
     - [x] Loc, ILoc
   - [ ] Plotting
-  - [ ] Creating new columns derived from existing columns
+  - [x] Creating new columns derived from existing columns
     - [x] Creating new columns
-    - [ ] Applying operations to the new column
+    - [x] Applying operations to the new column
     - [x] Renaming columns
   - [x] Calculating summary statistics
     - [x] Mean, median, standard deviation
