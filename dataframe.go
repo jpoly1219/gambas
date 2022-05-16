@@ -298,9 +298,8 @@ func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 	return nil, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// NewCol() creates a new column with the given data and column name.
+// NewCol creates a new column with the given data and column name.
 // To create a blank column, pass in a slice with zero values.
-// Use this in conjunction with operators, like this: df.NewCol().ColAdd()
 func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, error) {
 	newSeries, err := NewSeries(data, colname, &df.index)
 	if err != nil {
@@ -311,6 +310,22 @@ func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, err
 	df.columns = append(df.columns, colname)
 
 	return df, nil
+}
+
+// NewDerivedCol creates a new column derived from an existing column.
+// It copies over the data from a column named srcCol into a new column.
+// You can then apply column operations such as ColAdd to the new column.
+func (df *DataFrame) NewDerivedCol(colname, srcCol string) (*DataFrame, error) {
+	for i := range df.series {
+		if df.series[i].name == srcCol {
+			dataframe, err := df.NewCol(colname, df.series[i].data)
+			if err != nil {
+				return nil, err
+			}
+			return dataframe, nil
+		}
+	}
+	return nil, fmt.Errorf("the column doesn't exist: %s", srcCol)
 }
 
 // RenameCol renames columns in a DataFrame.
