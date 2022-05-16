@@ -951,6 +951,87 @@ func TestNewCol(t *testing.T) {
 	}
 }
 
+func TestNewDerivedCol(t *testing.T) {
+	type newDerivedColTest struct {
+		arg1     *DataFrame
+		arg2     string
+		arg3     string
+		expected *DataFrame
+	}
+	newDerivedColTests := []newDerivedColTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			"NewAge",
+			"Age",
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradley", "Candice"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{19.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Sex",
+					},
+					{
+						[]interface{}{19.0, 27.0, 22.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"NewAge",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex", "NewAge"},
+			},
+		},
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			"NewCol",
+			"Doesn't Exist",
+			nil,
+		},
+	}
+	for _, test := range newDerivedColTests {
+		output, err := test.arg1.NewDerivedCol(test.arg2, test.arg3)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
 func TestDataFrameRenameCol(t *testing.T) {
 	type renameColTest struct {
 		arg1     DataFrame
