@@ -461,3 +461,61 @@ func (df *DataFrame) DropNaN(axis int) error {
 
 	return nil
 }
+
+// Pivot returns an organized dataframe that has values corresponding to the index and the given column.
+func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
+	// check if index contains duplicate entires.
+	// for the same index, if column has a value that is repeated, then raise an error.
+
+	// loc each individual values, then concat them.
+	filteredDf, err := df.LocCols([]string{column, value})
+	if err != nil {
+		return nil, err
+	}
+
+	// map[col]map[index]data
+	dataMap := make(map[string]map[string]interface{}, 0)
+
+	for i, index := range filteredDf.index.index {
+		innerMap := make(map[string]interface{}, 0)
+		innerKey, err := index.hashKey()
+		if err != nil {
+			return nil, err
+		}
+
+		innerMap[*innerKey] = filteredDf.series[1].data[i]
+
+		outerKey := fmt.Sprint(filteredDf.series[0].data[i])
+		dataMap[outerKey] = innerMap
+	}
+
+	// newDf prep
+	newDfData := make([][]interface{}, 0)
+	newDfColumns := make([]string, 0)
+
+	for _, col := range filteredDf.series[0].data {
+		newDfColumns = append(newDfColumns, fmt.Sprint(col))
+		eachColData := make([]interface{}, 0)
+		for _, index := range filteredDf.index.index {
+			innerKey, err := index.hashKey()
+			if err != nil {
+				return nil, err
+			}
+
+			val, exists := dataMap[fmt.Sprint(col)][*innerKey]
+			if !exists {
+				eachColData = append(eachColData, math.NaN())
+			} else {
+				eachColData = append(eachColData, val)
+			}
+		}
+		newDfData = append(newDfData, eachColData)
+	}
+
+	newDf, err := NewDataFrame(newDfData, newDfColumns, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return newDf, nil
+}
