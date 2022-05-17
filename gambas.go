@@ -57,29 +57,34 @@ func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*
 	var df DataFrame
 	df.series = make([]Series, len(data))
 	df.index = IndexData{}
-	df.index.names = indexCols
 	df.columns = columns
 
 	// create df.index
 	// find location of index column
-	indexColsIndex := make([]int, 0)
-	for i, col := range columns {
-		for _, indexCol := range indexCols {
-			if col == indexCol {
-				indexColsIndex = append(indexColsIndex, i)
+	if indexCols == nil {
+		df.index = CreateRangeIndex(len(data[0]))
+	} else {
+		df.index.names = indexCols
+		indexColsIndex := make([]int, 0)
+
+		for i, col := range columns {
+			for _, indexCol := range indexCols {
+				if col == indexCol {
+					indexColsIndex = append(indexColsIndex, i)
+				}
 			}
 		}
-	}
 
-	for i := 0; i < len(data[0]); i++ {
-		indexTuple := Index{}
+		for i := 0; i < len(data[0]); i++ {
+			indexTuple := Index{}
 
-		for _, location := range indexColsIndex {
-			indexTuple.id = i
-			indexTuple.value = append(indexTuple.value, data[location][i])
+			for _, location := range indexColsIndex {
+				indexTuple.id = i
+				indexTuple.value = append(indexTuple.value, data[location][i])
+			}
+
+			df.index.index = append(df.index.index, indexTuple)
 		}
-
-		df.index.index = append(df.index.index, indexTuple)
 	}
 
 	for i, v := range data {
