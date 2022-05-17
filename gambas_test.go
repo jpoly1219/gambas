@@ -222,6 +222,44 @@ func TestNewDataFrame(t *testing.T) {
 				[]string{"group a", "group b", "group c"},
 			},
 		},
+		{
+			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
+			[]string{"group a", "group b", "group c"},
+			nil,
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{1, 2, 3},
+						IndexData{
+							[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+							[]string{""},
+						},
+						"group a",
+					},
+					{
+						[]interface{}{4, 5, 6},
+						IndexData{
+							[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+							[]string{""},
+						},
+						"group b",
+					},
+					{
+						[]interface{}{7, 8, 9},
+						IndexData{
+							[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+							[]string{""},
+						},
+						"group c",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+					[]string{""},
+				},
+				[]string{"group a", "group b", "group c"},
+			},
+		},
 	}
 
 	for _, test := range newDataFrameTests {
