@@ -2,9 +2,11 @@ package gambas
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestDataFramePrint(t *testing.T) {
@@ -1451,6 +1453,60 @@ func TestDropNaN(t *testing.T) {
 		err := test.arg1.DropNaN(test.arg2)
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
+		}
+	}
+}
+
+func TestPivot(t *testing.T) {
+	type pivotTest struct {
+		arg1     DataFrame
+		arg2     string
+		arg3     string
+		expected *DataFrame
+	}
+	pivotTests := []pivotTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/pivottest1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			"Sex",
+			"Height",
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{172.0, 180.0, math.NaN()},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Male",
+					},
+					{
+						[]interface{}{math.NaN(), math.NaN(), 165.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+							[]string{"Name"},
+						},
+						"Female",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
+					[]string{"Name"},
+				},
+				[]string{"Male", "Female"},
+			},
+		},
+	}
+
+	for _, test := range pivotTests {
+		output, err := test.arg1.Pivot(test.arg2, test.arg3)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
 }
