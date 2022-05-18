@@ -474,47 +474,99 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 	}
 
 	// map[col]map[index]data
-	dataMap := make(map[string]map[string]interface{}, 0)
-
-	for i, index := range filteredDf.index.index {
-		innerMap := make(map[string]interface{}, 0)
-		innerKey, err := index.hashKey()
-		if err != nil {
-			return nil, err
-		}
-
-		innerMap[*innerKey] = filteredDf.series[1].data[i]
-
-		outerKey := fmt.Sprint(filteredDf.series[0].data[i])
-		dataMap[outerKey] = innerMap
+	type dataMap struct {
+		column        string
+		indexValueMap map[string]interface{}
 	}
 
-	// newDf prep
 	newDfData := make([][]interface{}, 0)
 	newDfColumns := make([]string, 0)
+	dataMaps := make([]dataMap, 0)
 
-	for _, col := range filteredDf.series[0].data {
-		newDfColumns = append(newDfColumns, fmt.Sprint(col))
-		eachColData := make([]interface{}, 0)
-		for _, index := range filteredDf.index.index {
-			innerKey, err := index.hashKey()
-			if err != nil {
-				return nil, err
-			}
+	for _, data := range filteredDf.series[0].data {
+		if !containsString(newDfColumns, fmt.Sprint(data)) {
+			newDfColumns = append(newDfColumns, fmt.Sprint(data))
+			dm := dataMap{fmt.Sprint(data), map[string]interface{}{}}
+			dataMaps = append(dataMaps, dm)
+		}
+	}
 
-			val, exists := dataMap[fmt.Sprint(col)][*innerKey]
-			if !exists {
-				eachColData = append(eachColData, math.NaN())
-			} else {
-				eachColData = append(eachColData, val)
+	for i, index := range filteredDf.index.index {
+		colname := fmt.Sprint(filteredDf.series[0].data[i])
+		for _, dm := range dataMaps {
+			if dm.column == colname {
+				innerKey, err := index.hashKey()
+				if err != nil {
+					return nil, err
+				}
+
+				dm.indexValueMap[*innerKey] = filteredDf.series[1].data[i]
 			}
 		}
+	}
+
+	/*
+		dataMaps{
+			{
+				apple,
+				{12:00: red},
+			},
+			{
+				banana,
+				{12:00:yellow, 12:01:yellow},
+			},
+			{
+				cherry,
+				{12:01:red},
+			},
+		}
+	*/
+	// newDf prep
+	for _, col := range newDfColumns {
+		eachColData := make([]interface{}, 0)
+		for _, dm := range dataMaps {
+			if dm.column == col {
+				for _, index := range filteredDf.index.index {
+					innerKey, err := index.hashKey()
+					if err != nil {
+						return nil, err
+					}
+
+					val, exists := dm.indexValueMap[*innerKey]
+					if !exists {
+						eachColData = append(eachColData, math.NaN())
+					} else {
+						eachColData = append(eachColData, val)
+					}
+				}
+			}
+		}
+
+		// for _, index := range filteredDf.index.index {
+		// 	innerKey, err := index.hashKey()
+		// 	if err != nil {
+		// 		return nil, err
+		// 	}
+
+		// 	val, exists := dataMap[fmt.Sprint(col)][*innerKey]
+		// 	if !exists {
+		// 		eachColData = append(eachColData, math.NaN())
+		// 	} else {
+		// 		eachColData = append(eachColData, val)
+		// 	}
+		// }
 		newDfData = append(newDfData, eachColData)
 	}
 
 	newDf, err := NewDataFrame(newDfData, newDfColumns, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	copy(newDf.index.index, filteredDf.index.index)
+	newDf.index = filteredDf.index
+	for i := range newDf.series {
+		newDf.series[i].index = newDf.index
 	}
 
 	return newDf, nil
