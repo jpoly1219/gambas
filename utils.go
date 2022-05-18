@@ -123,6 +123,16 @@ func interface2StringSlice(data []interface{}) ([]string, error) {
 	return sd, nil
 }
 
+// containsString checks whether a string exists in a slice of strings.
+func containsString(strSlice []string, str string) bool {
+	for _, data := range strSlice {
+		if data == str {
+			return true
+		}
+	}
+	return false
+}
+
 // Summary statistics functions (internal use only)
 
 // median() returns the median of the elements in an array.
