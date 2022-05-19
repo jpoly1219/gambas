@@ -146,6 +146,7 @@ func containsString(strSlice []string, str string) bool {
 	return false
 }
 
+// containsIndex checks whether an Index object exists in a slice of Index objects.
 func containsIndex(indexSlice []Index, index Index) bool {
 	for _, data := range indexSlice {
 		if equal(data.value, index.value) {
