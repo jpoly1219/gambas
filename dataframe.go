@@ -473,21 +473,26 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 		return nil, err
 	}
 
-	// map[col]map[index]data
 	type dataMap struct {
 		column        string
 		indexValueMap map[string]interface{}
 	}
+	dataMaps := make([]dataMap, 0)
 
 	newDfData := make([][]interface{}, 0)
 	newDfColumns := make([]string, 0)
-	dataMaps := make([]dataMap, 0)
+	newDfIndexIndex := make([]Index, 0)
+	newDfIndexNames := filteredDf.index.names
 
-	for _, data := range filteredDf.series[0].data {
+	for i, data := range filteredDf.series[0].data {
 		if !containsString(newDfColumns, fmt.Sprint(data)) {
 			newDfColumns = append(newDfColumns, fmt.Sprint(data))
 			dm := dataMap{fmt.Sprint(data), map[string]interface{}{}}
 			dataMaps = append(dataMaps, dm)
+		}
+		if !containsIndex(newDfIndexIndex, filteredDf.index.index[i]) {
+			newIndex := Index{len(newDfIndexIndex), filteredDf.index.index[i].value}
+			newDfIndexIndex = append(newDfIndexIndex, newIndex)
 		}
 	}
 
@@ -495,7 +500,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 		colname := fmt.Sprint(filteredDf.series[0].data[i])
 		for _, dm := range dataMaps {
 			if dm.column == colname {
-				innerKey, err := index.hashKey()
+				innerKey, err := index.hashKeyValueOnly()
 				if err != nil {
 					return nil, err
 				}
@@ -505,36 +510,27 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 		}
 	}
 
-	/*
-		dataMaps{
-			{
-				apple,
-				{12:00: red},
-			},
-			{
-				banana,
-				{12:00:yellow, 12:01:yellow},
-			},
-			{
-				cherry,
-				{12:01:red},
-			},
-		}
-	*/
-	// newDf prep
 	for _, col := range newDfColumns {
 		eachColData := make([]interface{}, 0)
 		for _, dm := range dataMaps {
 			if dm.column == col {
-				for _, index := range filteredDf.index.index {
-					innerKey, err := index.hashKey()
+				for _, index := range newDfIndexIndex {
+
+					innerKey, err := index.hashKeyValueOnly()
 					if err != nil {
 						return nil, err
 					}
 
 					val, exists := dm.indexValueMap[*innerKey]
 					if !exists {
-						eachColData = append(eachColData, math.NaN())
+						switch filteredDf.series[1].data[0].(type) {
+						case string:
+							eachColData = append(eachColData, "NaN")
+						case float64:
+							eachColData = append(eachColData, math.NaN())
+						case int:
+							eachColData = append(eachColData, math.NaN())
+						}
 					} else {
 						eachColData = append(eachColData, val)
 					}
@@ -542,19 +538,6 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 			}
 		}
 
-		// for _, index := range filteredDf.index.index {
-		// 	innerKey, err := index.hashKey()
-		// 	if err != nil {
-		// 		return nil, err
-		// 	}
-
-		// 	val, exists := dataMap[fmt.Sprint(col)][*innerKey]
-		// 	if !exists {
-		// 		eachColData = append(eachColData, math.NaN())
-		// 	} else {
-		// 		eachColData = append(eachColData, val)
-		// 	}
-		// }
 		newDfData = append(newDfData, eachColData)
 	}
 
@@ -563,8 +546,8 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 		return nil, err
 	}
 
-	copy(newDf.index.index, filteredDf.index.index)
-	newDf.index = filteredDf.index
+	newDfIndex := IndexData{newDfIndexIndex, newDfIndexNames}
+	newDf.index = newDfIndex
 	for i := range newDf.series {
 		newDf.series[i].index = newDf.index
 	}
