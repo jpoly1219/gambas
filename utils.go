@@ -123,10 +123,32 @@ func interface2StringSlice(data []interface{}) ([]string, error) {
 	return sd, nil
 }
 
+// equal checks whether two slices are equal.
+func equal(slice1, slice2 []interface{}) bool {
+	if len(slice1) != len(slice2) {
+		return false
+	}
+	for i, v := range slice1 {
+		if v != slice2[i] {
+			return false
+		}
+	}
+	return true
+}
+
 // containsString checks whether a string exists in a slice of strings.
 func containsString(strSlice []string, str string) bool {
 	for _, data := range strSlice {
 		if data == str {
+			return true
+		}
+	}
+	return false
+}
+
+func containsIndex(indexSlice []Index, index Index) bool {
+	for _, data := range indexSlice {
+		if equal(data.value, index.value) {
 			return true
 		}
 	}
