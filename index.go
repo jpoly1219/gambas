@@ -35,6 +35,24 @@ func (i Index) hashKey() (*string, error) {
 	return &resultHex, nil
 }
 
+func (i Index) hashKeyValueOnly() (*string, error) {
+	if len(i.value) == 0 {
+		return nil, fmt.Errorf("no index")
+	}
+
+	byteSlice := []byte{}
+
+	for _, val := range i.value {
+		byteSlice = append(byteSlice, []byte(fmt.Sprint(val))...)
+	}
+
+	h := sha512.Sum512(byteSlice)
+
+	resultHex := fmt.Sprintf("%x", h)
+
+	return &resultHex, nil
+}
+
 type IndexData struct {
 	index []Index
 	names []string
