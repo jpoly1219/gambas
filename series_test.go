@@ -2293,3 +2293,54 @@ func TestSeriesSortByValues(t *testing.T) {
 		}
 	}
 }
+
+func TestIndexHasDuplicateValues(t *testing.T) {
+	type indexHasDuplicateValuesTest struct {
+		arg1     Series
+		expected bool
+	}
+	indexHasDuplicateValuesTests := []indexHasDuplicateValuesTest{
+		{
+			Series{
+				[]interface{}{"Alice", "Michael", "William", "Gina", "Emily", "Chris"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Female", 40}},
+						{1, []interface{}{"Male", 19}},
+						{2, []interface{}{"Male", 25}},
+						{3, []interface{}{"Female", 16}},
+						{4, []interface{}{"Female", 34}},
+						{5, []interface{}{"Male", 50}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			false,
+		},
+		{
+			Series{
+				[]interface{}{"Alice", "Michael", "William", "Gina", "Emily", "Chris"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Female", 40}},
+						{1, []interface{}{"Male", 19}},
+						{2, []interface{}{"Male", 25}},
+						{3, []interface{}{"Female", 40}},
+						{4, []interface{}{"Female", 34}},
+						{5, []interface{}{"Male", 50}},
+					},
+					[]string{"Sex", "Age"},
+				},
+				"col1",
+			},
+			true,
+		},
+	}
+	for _, test := range indexHasDuplicateValuesTests {
+		output, err := test.arg1.IndexHasDuplicateValues()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (output != true && err != nil) {
+			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
+		}
+	}
+}
