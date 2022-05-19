@@ -1501,6 +1501,50 @@ func TestPivot(t *testing.T) {
 				[]string{"Male", "Female"},
 			},
 		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/pivottest2.csv", []string{"Time"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			"Fruit",
+			"Color",
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Red", "NaN"},
+						IndexData{
+							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
+							[]string{"Time"},
+						},
+						"Apple",
+					},
+					{
+						[]interface{}{"Yellow", "Yellow"},
+						IndexData{
+							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
+							[]string{"Time"},
+						},
+						"Banana",
+					},
+					{
+						[]interface{}{"NaN", "Red"},
+						IndexData{
+							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
+							[]string{"Time"},
+						},
+						"Cherry",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
+					[]string{"Time"},
+				},
+				[]string{"Apple", "Banana", "Cherry"},
+			},
+		},
 	}
 
 	for _, test := range pivotTests {
