@@ -577,3 +577,21 @@ func (s *Series) SortByValues(ascending bool) error {
 
 	return nil
 }
+
+func (s *Series) IndexHasDuplicateValues() (bool, error) {
+	indexDataMap := make(map[string]interface{}, 0)
+
+	for _, index := range s.index.index {
+		key, err := index.hashKeyValueOnly()
+		if err != nil {
+			return false, err
+		}
+		val, exists := indexDataMap[*key]
+		if !exists {
+			indexDataMap[*key] = val
+		} else {
+			return true, nil
+		}
+	}
+	return false, nil
+}
