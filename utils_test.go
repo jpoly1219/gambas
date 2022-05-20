@@ -172,7 +172,7 @@ func TestInterface2StringSlice(t *testing.T) {
 	}
 }
 
-func TestslicesAreEqual(t *testing.T) {
+func TestSlicesAreEqual(t *testing.T) {
 	type slicesAreEqualTest struct {
 		arg1     []interface{}
 		arg2     []interface{}
