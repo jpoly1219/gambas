@@ -123,8 +123,8 @@ func interface2StringSlice(data []interface{}) ([]string, error) {
 	return sd, nil
 }
 
-// equal checks whether two slices are equal.
-func equal(slice1, slice2 []interface{}) bool {
+// slicesAreEqual checks whether two slices are equal.
+func slicesAreEqual(slice1, slice2 []interface{}) bool {
 	if len(slice1) != len(slice2) {
 		return false
 	}
@@ -147,9 +147,21 @@ func containsString(strSlice []string, str string) bool {
 }
 
 // containsIndex checks whether an Index object exists in a slice of Index objects.
+// For a lenient comaprison that checks for values only, use containsIndexWithoutId.
 func containsIndex(indexSlice []Index, index Index) bool {
 	for _, data := range indexSlice {
-		if equal(data.value, index.value) {
+		if slicesAreEqual(data.value, index.value) && (data.id == index.id) {
+			return true
+		}
+	}
+	return false
+}
+
+// containsIndex checks whether an Index object exists in a slice of Index objects.
+// For a strict comaprison that checks for id as well, use containsIndex.
+func containsIndexWithoutId(indexSlice []Index, index Index) bool {
+	for _, data := range indexSlice {
+		if slicesAreEqual(data.value, index.value) {
 			return true
 		}
 	}
