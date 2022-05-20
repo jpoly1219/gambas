@@ -171,3 +171,155 @@ func TestInterface2StringSlice(t *testing.T) {
 		}
 	}
 }
+
+func TestslicesAreEqual(t *testing.T) {
+	type slicesAreEqualTest struct {
+		arg1     []interface{}
+		arg2     []interface{}
+		expected bool
+	}
+	slicesAreEqualTests := []slicesAreEqualTest{
+		{
+			[]interface{}{0, 1, 2, 3, 4},
+			[]interface{}{0, 1, 2, 3, 4},
+			true,
+		},
+		{
+			[]interface{}{"a", "b"},
+			[]interface{}{"a", "b", "c"},
+			false,
+		},
+		{
+			[]interface{}{true, true, false},
+			[]interface{}{true, false, false},
+			false,
+		},
+	}
+	for _, test := range slicesAreEqualTests {
+		output := slicesAreEqual(test.arg1, test.arg2)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
+func TestContainsString(t *testing.T) {
+	type containsStringTest struct {
+		arg1     []string
+		arg2     string
+		expected bool
+	}
+	containsStringTests := []containsStringTest{
+		{
+			[]string{"a", "b", "c", "d", "e"},
+			"a",
+			true,
+		},
+		{
+			[]string{"a", "b", "c", "d", "e"},
+			"f",
+			false,
+		},
+	}
+	for _, test := range containsStringTests {
+		output := containsString(test.arg1, test.arg2)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
+func TestContainsIndex(t *testing.T) {
+	type containsIndexTest struct {
+		arg1     []Index
+		arg2     Index
+		expected bool
+	}
+	containsIndexTests := []containsIndexTest{
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{0, []interface{}{"index0"}},
+			true,
+		},
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{0, []interface{}{"index1"}},
+			false,
+		},
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{1, []interface{}{"index0"}},
+			false,
+		},
+	}
+	for _, test := range containsIndexTests {
+		output := containsIndex(test.arg1, test.arg2)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
+func TestContainsIndexWithoutId(t *testing.T) {
+	type containsIndexWithoutIdTest struct {
+		arg1     []Index
+		arg2     Index
+		expected bool
+	}
+	containsIndexWithoutIdTests := []containsIndexWithoutIdTest{
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{0, []interface{}{"index0"}},
+			true,
+		},
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{0, []interface{}{"index1"}},
+			true,
+		},
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{1, []interface{}{"index0"}},
+			true,
+		},
+		{
+			[]Index{
+				{0, []interface{}{"index0"}},
+				{1, []interface{}{"index1"}},
+				{2, []interface{}{"index2"}},
+			},
+			Index{1, []interface{}{"index3"}},
+			false,
+		},
+	}
+	for _, test := range containsIndexWithoutIdTests {
+		output := containsIndexWithoutId(test.arg1, test.arg2)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
