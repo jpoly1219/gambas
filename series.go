@@ -445,7 +445,7 @@ func (s Series) Describe() ([]float64, error) {
 	fmt.Println("Q3:", q3.Result)
 
 	result := []float64{
-		count.Result, mean.Result, median.Result, std.Result, min.Result, max.Result, q1.Result, q2.Result, q3.Result
+		count.Result, mean.Result, median.Result, std.Result, min.Result, max.Result, q1.Result, q2.Result, q3.Result,
 	}
 
 	return result, nil
