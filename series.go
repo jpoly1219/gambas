@@ -202,13 +202,13 @@ func (s Series) ILoc(min, max int) ([]interface{}, error) {
 type StatsFunc func() StatsResult
 
 type StatsResult struct {
-	usedFunc string
-	result   float64
-	err      error
+	UsedFunc string
+	Result   float64
+	Err      error
 }
 
 // Count() counts the number of non-NA elements in a column.
-func (s Series) Count() int {
+func (s Series) Count() StatsResult {
 	count := 0
 	for _, v := range s.data {
 		if v != nil || v != math.NaN() {
@@ -216,22 +216,22 @@ func (s Series) Count() int {
 		}
 	}
 
-	return count
+	return StatsResult{"Count", float64(count), nil}
 }
 
 // Mean() returns the mean of the elements in a column.
-func (s Series) Mean() (float64, error) {
+func (s Series) Mean() StatsResult {
 	mean := 0.0
 
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Mean", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
-		return math.NaN(), fmt.Errorf("no elements in this column")
+		return StatsResult{"Mean", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
 	for _, v := range data {
@@ -241,20 +241,20 @@ func (s Series) Mean() (float64, error) {
 	mean /= float64(len(data))
 	roundedMean := math.Round(mean*1000) / 1000
 
-	return roundedMean, nil
+	return StatsResult{"Mean", roundedMean, nil}
 }
 
 // Median() returns the median of the elements in a column.
-func (s Series) Median() (float64, error) {
+func (s Series) Median() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Median", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
-		return math.NaN(), fmt.Errorf("no elements in this column")
+		return StatsResult{"Median", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 	if total%2 == 0 {
 		lower := data[total/2-1]
@@ -263,78 +263,78 @@ func (s Series) Median() (float64, error) {
 		median := (lower + upper) / 2
 		roundedMedian := math.Round(median*1000) / 1000
 
-		return roundedMedian, nil
+		return StatsResult{"Median", roundedMedian, nil}
 	} else {
 		median := data[(total+1)/2-1]
 		roundedMedian := math.Round(median*1000) / 1000
 
-		return roundedMedian, nil
+		return StatsResult{"Median", roundedMedian, nil}
 	}
 }
 
 // Std() returns the sample standard deviation of the elements in a column.
-func (s Series) Std() (float64, error) {
+func (s Series) Std() StatsResult {
 	std := 0.0
-	mean, err := s.Mean() // this also checks that all data can be converted to float64.
-	if err != nil {
-		return math.NaN(), err
+	meanResult := s.Mean() // this also checks that all data can be converted to float64.
+	if meanResult.Err != nil {
+		return StatsResult{"Std", math.NaN(), meanResult.Err}
 	}
 
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Std", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
 	numerator := 0.0
 	for _, v := range data {
-		temp := math.Pow(v-mean, 2)
+		temp := math.Pow(v-meanResult.Result, 2)
 		numerator += temp
 	}
 	std = math.Sqrt(numerator / float64(len(data)-1))
 	roundedStd := math.Round(std*1000) / 1000
 
-	return roundedStd, nil
+	return StatsResult{"Std", roundedStd, nil}
 }
 
 // Min() returns the smallest element in a column.
-func (s Series) Min() (float64, error) {
+func (s Series) Min() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Min", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
-		return math.NaN(), fmt.Errorf("no elements in this column")
+		return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
-	return data[0], nil
+	return StatsResult{"Min", data[0], nil}
 }
 
 // Max() returns the largest element is a column.
-func (s Series) Max() (float64, error) {
+func (s Series) Max() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Max", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
-		return math.NaN(), fmt.Errorf("no elements in this column")
+		return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
-	return data[total-1], nil
+	return StatsResult{"Max", data[total-1], nil}
 }
 
 // Q1() returns the lower quartile (25%) of the elements in a column.
 // This does not include the median during calculation.
-func (s Series) Q1() (float64, error) {
+func (s Series) Q1() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Q1", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
@@ -342,35 +342,36 @@ func (s Series) Q1() (float64, error) {
 		lower := data[:len(data)/2]
 		q1, err := median(lower)
 		if err != nil {
-			return math.NaN(), err
+			return StatsResult{"Q1", math.NaN(), err}
 		}
-		return q1, nil
+		return StatsResult{"Q1", q1, nil}
 	} else {
 		lower := data[:(len(data)-1)/2]
 		q1, err := median(lower)
 		if err != nil {
-			return math.NaN(), err
+			return StatsResult{"Q1", math.NaN(), err}
 		}
-		return q1, nil
+		return StatsResult{"Q1", q1, nil}
 	}
 }
 
 // Q2() returns the middle quartile (50%) of the elements in a column.
 // This accomplishes the same thing as s.Median().
-func (s Series) Q2() (float64, error) {
-	q2, err := s.Median()
-	if err != nil {
-		return math.NaN(), err
+func (s Series) Q2() StatsResult {
+	q2Result := s.Median()
+	if q2Result.Err != nil {
+		return StatsResult{"Q2", math.NaN(), q2Result.Err}
 	}
-	return q2, nil
+
+	return StatsResult{"Q2", q2Result.Result, nil}
 }
 
 // Q3() returns the upper quartile (75%) of the elements in a column.
 // This does not include the median during calculation.
-func (s Series) Q3() (float64, error) {
+func (s Series) Q3() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
-		return math.NaN(), err
+		return StatsResult{"Q3", math.NaN(), err}
 	}
 	sort.Float64s(data)
 
@@ -378,72 +379,74 @@ func (s Series) Q3() (float64, error) {
 		upper := data[len(data)/2:]
 		q3, err := median(upper)
 		if err != nil {
-			return math.NaN(), err
+			return StatsResult{"Q3", math.NaN(), err}
 		}
-		return q3, nil
+		return StatsResult{"Q3", q3, nil}
 	} else {
 		upper := data[(len(data)+1)/2:]
 		q3, err := median(upper)
 		if err != nil {
-			return math.NaN(), err
+			return StatsResult{"Q3", math.NaN(), err}
 		}
-		return q3, nil
+		return StatsResult{"Q3", q3, nil}
 	}
 }
 
-func (s Series) Describe() ([]interface{}, error) {
+func (s Series) Describe() ([]float64, error) {
 	count := s.Count()
-	fmt.Println("Count:", count)
+	fmt.Println("Count:", count.Result)
 
-	mean, err := s.Mean()
-	if err != nil {
-		return nil, err
+	mean := s.Mean()
+	if mean.Err != nil {
+		return nil, mean.Err
 	}
-	fmt.Println("Mean:", mean)
+	fmt.Println("Mean:", mean.Result)
 
-	median, err := s.Median()
-	if err != nil {
-		return nil, err
+	median := s.Median()
+	if median.Err != nil {
+		return nil, median.Err
 	}
-	fmt.Println("Median:", median)
+	fmt.Println("Median:", median.Result)
 
-	std, err := s.Std()
-	if err != nil {
-		return nil, err
+	std := s.Std()
+	if std.Err != nil {
+		return nil, std.Err
 	}
-	fmt.Println("Std:", std)
+	fmt.Println("Std:", std.Result)
 
-	min, err := s.Min()
-	if err != nil {
-		return nil, err
+	min := s.Min()
+	if min.Err != nil {
+		return nil, min.Err
 	}
 	fmt.Println("Min:", min)
 
-	max, err := s.Max()
-	if err != nil {
-		return nil, err
+	max := s.Max()
+	if max.Err != nil {
+		return nil, max.Err
 	}
-	fmt.Println("Max:", max)
+	fmt.Println("Max:", max.Result)
 
-	q1, err := s.Q1()
-	if err != nil {
-		return nil, err
+	q1 := s.Q1()
+	if q1.Err != nil {
+		return nil, q1.Err
 	}
 	fmt.Println("Q1:", q1)
 
-	q2, err := s.Q2()
-	if err != nil {
-		return nil, err
+	q2 := s.Q2()
+	if q2.Err != nil {
+		return nil, q2.Err
 	}
-	fmt.Println("Q2:", q2)
+	fmt.Println("Q2:", q2.Result)
 
-	q3, err := s.Q3()
-	if err != nil {
-		return nil, err
+	q3 := s.Q3()
+	if q3.Err != nil {
+		return nil, q3.Err
 	}
-	fmt.Println("Q3:", q3)
+	fmt.Println("Q3:", q3.Result)
 
-	result := []interface{}{count, mean, median, std, min, max, q1, q2, q3}
+	result := []float64{
+		count.Result, mean.Result, median.Result, std.Result, min.Result, max.Result, q1.Result, q2.Result, q3.Result
+	}
 
 	return result, nil
 }
