@@ -199,6 +199,13 @@ func (s Series) ILoc(min, max int) ([]interface{}, error) {
 }
 
 // Summary statistics functions
+type StatsFunc func() StatsResult
+
+type StatsResult struct {
+	usedFunc string
+	result   float64
+	err      error
+}
 
 // Count() counts the number of non-NA elements in a column.
 func (s Series) Count() int {
