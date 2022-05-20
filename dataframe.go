@@ -490,7 +490,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 			dm := dataMap{fmt.Sprint(data), map[string]interface{}{}}
 			dataMaps = append(dataMaps, dm)
 		}
-		if !containsIndex(newDfIndexIndex, filteredDf.index.index[i]) {
+		if !containsIndexWithoutId(newDfIndexIndex, filteredDf.index.index[i]) {
 			newIndex := Index{len(newDfIndexIndex), filteredDf.index.index[i].value}
 			newDfIndexIndex = append(newDfIndexIndex, newIndex)
 		}
