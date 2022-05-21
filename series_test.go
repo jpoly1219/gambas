@@ -537,7 +537,7 @@ func TestSeriesILoc(t *testing.T) {
 func TestCount(t *testing.T) {
 	type countTest struct {
 		arg1     Series
-		expected int
+		expected StatsResult
 	}
 	countTests := []countTest{
 		{
@@ -554,7 +554,11 @@ func TestCount(t *testing.T) {
 				},
 				"Name",
 			},
-			4,
+			StatsResult{
+				"Count",
+				4.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -569,7 +573,11 @@ func TestCount(t *testing.T) {
 				},
 				"Age",
 			},
-			3,
+			StatsResult{
+				"Count",
+				3.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -577,13 +585,16 @@ func TestCount(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			0,
+			StatsResult{
+				"Count",
+				0.0,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range countTests {
 		output := test.arg1.Count()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors(), cmpopts.EquateNaNs()) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
@@ -591,9 +602,8 @@ func TestCount(t *testing.T) {
 
 func TestMean(t *testing.T) {
 	type meanTest struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	meanTests := []meanTest{
 		{
@@ -609,8 +619,11 @@ func TestMean(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not float64: Avery"),
+			StatsResult{
+				"Mean",
+				math.NaN(),
+				fmt.Errorf("data is not float64: Avery"),
+			},
 		},
 		{
 			Series{
@@ -625,8 +638,11 @@ func TestMean(t *testing.T) {
 				},
 				"Age",
 			},
-			24.0,
-			nil,
+			StatsResult{
+				"Mean",
+				24.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -634,20 +650,21 @@ func TestMean(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Mean",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 	}
 
 	for _, test := range meanTests {
-		output, err := test.arg1.Mean()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Mean()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -655,9 +672,8 @@ func TestMean(t *testing.T) {
 
 func TestMedian(t *testing.T) {
 	type medianTest struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	medianTests := []medianTest{
 		{
@@ -673,8 +689,11 @@ func TestMedian(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not float64: %v", "Avery"),
+			StatsResult{
+				"Median",
+				math.NaN(),
+				fmt.Errorf("data is not float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -689,8 +708,11 @@ func TestMedian(t *testing.T) {
 				},
 				"Age",
 			},
-			23.0,
-			nil,
+			StatsResult{
+				"Median",
+				23.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -698,8 +720,11 @@ func TestMedian(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Median",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -715,8 +740,11 @@ func TestMedian(t *testing.T) {
 				},
 				"Height",
 			},
-			175.85,
-			nil,
+			StatsResult{
+				"Median",
+				175.85,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -732,8 +760,11 @@ func TestMedian(t *testing.T) {
 				},
 				"Height",
 			},
-			178.7,
-			nil,
+			StatsResult{
+				"Median",
+				178.7,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -748,20 +779,21 @@ func TestMedian(t *testing.T) {
 				},
 				"Height",
 			},
-			171.5,
-			nil,
+			StatsResult{
+				"Median",
+				171.5,
+				nil,
+			},
 		},
 	}
 
 	for _, test := range medianTests {
-		output, err := test.arg1.Median()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Median()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -769,9 +801,8 @@ func TestMedian(t *testing.T) {
 
 func TestStd(t *testing.T) {
 	type stdTest struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	stdTests := []stdTest{
 		{
@@ -788,8 +819,11 @@ func TestStd(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not float64: %v", "Avery"),
+			StatsResult{
+				"Std",
+				math.NaN(),
+				fmt.Errorf("data is not float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -804,8 +838,11 @@ func TestStd(t *testing.T) {
 				},
 				"Age",
 			},
-			5.568,
-			nil,
+			StatsResult{
+				"Std",
+				5.568,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -813,8 +850,11 @@ func TestStd(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Std",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -830,8 +870,11 @@ func TestStd(t *testing.T) {
 				},
 				"Height",
 			},
-			7.913,
-			nil,
+			StatsResult{
+				"Std",
+				7.913,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -847,8 +890,11 @@ func TestStd(t *testing.T) {
 				},
 				"Height",
 			},
-			9.601,
-			nil,
+			StatsResult{
+				"Std",
+				9.601,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -863,20 +909,20 @@ func TestStd(t *testing.T) {
 				},
 				"Height",
 			},
-			10.182,
-			nil,
+			StatsResult{
+				"Std",
+				10.182,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range stdTests {
-		output, err := test.arg1.Std()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Std()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -884,9 +930,8 @@ func TestStd(t *testing.T) {
 
 func TestMin(t *testing.T) {
 	type minTest struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	minTests := []minTest{
 		{
@@ -903,8 +948,11 @@ func TestMin(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not a float64: %v", "Avery"),
+			StatsResult{
+				"Min",
+				math.NaN(),
+				fmt.Errorf("data is not a float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -919,8 +967,11 @@ func TestMin(t *testing.T) {
 				},
 				"Age",
 			},
-			19.0,
-			nil,
+			StatsResult{
+				"Min",
+				19.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -928,8 +979,11 @@ func TestMin(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Min",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -945,8 +999,11 @@ func TestMin(t *testing.T) {
 				},
 				"Height",
 			},
-			164.3,
-			nil,
+			StatsResult{
+				"Min",
+				164.3,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -962,8 +1019,11 @@ func TestMin(t *testing.T) {
 				},
 				"Height",
 			},
-			164.3,
-			nil,
+			StatsResult{
+				"Min",
+				164.3,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -978,20 +1038,20 @@ func TestMin(t *testing.T) {
 				},
 				"Height",
 			},
-			164.3,
-			nil,
+			StatsResult{
+				"Min",
+				164.3,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range minTests {
-		output, err := test.arg1.Min()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Min()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -999,9 +1059,8 @@ func TestMin(t *testing.T) {
 
 func TestMax(t *testing.T) {
 	type maxTest struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	maxTests := []maxTest{
 		{
@@ -1018,8 +1077,11 @@ func TestMax(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not a float64: %v", "Avery"),
+			StatsResult{
+				"Max",
+				math.NaN(),
+				fmt.Errorf("data is not a float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -1034,8 +1096,11 @@ func TestMax(t *testing.T) {
 				},
 				"Age",
 			},
-			30.0,
-			nil,
+			StatsResult{
+				"Max",
+				30.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1043,8 +1108,11 @@ func TestMax(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Max",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -1060,8 +1128,11 @@ func TestMax(t *testing.T) {
 				},
 				"Height",
 			},
-			182.5,
-			nil,
+			StatsResult{
+				"Max",
+				182.5,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1077,8 +1148,11 @@ func TestMax(t *testing.T) {
 				},
 				"Height",
 			},
-			182.5,
-			nil,
+			StatsResult{
+				"Max",
+				182.5,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1093,20 +1167,20 @@ func TestMax(t *testing.T) {
 				},
 				"Height",
 			},
-			178.7,
-			nil,
+			StatsResult{
+				"Max",
+				178.7,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range maxTests {
-		output, err := test.arg1.Max()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Max()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -1114,9 +1188,8 @@ func TestMax(t *testing.T) {
 
 func TestQ1(t *testing.T) {
 	type q1Test struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	q1Tests := []q1Test{
 		{
@@ -1133,8 +1206,11 @@ func TestQ1(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not a float64: %v", "Avery"),
+			StatsResult{
+				"Q1",
+				math.NaN(),
+				fmt.Errorf("data is not a float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -1149,8 +1225,11 @@ func TestQ1(t *testing.T) {
 				},
 				"Age",
 			},
-			19.0,
-			nil,
+			StatsResult{
+				"Q1",
+				19.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1158,8 +1237,11 @@ func TestQ1(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Q1",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -1175,8 +1257,11 @@ func TestQ1(t *testing.T) {
 				},
 				"Height",
 			},
-			168.65,
-			nil,
+			StatsResult{
+				"Q1",
+				168.65,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1192,8 +1277,11 @@ func TestQ1(t *testing.T) {
 				},
 				"Height",
 			},
-			164.3,
-			nil,
+			StatsResult{
+				"Q1",
+				164.3,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1208,20 +1296,20 @@ func TestQ1(t *testing.T) {
 				},
 				"Height",
 			},
-			164.3,
-			nil,
+			StatsResult{
+				"Q1",
+				164.3,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range q1Tests {
-		output, err := test.arg1.Q1()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Q1()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -1229,9 +1317,8 @@ func TestQ1(t *testing.T) {
 
 func TestQ2(t *testing.T) {
 	type q2Test struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	q2Tests := []q2Test{
 		{
@@ -1248,8 +1335,11 @@ func TestQ2(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not float64: %v", "Avery"),
+			StatsResult{
+				"Q2",
+				math.NaN(),
+				fmt.Errorf("data is not float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -1264,8 +1354,11 @@ func TestQ2(t *testing.T) {
 				},
 				"Age",
 			},
-			23.0,
-			nil,
+			StatsResult{
+				"Q2",
+				23.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1273,8 +1366,11 @@ func TestQ2(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Q2",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -1290,8 +1386,11 @@ func TestQ2(t *testing.T) {
 				},
 				"Height",
 			},
-			175.85,
-			nil,
+			StatsResult{
+				"Q2",
+				175.85,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1307,8 +1406,11 @@ func TestQ2(t *testing.T) {
 				},
 				"Height",
 			},
-			178.7,
-			nil,
+			StatsResult{
+				"Q2",
+				178.7,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1323,20 +1425,20 @@ func TestQ2(t *testing.T) {
 				},
 				"Height",
 			},
-			171.5,
-			nil,
+			StatsResult{
+				"Q2",
+				171.5,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range q2Tests {
-		output, err := test.arg1.Q2()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Q2()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -1344,9 +1446,8 @@ func TestQ2(t *testing.T) {
 
 func TestQ3(t *testing.T) {
 	type q3Test struct {
-		arg1          Series
-		expected      float64
-		expectedError error
+		arg1     Series
+		expected StatsResult
 	}
 	q3Tests := []q3Test{
 		{
@@ -1363,8 +1464,11 @@ func TestQ3(t *testing.T) {
 				},
 				"Name",
 			},
-			math.NaN(),
-			fmt.Errorf("data is not float64: %v", "Avery"),
+			StatsResult{
+				"Q3",
+				math.NaN(),
+				fmt.Errorf("data is not float64: %v", "Avery"),
+			},
 		},
 		{
 			Series{
@@ -1379,8 +1483,11 @@ func TestQ3(t *testing.T) {
 				},
 				"Age",
 			},
-			30.0,
-			nil,
+			StatsResult{
+				"Q3",
+				30.0,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1388,8 +1495,11 @@ func TestQ3(t *testing.T) {
 				IndexData{},
 				"Empty",
 			},
-			math.NaN(),
-			fmt.Errorf("no elements in this column"),
+			StatsResult{
+				"Q3",
+				math.NaN(),
+				fmt.Errorf("no elements in this column"),
+			},
 		},
 		{
 			Series{
@@ -1405,8 +1515,11 @@ func TestQ3(t *testing.T) {
 				},
 				"Height",
 			},
-			180.6,
-			nil,
+			StatsResult{
+				"Q3",
+				180.6,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1422,8 +1535,11 @@ func TestQ3(t *testing.T) {
 				},
 				"Height",
 			},
-			182.5,
-			nil,
+			StatsResult{
+				"Q3",
+				182.5,
+				nil,
+			},
 		},
 		{
 			Series{
@@ -1438,20 +1554,20 @@ func TestQ3(t *testing.T) {
 				},
 				"Height",
 			},
-			178.7,
-			nil,
+			StatsResult{
+				"Q3",
+				178.7,
+				nil,
+			},
 		},
 	}
-
 	for _, test := range q3Tests {
-		output, err := test.arg1.Q3()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
-			if fmt.Sprint(output) == "NaN" {
-				if !cmp.Equal(fmt.Sprint(output), fmt.Sprint(test.expected)) {
-					t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
-				}
+		output := test.arg1.Q3()
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}), cmpopts.EquateErrors()) {
+			if math.IsNaN(output.Result) {
+				continue
 			} else {
-				t.Fatalf("expected %v, got %v, err %v", test.expected, output, err)
+				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
 	}
@@ -1460,7 +1576,7 @@ func TestQ3(t *testing.T) {
 func TestDescribe(t *testing.T) {
 	type describeTest struct {
 		arg1     Series
-		expected []interface{}
+		expected []float64
 	}
 	describeTests := []describeTest{
 		{
@@ -1493,7 +1609,7 @@ func TestDescribe(t *testing.T) {
 				},
 				"col1",
 			},
-			[]interface{}{3, 456.456, 456.456, 333.333, 123.123, 789.789, 123.123, 456.456, 789.789},
+			[]float64{3, 456.456, 456.456, 333.333, 123.123, 789.789, 123.123, 456.456, 789.789},
 		},
 	}
 	for _, test := range describeTests {
