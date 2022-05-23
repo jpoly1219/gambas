@@ -98,8 +98,30 @@ func (df DataFrame) LocRows(rows ...[]interface{}) (*DataFrame, error) {
 	return dataframe, nil
 }
 
+// LocRowsItems will return a slice of rows.
+// Use this over LocRows if you want to extract the items directly
+// instead of getting a DataFrame object.
+func (df *DataFrame) LocRowsItems(rows ...[]interface{}) ([][]interface{}, error) {
+	filteredRows := make([][]interface{}, len(rows))
+	for i := 0; i < len(rows); i++ {
+		filteredRows[i] = make([]interface{}, 0)
+	}
+
+	for _, series := range df.series {
+		located, err := series.LocItems(rows...)
+		if err != nil {
+			return nil, err
+		}
+		for i := range located {
+			filteredRows[i] = append(filteredRows[i], located[i])
+		}
+	}
+
+	return filteredRows, nil
+}
+
 // LocRows returns a set of columns as a new DataFrame object, given a list of labels.
-func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
+func (df DataFrame) LocCols(cols ...string) (*DataFrame, error) {
 	filtered2D := make([][]interface{}, 0)
 	for _, column := range cols {
 		for _, series := range df.series {
@@ -130,7 +152,7 @@ func (df DataFrame) LocCols(cols []string) (*DataFrame, error) {
 
 // Loc indexes the DataFrame object given a slice of row and column labels.
 func (df DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, error) {
-	df1, err := df.LocCols(cols)
+	df1, err := df.LocCols(cols...)
 	if err != nil {
 		return nil, err
 	}
@@ -468,7 +490,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 	// for the same index, if column has a value that is repeated, then raise an error.
 
 	// loc each individual values, then concat them.
-	filteredDf, err := df.LocCols([]string{column, value})
+	filteredDf, err := df.LocCols(column, value)
 	if err != nil {
 		return nil, err
 	}
@@ -554,3 +576,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 
 	return newDf, nil
 }
+
+// func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) (*DataFrame, error) {
+// 	indexCols, err := df.LocCols([]string{index, column, value})
+// }
