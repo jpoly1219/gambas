@@ -454,11 +454,61 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 			[][]interface{}{{"Avery"}},
 			[][]interface{}{{"Avery", 19, "Male"}},
 		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder"}},
+			[][]interface{}{{"Jae Crowder", "Boston Celtics", 99.0, "SF", 25.0, "6-6", 235.0, "Marquette", 6796117.0}},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder"}, {"Avery Bradley"}},
+			[][]interface{}{
+				{"Jae Crowder", "Boston Celtics", 99.0, "SF", 25.0, "6-6", 235.0, "Marquette", 6796117.0},
+				{"Avery Bradley", "Boston Celtics", 0.0, "PG", 25.0, "6-2", 180.0, "Texas", 7730337.0},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name", "Age"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder", 25.0}, {"Avery Bradley", 25.0}},
+			[][]interface{}{
+				{"Jae Crowder", "Boston Celtics", 99.0, "SF", 25.0, "6-6", 235.0, "Marquette", 6796117.0},
+				{"Avery Bradley", "Boston Celtics", 0.0, "PG", 25.0, "6-2", 180.0, "Texas", 7730337.0},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name", "Age"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder", 22.0}, {"Avery Bradley", 25.0}},
+			nil,
+		},
 	}
 
 	for _, test := range dataframeLocRowsItemsTests {
 		output, err := test.arg1.LocRowsItems(test.arg2...)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
