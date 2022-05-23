@@ -128,19 +128,19 @@ func (s Series) IAt(ind int) (interface{}, error) {
 }
 
 // Loc() returns a range of data at given rows.
-func (s Series) Loc(ind ...[]interface{}) (*Series, error) {
+func (s Series) Loc(idx ...[]interface{}) (*Series, error) {
 	// This makes sure that each index passed are the same length.
-	indexLength := len(ind[0])
-	for i, eachIndex := range ind {
+	indexLength := len(idx[0])
+	for i, eachIndex := range idx {
 		if indexLength != len(eachIndex) {
-			return nil, fmt.Errorf("index length does not match: %v, %v", ind[i-1], eachIndex)
+			return nil, fmt.Errorf("index length does not match: %v, %v", idx[i-1], eachIndex)
 		}
 	}
 
 	allFiltered := make([]interface{}, 0)
 	allFilteredIndex := IndexData{}
 
-	for _, inputIndex := range ind {
+	for _, inputIndex := range idx {
 		filtered := make([]interface{}, 0)
 		filteredIndex := IndexData{}
 
@@ -182,6 +182,44 @@ func (s Series) Loc(ind ...[]interface{}) (*Series, error) {
 	// }
 
 	// return result, nil
+}
+
+// LocItems returns a slice of data at given rows.
+// Use this over Loc if you want to extract the items directly
+// instead of getting a Series object.
+func (s *Series) LocItems(idx ...[]interface{}) ([]interface{}, error) {
+	indexLength := len(idx[0])
+	for i, eachIndex := range idx {
+		if indexLength != len(eachIndex) {
+			return nil, fmt.Errorf("index length does not match: %v, %v", idx[i-1], eachIndex)
+		}
+	}
+
+	allFiltered := make([]interface{}, 0)
+
+	for _, inputIndex := range idx {
+		filtered := make([]interface{}, 0)
+
+		for j, seriesIndex := range s.index.index {
+			isSame := true
+			for k := 0; k < indexLength; k++ {
+				if inputIndex[k] != seriesIndex.value[k] {
+					isSame = false
+					break
+				}
+			}
+			if isSame {
+				filtered = append(filtered, s.data[j])
+			}
+		}
+
+		if len(filtered) == 0 {
+			return nil, fmt.Errorf("no data found for index %v", inputIndex)
+		}
+		allFiltered = append(allFiltered, filtered...)
+	}
+
+	return allFiltered, nil
 }
 
 // ILoc() returns an array of elements at a given integer index range.
