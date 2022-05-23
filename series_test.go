@@ -482,6 +482,172 @@ func TestSeriesLoc(t *testing.T) {
 	}
 }
 
+func TestSeriesLocItems(t *testing.T) {
+	type locItemsTest struct {
+		arg1          Series
+		arg2          [][]interface{}
+		expected      []interface{}
+		expectedError error
+	}
+	locItemsTests := []locItemsTest{
+		{
+			Series{
+				[]interface{}{"alice", "bob", "charlie"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
+					[]string{""},
+				},
+				"People",
+			},
+			[][]interface{}{{0}, {1}},
+			[]interface{}{"alice", "bob"},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"apple", "banana", "cherry"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"a"}},
+						{1, []interface{}{"b"}},
+						{2, []interface{}{"c"}},
+					},
+					[]string{""},
+				},
+				"Fruit",
+			},
+			[][]interface{}{{"b"}, {"c"}},
+			[]interface{}{"banana", "cherry"},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"female"}},
+			[]interface{}{"clara", "anna"},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"male", "volleyball"}},
+			[]interface{}{"brian"},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"male"}, {"volleyball"}},
+			nil,
+			fmt.Errorf("no data found for index [volleyball]"),
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"volleyball"}},
+			nil,
+			fmt.Errorf("no data found for index [volleyball]"),
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"female"}, {"male"}},
+			[]interface{}{"clara", "anna", "brian", "dorian", "michael"},
+			nil,
+		},
+		{
+			Series{
+				[]interface{}{"clara", "brian", "dorian", "anna", "michael"},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"female", "basketball"}},
+						{1, []interface{}{"male", "volleyball"}},
+						{2, []interface{}{"male", "basketball"}},
+						{3, []interface{}{"female", "volleyball"}},
+						{4, []interface{}{"male", "swimming"}},
+					},
+					[]string{"sex", "sports"},
+				},
+				"People",
+			},
+			[][]interface{}{{"female"}, {"volleyball"}},
+			nil,
+			fmt.Errorf("no data found for index [volleyball]"),
+		},
+	}
+
+	for _, test := range locItemsTests {
+		output, err := test.arg1.LocItems(test.arg2...)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (fmt.Sprint(err) != fmt.Sprint(test.expectedError)) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
 func TestSeriesILoc(t *testing.T) {
 	type ilocTest struct {
 		arg1     Series
