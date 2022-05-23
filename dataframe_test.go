@@ -548,10 +548,121 @@ func TestDataFrameLocCols(t *testing.T) {
 				[]string{"Age"},
 			},
 		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccols1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Position"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"PG", "SF", "SG", "SG"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
+							[]string{"Name"},
+						},
+						"Position",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery Bradley"}},
+						{1, []interface{}{"Jae Crowder"}},
+						{2, []interface{}{"John Holland"}},
+						{3, []interface{}{"R.J. Hunter"}},
+					},
+					[]string{"Name"},
+				},
+				[]string{"Position"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccols1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Age", "College", "Name"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{25.0, 25.0, 27.0, 22.0},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
+							[]string{"Name"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery Bradley"}},
+								{1, []interface{}{"Jae Crowder"}},
+								{2, []interface{}{"John Holland"}},
+								{3, []interface{}{"R.J. Hunter"}},
+							},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery Bradley"}},
+						{1, []interface{}{"Jae Crowder"}},
+						{2, []interface{}{"John Holland"}},
+						{3, []interface{}{"R.J. Hunter"}},
+					},
+					[]string{"Name"},
+				},
+				[]string{"Age", "College", "Name"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccols1.csv", []string{"Name", "Age"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Avery Bradley"},
+			nil,
+		},
 	}
 	for _, test := range dataframeLocColsTests {
-		output, err := test.arg1.LocCols(test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		output, err := test.arg1.LocCols(test.arg2...)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
