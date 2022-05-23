@@ -142,11 +142,323 @@ func TestDataFrameLocRows(t *testing.T) {
 				[]string{"Name", "Age", "Sex"},
 			},
 		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder"}},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Jae Crowder"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{99.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"SF"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-6"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{235.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Marquette"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{6796117.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}},
+							[]string{"Name"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{1, []interface{}{"Jae Crowder"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder"}, {"Avery Bradley"}},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Jae Crowder", "Avery Bradley"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{99.0, 0.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"SF", "PG"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-6", "6-2"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{235.0, 180.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Marquette", "Texas"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{6796117.0, 7730337.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+							[]string{"Name"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{1, []interface{}{"Jae Crowder"}}, {0, []interface{}{"Avery Bradley"}}},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name", "Age"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder", 25.0}, {"Avery Bradley", 25.0}},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Jae Crowder", "Avery Bradley"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Team",
+					},
+					{
+						[]interface{}{99.0, 0.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Number",
+					},
+					{
+						[]interface{}{"SF", "PG"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Position",
+					},
+					{
+						[]interface{}{25.0, 25.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"6-6", "6-2"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Height",
+					},
+					{
+						[]interface{}{235.0, 180.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Weight",
+					},
+					{
+						[]interface{}{"Marquette", "Texas"},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"College",
+					},
+					{
+						[]interface{}{6796117.0, 7730337.0},
+						IndexData{
+							[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+							[]string{"Name", "Age"},
+						},
+						"Salary",
+					},
+				},
+				IndexData{
+					[]Index{{1, []interface{}{"Jae Crowder", 25.0}}, {0, []interface{}{"Avery Bradley", 25.0}}},
+					[]string{"Name", "Age"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdflocrows1.csv", []string{"Name", "Age"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[][]interface{}{{"Jae Crowder", 22.0}, {"Avery Bradley", 25.0}},
+			nil,
+		},
 	}
 
 	for _, test := range dataframeLocRowsTests {
 		output, err := test.arg1.LocRows(test.arg2...)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestDataFrameLocRowsItems(t *testing.T) {
+	type dataframeLocRowsItemsTest struct {
+		arg1     DataFrame
+		arg2     [][]interface{}
+		expected [][]interface{}
+	}
+	dataframeLocRowsItemsTests := []dataframeLocRowsItemsTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			[][]interface{}{{"Avery"}},
+			[][]interface{}{{"Avery", 19, "Male"}},
+		},
+	}
+
+	for _, test := range dataframeLocRowsItemsTests {
+		output, err := test.arg1.LocRowsItems(test.arg2...)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -229,6 +541,42 @@ func TestDataFrameLoc(t *testing.T) {
 					[]string{"Name"},
 				},
 				[]string{"Age"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloc1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Age", "Name"},
+			[][]interface{}{{"John Holland"}},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{27.0},
+						IndexData{
+							[]Index{{2, []interface{}{"John Holland"}}},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{"John Holland"},
+						IndexData{
+							[]Index{{2, []interface{}{"John Holland"}}},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+				},
+				IndexData{
+					[]Index{{2, []interface{}{"John Holland"}}},
+					[]string{"Name"},
+				},
+				[]string{"Age", "Name"},
 			},
 		},
 	}
