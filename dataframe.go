@@ -597,6 +597,80 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 	return newDf, nil
 }
 
-// func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) (*DataFrame, error) {
-// 	indexCols, err := df.LocCols([]string{index, column, value})
-// }
+func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) (*DataFrame, error) {
+	filteredData, err := df.LocColsItems(index, column, value)
+	if err != nil {
+		return nil, err
+	}
+
+	// iterate through filteredData
+	// check for unique combinations of index and column
+	// for each unique combination, store the value in a valueSlice
+
+	// how to check for unique combination
+	// create and store a hash for index+column
+	// iterate through filteredData[0]
+	// if index+column hash doesnt exist, create and store it
+	// if exists, skip
+	// either way, store the vale in a valueSlice
+
+	dataMap := make(map[string][]interface{}, 0)
+	uniqueHashSlice := make([]string, 0)
+	uniqueIndexSlice := make([]string, 0)
+	uniqueColSlice := make([]string, 0)
+	for i, col := range filteredData[1] {
+		idx := filteredData[0][i]
+		val := filteredData[2][i]
+
+		if !containsString(uniqueIndexSlice, fmt.Sprint(idx)) {
+			uniqueIndexSlice = append(uniqueIndexSlice, fmt.Sprint(idx))
+		}
+		if !containsString(uniqueColSlice, fmt.Sprint(col)) {
+			uniqueColSlice = append(uniqueColSlice, fmt.Sprint(col))
+		}
+
+		index := Index{i, []interface{}{idx, col}}
+		key, err := index.hashKeyValueOnly()
+		if err != nil {
+			return nil, err
+		}
+
+		if !containsString(uniqueHashSlice, *key) {
+			uniqueHashSlice = append(uniqueHashSlice, *key)
+		}
+		dataMap[*key] = append(dataMap[*key], val)
+	}
+
+	valSlice := make([][]interface{}, 0)
+	for i, col := range uniqueColSlice {
+		val := make([]interface{}, 0)
+		for _, idx := range uniqueIndexSlice {
+			index := Index{i, []interface{}{idx, col}}
+			key, err := index.hashKeyValueOnly()
+			if err != nil {
+				return nil, err
+			}
+			result := aggFunc(dataMap[*key])
+			if result.Err != nil {
+				return nil, result.Err
+			}
+
+			val = append(val, result.Result)
+		}
+		valSlice = append(valSlice, val)
+	}
+
+	newDf, err := NewDataFrame(valSlice, uniqueColSlice, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	newDfIndex := IndexData{[]Index{}, []string{index}}
+	for i, uniqueIndex := range uniqueIndexSlice {
+		idx := Index{i, []interface{}{uniqueIndex}}
+		newDfIndex.index = append(newDfIndex.index, idx)
+	}
+	newDf.index = newDfIndex
+
+	return newDf, nil
+}
