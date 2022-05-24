@@ -150,6 +150,26 @@ func (df DataFrame) LocCols(cols ...string) (*DataFrame, error) {
 	return dataframe, nil
 }
 
+// LocColsItems will return a slice of columns.
+// Use this over LocCols if you want to extract the items directly
+// instead of getting a DataFrame object.
+func (df *DataFrame) LocColsItems(cols ...string) ([][]interface{}, error) {
+	filtered2D := make([][]interface{}, 0)
+	for _, column := range cols {
+		for _, series := range df.series {
+			if series.name == column {
+				filtered2D = append(filtered2D, series.data)
+			}
+		}
+	}
+
+	if len(filtered2D) == 0 {
+		return nil, fmt.Errorf("no columns found")
+	}
+
+	return filtered2D, nil
+}
+
 // Loc indexes the DataFrame object given a slice of row and column labels.
 func (df DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, error) {
 	df1, err := df.LocCols(cols...)
