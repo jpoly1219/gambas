@@ -700,7 +700,7 @@ func TestSeriesILoc(t *testing.T) {
 	}
 }
 
-func TestCount(t *testing.T) {
+func TestSeriesCount(t *testing.T) {
 	type countTest struct {
 		arg1     Series
 		expected StatsResult
@@ -766,7 +766,7 @@ func TestCount(t *testing.T) {
 	}
 }
 
-func TestMean(t *testing.T) {
+func TestSeriesMean(t *testing.T) {
 	type meanTest struct {
 		arg1     Series
 		expected StatsResult
@@ -836,7 +836,7 @@ func TestMean(t *testing.T) {
 	}
 }
 
-func TestMedian(t *testing.T) {
+func TestSeriesMedian(t *testing.T) {
 	type medianTest struct {
 		arg1     Series
 		expected StatsResult
@@ -965,7 +965,7 @@ func TestMedian(t *testing.T) {
 	}
 }
 
-func TestStd(t *testing.T) {
+func TestSeriesStd(t *testing.T) {
 	type stdTest struct {
 		arg1     Series
 		expected StatsResult
@@ -1094,7 +1094,7 @@ func TestStd(t *testing.T) {
 	}
 }
 
-func TestMin(t *testing.T) {
+func TestSeriesMin(t *testing.T) {
 	type minTest struct {
 		arg1     Series
 		expected StatsResult
@@ -1223,7 +1223,7 @@ func TestMin(t *testing.T) {
 	}
 }
 
-func TestMax(t *testing.T) {
+func TestSeriesMax(t *testing.T) {
 	type maxTest struct {
 		arg1     Series
 		expected StatsResult
@@ -1352,7 +1352,7 @@ func TestMax(t *testing.T) {
 	}
 }
 
-func TestQ1(t *testing.T) {
+func TestSeriesQ1(t *testing.T) {
 	type q1Test struct {
 		arg1     Series
 		expected StatsResult
@@ -1481,7 +1481,7 @@ func TestQ1(t *testing.T) {
 	}
 }
 
-func TestQ2(t *testing.T) {
+func TestSeriesQ2(t *testing.T) {
 	type q2Test struct {
 		arg1     Series
 		expected StatsResult
@@ -1610,7 +1610,7 @@ func TestQ2(t *testing.T) {
 	}
 }
 
-func TestQ3(t *testing.T) {
+func TestSeriesQ3(t *testing.T) {
 	type q3Test struct {
 		arg1     Series
 		expected StatsResult
@@ -1739,7 +1739,7 @@ func TestQ3(t *testing.T) {
 	}
 }
 
-func TestDescribe(t *testing.T) {
+func TestSeriesDescribe(t *testing.T) {
 	type describeTest struct {
 		arg1     Series
 		expected []float64
@@ -1786,7 +1786,7 @@ func TestDescribe(t *testing.T) {
 	}
 }
 
-func TestValueCounts(t *testing.T) {
+func TestSeriesValueCounts(t *testing.T) {
 	type valueCountsTest struct {
 		arg1     Series
 		expected *Series
@@ -2576,7 +2576,7 @@ func TestSeriesSortByValues(t *testing.T) {
 	}
 }
 
-func TestIndexHasDuplicateValues(t *testing.T) {
+func TestSeriesIndexHasDuplicateValues(t *testing.T) {
 	type indexHasDuplicateValuesTest struct {
 		arg1     Series
 		expected bool
