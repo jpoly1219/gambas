@@ -668,6 +668,70 @@ func TestDataFrameLocCols(t *testing.T) {
 	}
 }
 
+func TestDataFrameLocColsItems(t *testing.T) {
+	type dataframeLocColsItemsTest struct {
+		arg1     DataFrame
+		arg2     []string
+		expected [][]interface{}
+	}
+	dataframeLocColsItemsTests := []dataframeLocColsItemsTest{
+		{
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
+				newDf, err := NewDataFrame(data, columns, indexCols)
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
+			[]string{"Age"},
+			[][]interface{}{{19, 27, 22}},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccolsitems1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Position"},
+			[][]interface{}{{"PG", "SF", "SG", "SG"}},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccolsitems1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Age", "College", "Name"},
+			[][]interface{}{
+				{25.0, 25.0, 27.0, 22.0},
+				{"Texas", "Marquette", "Boston University", "Georgia State"},
+				{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccolsitems1.csv", []string{"Name", "Age"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			[]string{"Avery Bradley"},
+			nil,
+		},
+	}
+	for _, test := range dataframeLocColsItemsTests {
+		output, err := test.arg1.LocColsItems(test.arg2...)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
 func TestDataFrameLoc(t *testing.T) {
 	type dataframeLocTest struct {
 		arg1     DataFrame
