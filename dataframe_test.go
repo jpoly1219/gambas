@@ -2040,7 +2040,7 @@ func TestPivot(t *testing.T) {
 	pivotTests := []pivotTest{
 		{
 			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/pivottest1.csv", []string{"Name"})
+				newDf, err := ReadCsv("./testfiles/testdfpivot1.csv", []string{"Name"})
 				if err != nil {
 					t.Error(err)
 				}
@@ -2076,7 +2076,7 @@ func TestPivot(t *testing.T) {
 		},
 		{
 			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/pivottest2.csv", []string{"Time"})
+				newDf, err := ReadCsv("./testfiles/testdfpivot2.csv", []string{"Time"})
 				if err != nil {
 					t.Error(err)
 				}
@@ -2122,6 +2122,190 @@ func TestPivot(t *testing.T) {
 
 	for _, test := range pivotTests {
 		output, err := test.arg1.Pivot(test.arg2, test.arg3)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestDataFramePivotTable(t *testing.T) {
+	type pivotTableTest struct {
+		arg1     DataFrame
+		arg2     string
+		arg3     string
+		arg4     string
+		arg5     StatsFunc
+		expected *DataFrame
+	}
+	pivotTableTests := []pivotTableTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfpivottable1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			"Team",
+			"Height",
+			"Salary",
+			Mean,
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{math.NaN(), 1500000.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"5-11",
+					},
+					{
+						[]interface{}{6912869.0, math.NaN()},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"5-9",
+					},
+					{
+						[]interface{}{5000000.0, 958633.333},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-10",
+					},
+					{
+						[]interface{}{math.NaN(), 1140240.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-11",
+					},
+					{
+						[]interface{}{4777348.5, math.NaN()},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-2",
+					},
+					{
+						[]interface{}{math.NaN(), 2697445.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-3",
+					},
+					{
+						[]interface{}{3431040.0, 817107.5},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-4",
+					},
+					{
+						[]interface{}{1148640.0, math.NaN()},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-5",
+					},
+					{
+						[]interface{}{4272978.5, math.NaN()},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-6",
+					},
+					{
+						[]interface{}{3425510.0, 1467660.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-7",
+					},
+					{
+						[]interface{}{1170960.0, 7330732.5},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-8",
+					},
+					{
+						[]interface{}{7284630.0, math.NaN()},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"6-9",
+					},
+					{
+						[]interface{}{2391067.5, 19689000.0},
+						IndexData{
+							[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+							[]string{"Team"},
+						},
+						"7-0",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"Boston Celtics"}}, {1, []interface{}{"Brooklyn Nets"}}},
+					[]string{"Team"},
+				},
+				[]string{"5-11", "5-9", "6-10", "6-11", "6-2", "6-3", "6-4", "6-5", "6-6", "6-7", "6-8", "6-9", "7-0"},
+			},
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/airquality.csv", []string{"Time"})
+				if err != nil {
+					t.Error(err)
+				}
+				return *newDf
+			}(),
+			"location",
+			"parameter",
+			"value",
+			Mean,
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{26.951, 29.374, 29.740},
+						IndexData{
+							[]Index{{0, []interface{}{"BETR801"}}, {1, []interface{}{"FR04014"}}, {2, []interface{}{"London Westminster"}}},
+							[]string{"location"},
+						},
+						"no2",
+					},
+					{
+						[]interface{}{23.169, math.NaN(), 13.444},
+						IndexData{
+							[]Index{{0, []interface{}{"BETR801"}}, {1, []interface{}{"FR04014"}}, {2, []interface{}{"London Westminster"}}},
+							[]string{"location"},
+						},
+						"pm25",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{"BETR801"}}, {1, []interface{}{"FR04014"}}, {2, []interface{}{"London Westminster"}}},
+					[]string{"location"},
+				},
+				[]string{"no2", "pm25"},
+			},
+		},
+	}
+
+	for _, test := range pivotTableTests {
+		output, err := test.arg1.PivotTable(test.arg2, test.arg3, test.arg4, test.arg5)
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
