@@ -36,7 +36,7 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] Sorting by given index
     - [ ] Groupby
     - [x] Pivot
-    - [ ] PivotTable
+    - [x] PivotTable
     - [ ] Long to wide format
     - [ ] Wide to long format
   - [ ] Combining data from multiple tables
