@@ -71,6 +71,14 @@ func TestMean(t *testing.T) {
 			},
 		},
 		{
+			[]interface{}{30.0, 23.0, 19.0, math.NaN()},
+			StatsResult{
+				"Mean",
+				24.0,
+				nil,
+			},
+		},
+		{
 			[]interface{}{},
 			StatsResult{
 				"Mean",
