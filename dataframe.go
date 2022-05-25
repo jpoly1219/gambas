@@ -597,6 +597,10 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 	return newDf, nil
 }
 
+// PivotTable rearranges the data by a given index and column.
+// Each value will be aggregated via an aggregation function.
+// Pick three columns from the DataFrame, each to serve as the index, column, and value.
+// PivotTable ignores NaN values.
 func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) (*DataFrame, error) {
 	filteredData, err := df.LocColsItems(index, column, value)
 	if err != nil {
@@ -641,6 +645,9 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 		dataMap[*key] = append(dataMap[*key], val)
 	}
 
+	sort.Strings(uniqueColSlice)
+	sort.Strings(uniqueIndexSlice)
+
 	valSlice := make([][]interface{}, 0)
 	for i, col := range uniqueColSlice {
 		val := make([]interface{}, 0)
@@ -650,9 +657,14 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 			if err != nil {
 				return nil, err
 			}
+
 			result := aggFunc(dataMap[*key])
 			if result.Err != nil {
-				return nil, result.Err
+				if math.IsNaN(result.Result) {
+
+				} else {
+					return nil, result.Err
+				}
 			}
 
 			val = append(val, result.Result)
@@ -671,6 +683,9 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 		newDfIndex.index = append(newDfIndex.index, idx)
 	}
 	newDf.index = newDfIndex
+	for i := range newDf.series {
+		newDf.series[i].index = newDf.index
+	}
 
 	return newDf, nil
 }
