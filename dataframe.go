@@ -689,3 +689,30 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 
 	return newDf, nil
 }
+
+func (df *DataFrame) Melt(colName, valueName string) (*DataFrame, error) {
+	newDfIndexSlice := make([]interface{}, 0)
+	newDfColumnSlice := make([]interface{}, 0)
+	newDfValueSlice := make([]interface{}, 0)
+
+	for i, idx := range df.index.index {
+		for _, col := range df.series {
+			newDfIndexSlice = append(newDfIndexSlice, idx.value...)
+			newDfColumnSlice = append(newDfColumnSlice, col.name)
+			newDfValueSlice = append(newDfValueSlice, col.data[i])
+		}
+	}
+
+	newDfSlice := make([][]interface{}, 0)
+	newDfSlice = append(newDfSlice, newDfIndexSlice, newDfColumnSlice, newDfValueSlice)
+
+	colNameSlice := make([]string, 0)
+	colNameSlice = append(colNameSlice, df.index.names...)
+	colNameSlice = append(colNameSlice, colName, valueName)
+	newDf, err := NewDataFrame(newDfSlice, colNameSlice, df.index.names)
+	if err != nil {
+		return nil, err
+	}
+
+	return newDf, nil
+}
