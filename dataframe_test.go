@@ -2306,6 +2306,99 @@ func TestDataFramePivotTable(t *testing.T) {
 
 	for _, test := range pivotTableTests {
 		output, err := test.arg1.PivotTable(test.arg2, test.arg3, test.arg4, test.arg5)
+		fmt.Println(output)
+		output.Print()
+		fmt.Println("---")
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestDataFrameMelt(t *testing.T) {
+	type meltTest struct {
+		arg1     DataFrame
+		arg2     string
+		arg3     string
+		expected *DataFrame
+	}
+	meltTests := []meltTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/airquality.csv", []string{"Time"})
+				if err != nil {
+					t.Error(err)
+				}
+				dfPivoted, _ := newDf.PivotTable("location", "parameter", "value", Mean)
+				return *dfPivoted
+			}(),
+			"parameter",
+			"value",
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"BETR801", "BETR801", "FR04014", "FR04014", "London Westminster", "London Westminster"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"BETR801"}},
+								{1, []interface{}{"BETR801"}},
+								{2, []interface{}{"FR04014"}},
+								{3, []interface{}{"FR04014"}},
+								{4, []interface{}{"London Westminster"}},
+								{5, []interface{}{"London Westminster"}},
+							},
+							[]string{"location"},
+						},
+						"location",
+					},
+					{
+						[]interface{}{"no2", "pm25", "no2", "pm25", "no2", "pm25"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"BETR801"}},
+								{1, []interface{}{"BETR801"}},
+								{2, []interface{}{"FR04014"}},
+								{3, []interface{}{"FR04014"}},
+								{4, []interface{}{"London Westminster"}},
+								{5, []interface{}{"London Westminster"}},
+							},
+							[]string{"location"},
+						},
+						"parameter",
+					},
+					{
+						[]interface{}{26.951, 23.169, 29.374, math.NaN(), 29.740, 13.444},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"BETR801"}},
+								{1, []interface{}{"BETR801"}},
+								{2, []interface{}{"FR04014"}},
+								{3, []interface{}{"FR04014"}},
+								{4, []interface{}{"London Westminster"}},
+								{5, []interface{}{"London Westminster"}},
+							},
+							[]string{"location"},
+						},
+						"value",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"BETR801"}},
+						{1, []interface{}{"BETR801"}},
+						{2, []interface{}{"FR04014"}},
+						{3, []interface{}{"FR04014"}},
+						{4, []interface{}{"London Westminster"}},
+						{5, []interface{}{"London Westminster"}},
+					},
+					[]string{"location"},
+				},
+				[]string{"location", "parameter", "value"},
+			},
+		},
+	}
+	for _, test := range meltTests {
+		output, err := test.arg1.Melt(test.arg2, test.arg3)
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
