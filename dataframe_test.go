@@ -2030,7 +2030,7 @@ func TestDropNaN(t *testing.T) {
 	}
 }
 
-func TestPivot(t *testing.T) {
+func TestDataFramePivot(t *testing.T) {
 	type pivotTest struct {
 		arg1     DataFrame
 		arg2     string
