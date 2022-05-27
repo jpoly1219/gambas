@@ -34,7 +34,7 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] Sorting by index
     - [x] Sorting by values
     - [x] Sorting by given index
-    - [ ] Groupby
+    - [p] Groupby
     - [x] Pivot (long to wide format)
     - [x] PivotTable (long to wide format)
     - [x] Melt (wide to long format)
