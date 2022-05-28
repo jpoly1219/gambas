@@ -716,3 +716,38 @@ func (df *DataFrame) Melt(colName, valueName string) (*DataFrame, error) {
 
 	return newDf, nil
 }
+
+func (df *DataFrame) GroupBy(cols ...string) (*GroupBy, error) {
+	gb := new(GroupBy)
+
+	filtered, err := df.LocCols(cols...)
+	if err != nil {
+		return nil, err
+	}
+
+	for i := range filtered.index.index {
+		indexTuple := make([]interface{}, 0)
+		for j := range filtered.series {
+			indexTuple = append(indexTuple, filtered.series[j].data[i])
+		}
+		index := Index{i, indexTuple}
+		gb.index = append(gb.index, index)
+	}
+
+	for _, ser := range df.series {
+		gb.columns = append(gb.columns, ser.name)
+		for _, val := range ser.data {
+			gb.dataMap[ser.name] = append(gb.dataMap[ser.name], val)
+		}
+	}
+
+	return gb, nil
+
+	/*
+		gb{
+			[]Index{
+				{0, }
+			}
+		}
+	*/
+}
