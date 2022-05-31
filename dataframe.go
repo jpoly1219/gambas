@@ -717,6 +717,7 @@ func (df *DataFrame) Melt(colName, valueName string) (*DataFrame, error) {
 	return newDf, nil
 }
 
+// GroupBy groups selected columns in a DataFrame object and returns a GroupBy object.
 func (df *DataFrame) GroupBy(cols ...string) (*GroupBy, error) {
 	gb := new(GroupBy)
 
