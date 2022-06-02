@@ -729,7 +729,7 @@ func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
 
 	for i, row := range filtered.index.index {
 		colTuple := make([]interface{}, 0)
-		for j, ser := range filtered.series {
+		for _, ser := range filtered.series {
 			colTuple = append(colTuple, ser.data[i])
 		}
 
