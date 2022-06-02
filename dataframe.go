@@ -718,37 +718,35 @@ func (df *DataFrame) Melt(colName, valueName string) (*DataFrame, error) {
 }
 
 // GroupBy groups selected columns in a DataFrame object and returns a GroupBy object.
-func (df *DataFrame) GroupBy(cols ...string) (*GroupBy, error) {
-	gb := new(GroupBy)
-
-	filtered, err := df.LocCols(cols...)
+func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
+	filtered, err := df.LocCols(by...)
 	if err != nil {
 		return nil, err
 	}
 
-	for i := range filtered.index.index {
-		indexTuple := make([]interface{}, 0)
-		for j := range filtered.series {
-			indexTuple = append(indexTuple, filtered.series[j].data[i])
+	colIndMap := make(map[string][]interface{})
+	colTuples := make([][]interface{}, 0)
+
+	for i, row := range filtered.index.index {
+		colTuple := make([]interface{}, 0)
+		for j, ser := range filtered.series {
+			colTuple = append(colTuple, ser.data[i])
 		}
-		index := Index{i, indexTuple}
-		gb.index = append(gb.index, index)
+
+		index := Index{i, colTuple}
+		key, err := index.hashKeyValueOnly()
+		if err != nil {
+			return nil, err
+		}
+
+		colIndMap[*key] = append(colIndMap[*key], row)
+		colTuples = append(colTuples, colTuple)
 	}
 
-	for _, ser := range df.series {
-		gb.columns = append(gb.columns, ser.name)
-		for _, val := range ser.data {
-			gb.dataMap[ser.name] = append(gb.dataMap[ser.name], val)
-		}
-	}
+	gb := new(GroupBy)
+	gb.DataFrame = df
+	gb.colIndMap = colIndMap
+	gb.colTuples = colTuples
 
 	return gb, nil
-
-	/*
-		gb{
-			[]Index{
-				{0, }
-			}
-		}
-	*/
 }
