@@ -168,6 +168,16 @@ func containsIndexWithoutId(indexSlice []Index, index Index) bool {
 	return false
 }
 
+// containsSlice checks whether a slice of interface{} exists in a slice of []interface{}.
+func containsSlice(s1 [][]interface{}, s2 []interface{}) bool {
+	for _, data := range s1 {
+		if slicesAreEqual(data, s2) {
+			return true
+		}
+	}
+	return false
+}
+
 // Summary statistics functions (internal use only)
 
 // median() returns the median of the elements in an array.
