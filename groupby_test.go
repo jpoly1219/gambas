@@ -1,7 +1,6 @@
 package gambas
 
 import (
-	"math"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -30,51 +29,59 @@ func TestGroupByAgg(t *testing.T) {
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{"BETR801", "FR04014", "London Westminster"},
+						[]interface{}{"no2", "no2", "no2", "pm25", "pm25"},
 						IndexData{
 							[]Index{
-								{0, []interface{}{"BETR801"}},
-								{1, []interface{}{"FR04014"}},
-								{2, []interface{}{"London Westminster"}},
+								{3, []interface{}{"no2", "BETR801"}},
+								{2, []interface{}{"no2", "FR04014"}},
+								{4, []interface{}{"no2", "London Westminster"}},
+								{0, []interface{}{"pm25", "BETR801"}},
+								{1, []interface{}{"pm25", "London Westminster"}},
 							},
-							[]string{"location"},
+							[]string{"parameter", "location"},
+						},
+						"parameter",
+					},
+					{
+						[]interface{}{"BETR801", "FR04014", "London Westminster", "BETR801", "London Westminster"},
+						IndexData{
+							[]Index{
+								{3, []interface{}{"no2", "BETR801"}},
+								{2, []interface{}{"no2", "FR04014"}},
+								{4, []interface{}{"no2", "London Westminster"}},
+								{0, []interface{}{"pm25", "BETR801"}},
+								{1, []interface{}{"pm25", "London Westminster"}},
+							},
+							[]string{"parameter", "location"},
 						},
 						"location",
 					},
 					{
-						[]interface{}{26.951, 29.374, 29.740},
+						[]interface{}{26.951, 29.374, 29.740, 23.169, 13.444},
 						IndexData{
 							[]Index{
-								{0, []interface{}{"BETR801"}},
-								{1, []interface{}{"FR04014"}},
-								{2, []interface{}{"London Westminster"}},
+								{3, []interface{}{"no2", "BETR801"}},
+								{2, []interface{}{"no2", "FR04014"}},
+								{4, []interface{}{"no2", "London Westminster"}},
+								{0, []interface{}{"pm25", "BETR801"}},
+								{1, []interface{}{"pm25", "London Westminster"}},
 							},
-							[]string{"location"},
+							[]string{"parameter", "location"},
 						},
-						"no2",
-					},
-					{
-						[]interface{}{23.169, math.NaN(), 13.444},
-						IndexData{
-							[]Index{
-								{0, []interface{}{"BETR801"}},
-								{1, []interface{}{"FR04014"}},
-								{2, []interface{}{"London Westminster"}},
-							},
-							[]string{"location"},
-						},
-						"pm25",
+						"value",
 					},
 				},
 				IndexData{
 					[]Index{
-						{0, []interface{}{"BETR801"}},
-						{1, []interface{}{"FR04014"}},
-						{2, []interface{}{"London Westminster"}},
+						{3, []interface{}{"no2", "BETR801"}},
+						{2, []interface{}{"no2", "FR04014"}},
+						{4, []interface{}{"no2", "London Westminster"}},
+						{0, []interface{}{"pm25", "BETR801"}},
+						{1, []interface{}{"pm25", "London Westminster"}},
 					},
-					[]string{"location"},
+					[]string{"parameter", "location"},
 				},
-				[]string{"location", "no2", "pm25"},
+				[]string{"parameter", "location", "value"},
 			},
 		},
 	}
