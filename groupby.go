@@ -16,8 +16,15 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 		return nil, err
 	}
 
-	newDfData := make([][]interface{}, len(gb.colTuples[0])+len(targetCol))
-	for i, ser := range filtered.series {
+	newDfData := make([][]interface{}, len(gb.colTuples[0]))
+	for _, colTuple := range gb.colTuples {
+		for j, col := range colTuple {
+			newDfData[j] = append(newDfData[j], col)
+		}
+	}
+
+	results := make([]interface{}, 0)
+	for _, ser := range filtered.series {
 		for j, colTuple := range gb.colTuples {
 			colTupleIndex := Index{j, colTuple}
 			key, err := colTupleIndex.hashKeyValueOnly()
@@ -35,18 +42,21 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 				return nil, err
 			}
 			result := aggFunc(data)
-
-			for k := range colTuple {
-				newDfData[i] = append(newDfData[i], colTuple[i])
-			}
+			results = append(results, result.Result)
 		}
 	}
 
-	fmt.Println(colTupleToResult)
+	newDfData = append(newDfData, results)
+	newDfColumns := make([]string, 0)
+	newDfColumns = append(newDfColumns, gb.colTuplesLabels...)
+	newDfColumns = append(newDfColumns, filtered.columns...)
+	fmt.Println(newDfColumns)
 
-	newDf, err := NewDataFrame(colTupleToResult, gb.dataFrame.columns, gb.dataFrame.index.names)
+	newDf, err := NewDataFrame(newDfData, newDfColumns, gb.colTuplesLabels)
 	if err != nil {
 		return nil, err
 	}
+
+	newDf.SortByIndex(true)
 	return newDf, nil
 }
