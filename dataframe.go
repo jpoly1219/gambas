@@ -749,6 +749,7 @@ func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
 	gb.dataFrame = df
 	gb.colIndMap = colIndMap
 	gb.colTuples = colTuples
+	gb.colTuplesLabels = filtered.columns
 
 	return gb, nil
 }
