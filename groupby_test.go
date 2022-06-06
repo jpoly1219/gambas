@@ -17,6 +17,101 @@ func TestGroupByAgg(t *testing.T) {
 	aggTests := []aggTest{
 		{
 			func() GroupBy {
+				newDf, err := ReadCsv("./testfiles/testgbagg.csv", []string{"ID"})
+				if err != nil {
+					t.Error(err)
+				}
+				gb, _ := newDf.GroupBy("Animal")
+				return *gb
+			}(),
+			[]string{"Max Speed"},
+			Mean,
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Falcon", "Parrot"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Falcon"}},
+								{1, []interface{}{"Parrot"}},
+							},
+							[]string{"Animal"},
+						},
+						"Animal",
+					},
+					{
+						[]interface{}{375.000, 25.000},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Falcon"}},
+								{1, []interface{}{"Parrot"}},
+							},
+							[]string{"Animal"},
+						},
+						"Max Speed",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Falcon"}},
+						{1, []interface{}{"Parrot"}},
+					},
+					[]string{"Animal"},
+				},
+				[]string{"Animal", "Max Speed"},
+			},
+		},
+		{
+			func() GroupBy {
+				newDf, err := ReadCsv("./testfiles/titanic.csv", []string{"PassengerId"})
+				if err != nil {
+					t.Error(err)
+				}
+				gb, _ := newDf.GroupBy("Pclass")
+				return *gb
+			}(),
+			[]string{"Age"},
+			Mean,
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{1, 2, 3},
+						IndexData{
+							[]Index{
+								{0, []interface{}{1}},
+								{1, []interface{}{2}},
+								{2, []interface{}{3}},
+							},
+							[]string{"Pclass"},
+						},
+						"Pclass",
+					},
+					{
+						[]interface{}{38.233, 29.878, 25.141},
+						IndexData{
+							[]Index{
+								{0, []interface{}{1}},
+								{1, []interface{}{2}},
+								{2, []interface{}{3}},
+							},
+							[]string{"Pclass"},
+						},
+						"Age",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{1}},
+						{1, []interface{}{2}},
+						{2, []interface{}{3}},
+					},
+					[]string{"Pclass"},
+				},
+				[]string{"Pclass", "Age"},
+			},
+		},
+		{
+			func() GroupBy {
 				newDf, err := ReadCsv("./testfiles/airquality.csv", []string{"date.utc"})
 				if err != nil {
 					t.Error(err)
