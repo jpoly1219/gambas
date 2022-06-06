@@ -30,9 +30,13 @@ func NewSeries(data []interface{}, name string, index *IndexData) (*Series, erro
 		return nil, err
 	}
 	if !ok {
-		return nil, fmt.Errorf("types do not match")
+		strData := consolidateToString(data)
+		s.data = strData
+		// return nil, fmt.Errorf("types do not match")
 	}
-	s.data = data
+	if s.data != nil {
+		s.data = data
+	}
 
 	if index == nil {
 		s.index = CreateRangeIndex(len(data))
