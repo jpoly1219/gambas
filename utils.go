@@ -90,6 +90,18 @@ func checkCSVDataType(data string) interface{} {
 	}
 }
 
+// consolidateToString consolidates all data in an []interface{} to string.
+// In order to stay compatible with Series.data,
+// the data type of the slice is still an empty interface.
+func consolidateToString(data []interface{}) []interface{} {
+	result := make([]interface{}, len(data))
+	for i, d := range data {
+		result[i] = fmt.Sprint(d)
+	}
+
+	return result
+}
+
 // interface2F64Data() converts a slice of interface{} into F64Data.
 func interface2F64Slice(data []interface{}) ([]float64, error) {
 	fd := make([]float64, 0)
