@@ -34,7 +34,7 @@ func NewSeries(data []interface{}, name string, index *IndexData) (*Series, erro
 		s.data = strData
 		// return nil, fmt.Errorf("types do not match")
 	}
-	if s.data != nil {
+	if s.data == nil {
 		s.data = data
 	}
 
