@@ -75,12 +75,12 @@ func TestGroupByAgg(t *testing.T) {
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{1, 2, 3},
+						[]interface{}{1.0, 2.0, 3.0},
 						IndexData{
 							[]Index{
-								{0, []interface{}{1}},
-								{1, []interface{}{2}},
-								{2, []interface{}{3}},
+								{1, []interface{}{1.0}},
+								{2, []interface{}{2.0}},
+								{0, []interface{}{3.0}},
 							},
 							[]string{"Pclass"},
 						},
@@ -90,9 +90,9 @@ func TestGroupByAgg(t *testing.T) {
 						[]interface{}{38.233, 29.878, 25.141},
 						IndexData{
 							[]Index{
-								{0, []interface{}{1}},
-								{1, []interface{}{2}},
-								{2, []interface{}{3}},
+								{1, []interface{}{1.0}},
+								{2, []interface{}{2.0}},
+								{0, []interface{}{3.0}},
 							},
 							[]string{"Pclass"},
 						},
@@ -101,9 +101,9 @@ func TestGroupByAgg(t *testing.T) {
 				},
 				IndexData{
 					[]Index{
-						{0, []interface{}{1}},
-						{1, []interface{}{2}},
-						{2, []interface{}{3}},
+						{1, []interface{}{1.0}},
+						{2, []interface{}{2.0}},
+						{0, []interface{}{3.0}},
 					},
 					[]string{"Pclass"},
 				},
