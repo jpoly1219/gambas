@@ -739,7 +739,7 @@ func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
 			return nil, err
 		}
 
-		colIndMap[*key] = append(colIndMap[*key], row.value...)
+		colIndMap[*key] = append(colIndMap[*key], row.id)
 		if !containsSlice(colTuples, colTuple) {
 			colTuples = append(colTuples, colTuple)
 		}
