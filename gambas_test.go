@@ -109,7 +109,14 @@ func TestNewSeries(t *testing.T) {
 				[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
 				[]string{""},
 			},
-			nil,
+			&Series{
+				[]interface{}{"apple", "2", "cherry"},
+				IndexData{
+					[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+					[]string{""},
+				},
+				"Fruit",
+			},
 		},
 		{
 			[]interface{}{"alice", "bob", "charlie"},
