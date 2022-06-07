@@ -1,7 +1,5 @@
 package gambas
 
-import "fmt"
-
 type GroupBy struct {
 	dataFrame       *DataFrame
 	colIndMap       map[string][]interface{}
@@ -25,21 +23,21 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 
 	results := make([]interface{}, 0)
 	for _, ser := range filtered.series {
-		for j, colTuple := range gb.colTuples {
-			colTupleIndex := Index{j, colTuple}
+		for i, colTuple := range gb.colTuples {
+			colTupleIndex := Index{i, colTuple}
 			key, err := colTupleIndex.hashKeyValueOnly()
 			if err != nil {
 				return nil, err
 			}
 
 			indexForData := gb.colIndMap[*key]
-			ifd2d := make([][]interface{}, 0)
-			for _, ifd := range indexForData {
-				ifd2d = append(ifd2d, []interface{}{ifd})
-			}
-			data, err := ser.LocItems(ifd2d...)
-			if err != nil {
-				return nil, err
+			data := make([]interface{}, 0)
+			for _, id := range indexForData {
+				d, err := ser.IAt(id.(int))
+				if err != nil {
+					return nil, err
+				}
+				data = append(data, d)
 			}
 			result := aggFunc(data)
 			results = append(results, result.Result)
@@ -50,7 +48,6 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 	newDfColumns := make([]string, 0)
 	newDfColumns = append(newDfColumns, gb.colTuplesLabels...)
 	newDfColumns = append(newDfColumns, filtered.columns...)
-	fmt.Println(newDfColumns)
 
 	newDf, err := NewDataFrame(newDfData, newDfColumns, gb.colTuplesLabels)
 	if err != nil {
