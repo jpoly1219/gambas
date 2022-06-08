@@ -16,7 +16,7 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] Writing to CSV files
     - [ ] Reading Excel files
     - [ ] Writing to Excel files
-    - [ ] Reading JSON files
+    - [p] Reading JSON files
     - [ ] Writing to JSON files
   - [x] Selecting a subset of data
     - [x] At, IAt
@@ -34,7 +34,7 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] Sorting by index
     - [x] Sorting by values
     - [x] Sorting by given index
-    - [x] Groupby *more testing is required*
+    - [x] Groupby *(more testing is required)*
     - [x] Pivot (long to wide format)
     - [x] PivotTable (long to wide format)
     - [x] Melt (wide to long format)
