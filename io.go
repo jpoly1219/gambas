@@ -3,6 +3,7 @@ package gambas
 import (
 	"bufio"
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -122,3 +123,52 @@ func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
 	}
 	return info, nil
 }
+
+// ReadJson reads a JSON file and returns a new DataFrame object.
+// It is recommended to generate pathToFile using `filepath.Join`.
+// The JSON file should be in this formats:
+// {"col1":[val1, val2, ...], "col2":[val1, val2, ...], ...}
+// You can either set a column to be the index, or set it as nil.
+// If nil, a new RangeIndex will be created.
+func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error) {
+	f, err := os.Open(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	fbyte, err := io.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+
+	var decoded map[string]interface{}
+	err = json.Unmarshal(fbyte, &decoded)
+	if err != nil {
+		return nil, err
+	}
+
+	newDfData := make([][]interface{}, 0)
+	newDfCols := make([]string, 0)
+	newDfIndex := IndexData{[]Index{}, []string{}}
+
+	for col, colData := range decoded {
+		
+	}
+
+	newDf, err := NewDataFrame([][]interface{}{}, []string{}, []string{})
+	if err != nil {
+		return nil, err
+	}
+	return newDf, nil
+}
+
+// ReadJsonByRows reads a JSON file and returns a new DataFrame object.
+// The JSON file should be in this format:
+// {"index1":{"col1":val1, "col2":val2, ...}, "index2":{}...}
+func ReadJsonByRows()
+
+// ReadJsonStream reads a JSON stream and returns a new DataFrame object.
+// The JSON file should be in this format:
+// {"col1":val1, "col2":val2, ...} {"col1":val1, "col2":val2, ...}
+func ReadJsonStream()
