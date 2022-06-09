@@ -126,10 +126,11 @@ func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
 
 // ReadJson reads a JSON file and returns a new DataFrame object.
 // It is recommended to generate pathToFile using `filepath.Join`.
-// The JSON file should be in this formats:
+// The JSON file should be in this format:
 // {"col1":[val1, val2, ...], "col2":[val1, val2, ...], ...}
 // You can either set a column to be the index, or set it as nil.
 // If nil, a new RangeIndex will be created.
+// Your index column should not have any missing values.
 func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error) {
 	f, err := os.Open(pathToFile)
 	if err != nil {
@@ -150,13 +151,23 @@ func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error
 
 	newDfData := make([][]interface{}, 0)
 	newDfCols := make([]string, 0)
-	newDfIndex := IndexData{[]Index{}, []string{}}
+	newDfIndexNames := make([]string, 0)
 
 	for col, colData := range decoded {
-		
+		newDfCols = append(newDfCols, col)
+		colDataAsserted := colData.([]interface{})
+		newDfData = append(newDfData, colDataAsserted)
+
+		if indexCols != nil && containsString(indexCols, col) {
+			newDfIndexNames = append(newDfIndexNames, col)
+		}
 	}
 
-	newDf, err := NewDataFrame([][]interface{}{}, []string{}, []string{})
+	if indexCols == nil {
+		newDfIndexNames = nil
+	}
+
+	newDf, err := NewDataFrame(newDfData, newDfCols, newDfIndexNames)
 	if err != nil {
 		return nil, err
 	}
