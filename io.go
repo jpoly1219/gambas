@@ -177,7 +177,49 @@ func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error
 // ReadJsonByRows reads a JSON file and returns a new DataFrame object.
 // The JSON file should be in this format:
 // {"index1":{"col1":val1, "col2":val2, ...}, "index2":{}...}
-func ReadJsonByRows()
+func ReadJsonByRows(pathToFile string) (*DataFrame, error) {
+	f, err := os.Open(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	fbyte, err := io.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+
+	var decoded map[string]interface{}
+	err = json.Unmarshal(fbyte, &decoded)
+	if err != nil {
+		return nil, err
+	}
+
+	newDfData := make([][]interface{}, 0)
+	newDfCols := make([]string, 0)
+	newDfCols = append(newDfCols, "index")
+
+	for index, rowData := range decoded {
+		rowDataAsserted := rowData.(map[string]interface{})
+		d := make([][]interface{}, len(rowDataAsserted)+1)
+		d[0] = append(d[0], index)
+
+		count := 1
+		for col, val := range rowDataAsserted {
+			if !containsString(newDfCols, col) {
+				newDfCols = append(newDfCols, col)
+			}
+			d[count] = append(d[count], val)
+		}
+		newDfData = d
+	}
+
+	newDf, err := NewDataFrame(newDfData, newDfCols, []string{"index"})
+	if err != nil {
+		return nil, err
+	}
+	return newDf, nil
+}
 
 // ReadJsonStream reads a JSON stream and returns a new DataFrame object.
 // The JSON file should be in this format:
