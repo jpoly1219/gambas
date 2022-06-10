@@ -646,3 +646,137 @@ func TestWriteCsv(t *testing.T) {
 		}
 	}
 }
+
+func TestIoReadJsonByColumns(t *testing.T) {
+	type readJsonByColumnsTest struct {
+		arg1     string
+		arg2     []string
+		expected *DataFrame
+	}
+	readJsonByColumnsTests := []readJsonByColumnsTest{
+		{
+			"testfiles/readjsonbycolumns/1.json",
+			[]string{"Name"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{
+							"Avery", "Bradley", "Candice",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{
+							19.0, 26.0, 23.0,
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{
+							"Male", "Male", "Female",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Sex",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery"}},
+						{1, []interface{}{"Bradley"}},
+						{2, []interface{}{"Candice"}},
+					},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+		{
+			"testfiles/readjsonbycolumns/2.json",
+			[]string{"Name"},
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{
+							"Avery", "Bradley", "Candice",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Name",
+					},
+					{
+						[]interface{}{
+							19.0, 26.0, math.NaN(),
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{
+							"Male", "NaN", "Female",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Sex",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery"}},
+						{1, []interface{}{"Bradley"}},
+						{2, []interface{}{"Candice"}},
+					},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+	}
+	for _, test := range readJsonByColumnsTests {
+		output, err := ReadJsonByColumns(test.arg1, test.arg2)
+		if output != nil && err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
