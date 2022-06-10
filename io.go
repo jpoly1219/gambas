@@ -223,5 +223,42 @@ func ReadJsonByRows(pathToFile string) (*DataFrame, error) {
 
 // ReadJsonStream reads a JSON stream and returns a new DataFrame object.
 // The JSON file should be in this format:
-// {"col1":val1, "col2":val2, ...} {"col1":val1, "col2":val2, ...}
-func ReadJsonStream()
+// {"col1":val1, "col2":val2, ...}{"col1":val1, "col2":val2, ...}
+func ReadJsonStream(pathToFile string, indexCols []string) (*DataFrame, error) {
+	f, err := os.Open(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	dec := json.NewDecoder(f)
+	newDfCols := make([]string, 0)
+	colData := make(map[string][]interface{}, 0)
+
+	for {
+		var row map[string]interface{}
+		err := dec.Decode(&row)
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return nil, err
+		}
+
+		for k, v := range row {
+			colData[k] = append(colData[k], v)
+		}
+	}
+
+	newDfData := make([][]interface{}, 0)
+
+	for k, v := range colData {
+		newDfCols = append(newDfCols, k)
+		newDfData = append(newDfData, v)
+	}
+
+	newDf, err := NewDataFrame(newDfData, newDfCols, indexCols)
+	if err != nil {
+		return nil, err
+	}
+	return newDf, nil
+}
