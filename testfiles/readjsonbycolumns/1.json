@@ -1,0 +1,11 @@
+{
+    "Name": [
+        "Avery", "Bradley", "Candice"
+    ],
+    "Age": [
+        19.0, 26.0, 23.0
+    ],
+    "Sex": [
+        "Male", "Male", "Female"
+    ]
+}
