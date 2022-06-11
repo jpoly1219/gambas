@@ -1,0 +1,14 @@
+{
+    "Avery": {
+        "Age": 19.0,
+        "Sex": "Male"
+    },
+    "Bradley": {
+        "Age": 26.0,
+        "Sex": "Male"
+    },
+    "Candice": {
+        "Age": 23.0,
+        "Sex": "Female"
+    }
+}
