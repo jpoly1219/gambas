@@ -775,7 +775,80 @@ func TestIoReadJsonByColumns(t *testing.T) {
 	}
 	for _, test := range readJsonByColumnsTests {
 		output, err := ReadJsonByColumns(test.arg1, test.arg2)
-		if output != nil && err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestIoReadJsonByRows(t *testing.T) {
+	type readJsonByRowsTest struct {
+		arg1     string
+		expected *DataFrame
+	}
+	readJsonByRowsTests := []readJsonByRowsTest{
+		{
+			"testfiles/readjsonbyrows/1.json",
+			&DataFrame{
+				[]Series{
+					{
+						[]interface{}{
+							"Avery", "Bradley", "Candice",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"index"},
+						},
+						"index",
+					},
+					{
+						[]interface{}{
+							19.0, 26.0, 23.0,
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"index"},
+						},
+						"Age",
+					},
+					{
+						[]interface{}{
+							"Male", "Male", "Female",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"index"},
+						},
+						"Sex",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery"}},
+						{1, []interface{}{"Bradley"}},
+						{2, []interface{}{"Candice"}},
+					},
+					[]string{"index"},
+				},
+				[]string{"index", "Age", "Sex"},
+			},
+		},
+	}
+	for _, test := range readJsonByRowsTests {
+		output, err := ReadJsonByRows(test.arg1)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
