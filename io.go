@@ -171,6 +171,7 @@ func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error
 	if err != nil {
 		return nil, err
 	}
+	newDf.SortByIndex(true)
 	return newDf, nil
 }
 
