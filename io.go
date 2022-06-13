@@ -156,6 +156,10 @@ func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error
 	for col, colData := range decoded {
 		newDfCols = append(newDfCols, col)
 		colDataAsserted := colData.([]interface{})
+		for i, cda := range colDataAsserted {
+			checked := checkJsonDataType(cda)
+			colDataAsserted[i] = checked
+		}
 		newDfData = append(newDfData, colDataAsserted)
 
 		if indexCols != nil && containsString(indexCols, col) {
