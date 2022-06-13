@@ -90,6 +90,14 @@ func checkCSVDataType(data string) interface{} {
 	}
 }
 
+// checkJsonDataType checks for JSON null data, and converts it into math.NaN().
+func checkJsonDataType(data interface{}) interface{} {
+	if data == nil {
+		return math.NaN()
+	}
+	return data
+}
+
 // consolidateToString consolidates all data in an []interface{} to string.
 // In order to stay compatible with Series.data,
 // the data type of the slice is still an empty interface.
