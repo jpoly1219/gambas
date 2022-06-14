@@ -75,10 +75,43 @@ func i2f(data interface{}) (float64, error) {
 	return x, nil
 }
 
+// tryBool checks if a string can be converted into bool.
+// tryBool only accepts "TRUE", "True", "true", and "FALSE", "False", "false".
+func tryBool(data string) (bool, error) {
+	ignored := []string{"1, t, T, 0, f, F"}
+	if containsString(ignored, data) {
+		return false, fmt.Errorf("ignored string")
+	}
+
+	b, err := strconv.ParseBool(data)
+	if err != nil {
+		return false, err
+	}
+	return b, nil
+}
+
+// tryInt checks if a string can be converted into int.
+func tryInt(data string) (int, error) {
+	s, err := strconv.Atoi(data)
+	if err != nil {
+		return 0, err
+	}
+	return s, nil
+}
+
+// tryFloat64 checks if a string can be converted into float64.
+func tryFloat64(data string) (float64, error) {
+	f, err := strconv.ParseFloat(data, 64)
+	if err != nil {
+		return 0, err
+	}
+	return f, nil
+}
+
 // checkType checks to see if the data can be represented as a float64.
 // Because CSV is read as an array of strings, there has to be a way to check the type.
 func checkCSVDataType(data string) interface{} {
-	if data == "NaN" || data == "" {
+	if data == "" {
 		return math.NaN()
 	}
 	v, ok := strconv.ParseFloat(data, 64)
