@@ -108,6 +108,24 @@ func tryFloat64(data string) (float64, error) {
 	return f, nil
 }
 
+// tryDataType accepts a string and tries to convert it to the correct data type.
+// It will try to convert the data into a bool, then int, then float64, and finally string.
+func tryDataType(data string) interface{} {
+	b, err := tryBool(data)
+	if err != nil {
+		i, err := tryInt(data)
+		if err != nil {
+			f, err := tryFloat64(data)
+			if err != nil {
+				return data
+			}
+			return f
+		}
+		return i
+	}
+	return b
+}
+
 // checkType checks to see if the data can be represented as a float64.
 // Because CSV is read as an array of strings, there has to be a way to check the type.
 func checkCSVDataType(data string) interface{} {
