@@ -48,7 +48,6 @@ func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 			}
 			// each data should be checked to see what type it is
 			vChecked := checkCSVDataType(v)
-			// fmt.Print(vChecked, ", ")
 			data2DArray[i] = append(data2DArray[i], vChecked)
 		}
 		rowNum++
