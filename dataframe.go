@@ -341,7 +341,8 @@ func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 }
 
 // NewCol creates a new column with the given data and column name.
-// To create a blank column, pass in a slice with zero values.
+// To create a blank column, pass in a slice with empty string values
+// like so: []interface{}{"", "", "", ...}
 func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, error) {
 	newSeries, err := NewSeries(data, colname, &df.index)
 	if err != nil {
@@ -567,10 +568,11 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 					if !exists {
 						switch filteredDf.series[1].data[0].(type) {
 						case string:
-							eachColData = append(eachColData, "NaN")
+							eachColData = append(eachColData, "")
 						case float64:
 							eachColData = append(eachColData, math.NaN())
 						case int:
+							// should make a null for integer later
 							eachColData = append(eachColData, math.NaN())
 						}
 					} else {
