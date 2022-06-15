@@ -25,16 +25,20 @@ func CreateRangeIndex(length int) IndexData {
 // This field is for passing in the DataFrame's index data in NewDataFrame.
 func NewSeries(data []interface{}, name string, index *IndexData) (*Series, error) {
 	var s Series
-	ok, err := checkTypeIntegrity(data)
+	dtype, err := checkTypeIntegrity(data)
 	if err != nil {
 		return nil, err
 	}
-	if !ok {
-		strData := consolidateToString(data)
-		s.data = strData
-	}
-	if s.data == nil {
-		s.data = data
+
+	switch dtype {
+	case "float64":
+		s.data = consolidateToFloat64(data)
+	case "string":
+		s.data = consolidateToString(data)
+	default:
+		if s.data == nil {
+			s.data = data
+		}
 	}
 
 	if index == nil {
