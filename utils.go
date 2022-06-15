@@ -193,6 +193,22 @@ func checkJsonDataType(data interface{}) interface{} {
 	return data
 }
 
+// consolidateToFloat64 consolidates all data in an []interface{} to float64.
+// This is necessary to convert empty string values into math.NaN().
+// In order to stay compatible with Series.data,
+// the data type of the slice is still an empty interface.
+func consolidateToFloat64(data []interface{}) []interface{} {
+	result := make([]interface{}, len(data))
+	for i, d := range data {
+		if d == "" {
+			d = math.NaN()
+		}
+		result[i] = d
+	}
+
+	return result
+}
+
 // consolidateToString consolidates all data in an []interface{} to string.
 // In order to stay compatible with Series.data,
 // the data type of the slice is still an empty interface.
