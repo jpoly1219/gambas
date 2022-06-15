@@ -122,7 +122,7 @@ func i2f(data interface{}) (float64, error) {
 // tryBool checks if a string can be converted into bool.
 // tryBool only accepts "TRUE", "True", "true", and "FALSE", "False", "false".
 func tryBool(data string) (bool, error) {
-	ignored := []string{"1, t, T, 0, f, F"}
+	ignored := []string{"1", "t", "T", "0", "f", "F"}
 	if containsString(ignored, data) {
 		return false, fmt.Errorf("ignored string")
 	}
