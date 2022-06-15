@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 func TestCheckTypeIntegrity(t *testing.T) {
@@ -388,6 +389,68 @@ func TestCheckCSVDataType(t *testing.T) {
 			} else {
 				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
+		}
+	}
+}
+
+func TestConsolidateToFloat64(t *testing.T) {
+	type consolidateToFloat64Test struct {
+		arg1     []interface{}
+		expected []interface{}
+	}
+	consolidateToFloat64Tests := []consolidateToFloat64Test{
+		{
+			[]interface{}{1.0, 2.0, 3.0},
+			[]interface{}{1.0, 2.0, 3.0},
+		},
+		{
+			[]interface{}{"", 2.0, 3.0},
+			[]interface{}{math.NaN(), 2.0, 3.0},
+		},
+		{
+			[]interface{}{"", ""},
+			[]interface{}{math.NaN(), math.NaN()},
+		},
+	}
+	for _, test := range consolidateToFloat64Tests {
+		output := consolidateToFloat64(test.arg1)
+		if !cmp.Equal(output, test.expected, cmpopts.EquateNaNs()) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
+func TestConsolidateToString(t *testing.T) {
+	type consolidateToStringTest struct {
+		arg1     []interface{}
+		expected []interface{}
+	}
+	consolidateToStringTests := []consolidateToStringTest{
+		{
+			[]interface{}{1.0, 2.0, 3.0},
+			[]interface{}{"1", "2", "3"},
+		},
+		{
+			[]interface{}{"", 2.0, 3.0},
+			[]interface{}{"", "2", "3"},
+		},
+		{
+			[]interface{}{"", ""},
+			[]interface{}{"", ""},
+		},
+		{
+			[]interface{}{true, "false"},
+			[]interface{}{"true", "false"},
+		},
+		{
+			[]interface{}{1, 2, 3, 4, ""},
+			[]interface{}{"1", "2", "3", "4", ""},
+		},
+	}
+	for _, test := range consolidateToStringTests {
+		output := consolidateToString(test.arg1)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
 }
