@@ -7,38 +7,82 @@ import (
 	"strconv"
 )
 
-func checkTypeIntegrity(data []interface{}) (bool, error) {
-	isFloat64 := 0
-	isString := 0
-	isNil := 0
-	for _, v := range data {
-		switch t := v.(type) {
-		case float64:
-			if math.IsNaN(t) {
-				continue
-			}
-			isFloat64 = 1
-		case string:
-			isString = 1
-		case nil:
-			isNil = 1
-		default:
-			_, err := i2f(v)
-			if err != nil {
-				return false, fmt.Errorf("invalid type: %T", t)
-			} else {
-				isFloat64 = 1
-			}
-		}
+func checkTypeIntegrity(data []interface{}) (string, error) {
+	determinant := 0
+	dtype := ""
 
-		if isFloat64+isString+isNil > 1 {
-			return false, nil
-		} else if isFloat64+isString+isNil == 0 {
-			panic("type not detected")
+	emptyValLocations := make([]int, 0)
+	for i, d := range data {
+		if d == "" {
+			emptyValLocations = append(emptyValLocations, i)
+			continue
+		}
+		switch d.(type) {
+		case bool:
+			determinant += 1
+		case int:
+			determinant += 2
+		case float64:
+			determinant += 4
+		case string:
+			determinant += 8
 		}
 	}
 
-	return true, nil
+	switch determinant {
+	case 1:
+		dtype = "bool"
+	case 2:
+		if len(emptyValLocations) > 0 {
+			dtype = "float64"
+		} else {
+			dtype = "int"
+		}
+	case 4:
+		dtype = "float64"
+	case 8:
+		dtype = "string"
+	case 6:
+		dtype = "float64"
+	case 0:
+		return "", fmt.Errorf("invalid data type; data type should be either bool, int, float64, or string")
+	default:
+		dtype = "string"
+	}
+
+	return dtype, nil
+
+	// isFloat64 := 0
+	// isString := 0
+	// isNil := 0
+	// for _, v := range data {
+	// 	switch t := v.(type) {
+	// 	case float64:
+	// 		if math.IsNaN(t) {
+	// 			continue
+	// 		}
+	// 		isFloat64 = 1
+	// 	case string:
+	// 		isString = 1
+	// 	case nil:
+	// 		isNil = 1
+	// 	default:
+	// 		_, err := i2f(v)
+	// 		if err != nil {
+	// 			return false, fmt.Errorf("invalid type: %T", t)
+	// 		} else {
+	// 			isFloat64 = 1
+	// 		}
+	// 	}
+
+	// 	if isFloat64+isString+isNil > 1 {
+	// 		return false, nil
+	// 	} else if isFloat64+isString+isNil == 0 {
+	// 		panic("type not detected")
+	// 	}
+	// }
+
+	// return true, nil
 }
 
 func i2f(data interface{}) (float64, error) {
