@@ -84,6 +84,7 @@ func TestNewSeries(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 		},
 		{
@@ -100,6 +101,7 @@ func TestNewSeries(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 		},
 		{
@@ -116,6 +118,7 @@ func TestNewSeries(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 		},
 		{
@@ -132,6 +135,7 @@ func TestNewSeries(t *testing.T) {
 					[]string{"id", "sex"},
 				},
 				"People",
+				"string",
 			},
 		},
 	}
@@ -166,6 +170,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{"group a"},
 						},
 						"group a",
+						"int",
 					},
 					{
 						[]interface{}{4, 5, 6},
@@ -174,6 +179,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{"group a"},
 						},
 						"group b",
+						"int",
 					},
 					{
 						[]interface{}{7, 8, 9},
@@ -182,6 +188,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{"group a"},
 						},
 						"group c",
+						"int",
 					},
 				},
 				IndexData{
@@ -204,6 +211,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{"group a", "group c"},
 						},
 						"group a",
+						"int",
 					},
 					{
 						[]interface{}{4, 5, 6},
@@ -212,6 +220,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{"group a", "group c"},
 						},
 						"group b",
+						"int",
 					},
 					{
 						[]interface{}{7, 8, 9},
@@ -220,6 +229,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{"group a", "group c"},
 						},
 						"group c",
+						"int",
 					},
 				},
 				IndexData{
@@ -242,6 +252,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{""},
 						},
 						"group a",
+						"int",
 					},
 					{
 						[]interface{}{4, 5, 6},
@@ -250,6 +261,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{""},
 						},
 						"group b",
+						"int",
 					},
 					{
 						[]interface{}{7, 8, 9},
@@ -258,6 +270,7 @@ func TestNewDataFrame(t *testing.T) {
 							[]string{""},
 						},
 						"group c",
+						"int",
 					},
 				},
 				IndexData{

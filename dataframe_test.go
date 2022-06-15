@@ -117,6 +117,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19},
@@ -125,6 +126,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"int",
 					},
 					{
 						[]interface{}{"Male"},
@@ -133,6 +135,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -160,6 +163,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics"},
@@ -168,6 +172,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{99.0},
@@ -176,6 +181,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"SF"},
@@ -184,6 +190,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0},
@@ -192,6 +199,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-6"},
@@ -200,6 +208,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{235.0},
@@ -208,6 +217,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Marquette"},
@@ -216,6 +226,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{6796117.0},
@@ -224,6 +235,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -251,6 +263,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics"},
@@ -259,6 +272,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{99.0, 0.0},
@@ -267,6 +281,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"SF", "PG"},
@@ -275,6 +290,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0},
@@ -283,6 +299,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-6", "6-2"},
@@ -291,6 +308,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{235.0, 180.0},
@@ -299,6 +317,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Marquette", "Texas"},
@@ -307,6 +326,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{6796117.0, 7730337.0},
@@ -315,6 +335,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -342,6 +363,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics"},
@@ -350,6 +372,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{99.0, 0.0},
@@ -358,6 +381,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"SF", "PG"},
@@ -366,6 +390,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0},
@@ -374,6 +399,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-6", "6-2"},
@@ -382,6 +408,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{235.0, 180.0},
@@ -390,6 +417,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Weight",
+						"flaot64",
 					},
 					{
 						[]interface{}{"Marquette", "Texas"},
@@ -398,6 +426,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{6796117.0, 7730337.0},
@@ -406,6 +435,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -539,6 +569,7 @@ func TestDataFrameLocCols(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"int",
 					},
 				},
 				IndexData{
@@ -571,6 +602,7 @@ func TestDataFrameLocCols(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 				},
 				IndexData{
@@ -608,6 +640,7 @@ func TestDataFrameLocCols(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
@@ -621,6 +654,7 @@ func TestDataFrameLocCols(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -634,6 +668,7 @@ func TestDataFrameLocCols(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 				},
 				IndexData{
@@ -759,6 +794,7 @@ func TestDataFrameLoc(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"int",
 					},
 				},
 				IndexData{
@@ -787,6 +823,7 @@ func TestDataFrameLoc(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"John Holland"},
@@ -795,6 +832,7 @@ func TestDataFrameLoc(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 				},
 				IndexData{
@@ -853,6 +891,7 @@ func TestColAdd(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{24.0, 32.0, 27.0},
@@ -861,6 +900,7 @@ func TestColAdd(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -869,6 +909,7 @@ func TestColAdd(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -927,6 +968,7 @@ func TestColSub(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{14.0, 22.0, 17.0},
@@ -935,6 +977,7 @@ func TestColSub(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -943,6 +986,7 @@ func TestColSub(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1001,6 +1045,7 @@ func TestColMul(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{38.0, 54.0, 44.0},
@@ -1009,6 +1054,7 @@ func TestColMul(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"flaot64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1017,6 +1063,7 @@ func TestColMul(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1075,6 +1122,7 @@ func TestColDiv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{3.8, 5.4, 4.4},
@@ -1083,6 +1131,7 @@ func TestColDiv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1091,6 +1140,7 @@ func TestColDiv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1149,6 +1199,7 @@ func TestColMod(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{4.0, 2.0, 2.0},
@@ -1157,6 +1208,7 @@ func TestColMod(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1165,6 +1217,7 @@ func TestColMod(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1223,6 +1276,7 @@ func TestColGt(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{false, true, false},
@@ -1231,6 +1285,7 @@ func TestColGt(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"bool",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1239,6 +1294,7 @@ func TestColGt(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1297,6 +1353,7 @@ func TestColLt(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{true, false, false},
@@ -1305,6 +1362,7 @@ func TestColLt(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"bool",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1313,6 +1371,7 @@ func TestColLt(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1371,6 +1430,7 @@ func TestColEq(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{true, false, false},
@@ -1379,6 +1439,7 @@ func TestColEq(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"bool",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1387,6 +1448,7 @@ func TestColEq(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1432,6 +1494,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 27.0, 22.0},
@@ -1440,6 +1503,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1448,6 +1512,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 					{
 						[]interface{}{"USA", "UK", "Canada"},
@@ -1456,6 +1521,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Nationality",
+						"string",
 					},
 				},
 				IndexData{
@@ -1484,6 +1550,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 27.0, 22.0},
@@ -1492,6 +1559,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1500,6 +1568,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 					{
 						[]interface{}{nil, nil, nil},
@@ -1508,6 +1577,7 @@ func TestNewCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age+5",
+						"string",
 					},
 				},
 				IndexData{
@@ -1553,6 +1623,7 @@ func TestNewDerivedCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 27.0, 22.0},
@@ -1561,6 +1632,7 @@ func TestNewDerivedCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1569,6 +1641,7 @@ func TestNewDerivedCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 27.0, 22.0},
@@ -1577,6 +1650,7 @@ func TestNewDerivedCol(t *testing.T) {
 							[]string{"Name"},
 						},
 						"NewAge",
+						"float64",
 					},
 				},
 				IndexData{
@@ -1720,6 +1794,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 27.0, 22.0},
@@ -1728,6 +1803,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1736,6 +1812,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1801,6 +1878,7 @@ func TestDataFrameSortByValues(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 22.0, 27.0},
@@ -1809,6 +1887,7 @@ func TestDataFrameSortByValues(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Female", "Male"},
@@ -1817,6 +1896,7 @@ func TestDataFrameSortByValues(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -1864,6 +1944,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics"},
@@ -1872,6 +1953,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{0.0, 99.0, 28.0},
@@ -1880,6 +1962,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"PG", "SF", "SG"},
@@ -1888,6 +1971,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0, 22.0},
@@ -1896,6 +1980,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-2", "6-6", "6-5"},
@@ -1904,6 +1989,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{180.0, 235.0, 185.0},
@@ -1912,6 +1998,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Georgia State"},
@@ -1920,6 +2007,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{7730337.0, 6796117.0, 1148640.0},
@@ -1928,6 +2016,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -1955,6 +2044,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
@@ -1963,6 +2053,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
@@ -1971,6 +2062,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
@@ -1979,6 +2071,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
@@ -1987,6 +2080,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
@@ -1995,6 +2089,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
@@ -2003,6 +2098,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{7730337.0, 6796117.0, 5000000.0, 1148640.0},
@@ -2011,6 +2107,7 @@ func TestDropNaN(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -2057,6 +2154,7 @@ func TestDataFramePivot(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Male",
+						"float64",
 					},
 					{
 						[]interface{}{math.NaN(), math.NaN(), 165.0},
@@ -2065,6 +2163,7 @@ func TestDataFramePivot(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Female",
+						"float64",
 					},
 				},
 				IndexData{
@@ -2093,6 +2192,7 @@ func TestDataFramePivot(t *testing.T) {
 							[]string{"Time"},
 						},
 						"Apple",
+						"string",
 					},
 					{
 						[]interface{}{"Yellow", "Yellow"},
@@ -2101,6 +2201,7 @@ func TestDataFramePivot(t *testing.T) {
 							[]string{"Time"},
 						},
 						"Banana",
+						"string",
 					},
 					{
 						[]interface{}{"NaN", "Red"},
@@ -2109,6 +2210,7 @@ func TestDataFramePivot(t *testing.T) {
 							[]string{"Time"},
 						},
 						"Cherry",
+						"string",
 					},
 				},
 				IndexData{
@@ -2159,6 +2261,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"5-11",
+						"float64",
 					},
 					{
 						[]interface{}{6912869.0, math.NaN()},
@@ -2167,6 +2270,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"5-9",
+						"float64",
 					},
 					{
 						[]interface{}{5000000.0, 958633.333},
@@ -2175,6 +2279,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-10",
+						"float64",
 					},
 					{
 						[]interface{}{math.NaN(), 1140240.0},
@@ -2183,6 +2288,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-11",
+						"float64",
 					},
 					{
 						[]interface{}{4777348.5, math.NaN()},
@@ -2191,6 +2297,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-2",
+						"float64",
 					},
 					{
 						[]interface{}{math.NaN(), 2697445.0},
@@ -2199,6 +2306,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-3",
+						"float64",
 					},
 					{
 						[]interface{}{3431040.0, 817107.5},
@@ -2207,6 +2315,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-4",
+						"float64",
 					},
 					{
 						[]interface{}{1148640.0, math.NaN()},
@@ -2215,6 +2324,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-5",
+						"float64",
 					},
 					{
 						[]interface{}{4272978.5, math.NaN()},
@@ -2223,6 +2333,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-6",
+						"float64",
 					},
 					{
 						[]interface{}{3425510.0, 1467660.0},
@@ -2231,6 +2342,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-7",
+						"float64",
 					},
 					{
 						[]interface{}{1170960.0, 7330732.5},
@@ -2239,6 +2351,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-8",
+						"float64",
 					},
 					{
 						[]interface{}{7284630.0, math.NaN()},
@@ -2247,6 +2360,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"6-9",
+						"float64",
 					},
 					{
 						[]interface{}{2391067.5, 19689000.0},
@@ -2255,6 +2369,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"Team"},
 						},
 						"7-0",
+						"float64",
 					},
 				},
 				IndexData{
@@ -2285,6 +2400,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"location"},
 						},
 						"no2",
+						"float64",
 					},
 					{
 						[]interface{}{23.169, math.NaN(), 13.444},
@@ -2293,6 +2409,7 @@ func TestDataFramePivotTable(t *testing.T) {
 							[]string{"location"},
 						},
 						"pm25",
+						"float64",
 					},
 				},
 				IndexData{
@@ -2350,6 +2467,7 @@ func TestDataFrameMelt(t *testing.T) {
 							[]string{"location"},
 						},
 						"location",
+						"string",
 					},
 					{
 						[]interface{}{"no2", "pm25", "no2", "pm25", "no2", "pm25"},
@@ -2365,6 +2483,7 @@ func TestDataFrameMelt(t *testing.T) {
 							[]string{"location"},
 						},
 						"parameter",
+						"string",
 					},
 					{
 						[]interface{}{26.951, 23.169, 29.374, math.NaN(), 29.740, 13.444},
@@ -2380,6 +2499,7 @@ func TestDataFrameMelt(t *testing.T) {
 							[]string{"location"},
 						},
 						"value",
+						"float64",
 					},
 				},
 				IndexData{

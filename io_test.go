@@ -29,6 +29,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{19.0, 25.0, 22.0},
@@ -37,6 +38,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -45,6 +47,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -71,6 +74,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
@@ -84,6 +88,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
@@ -97,6 +102,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
@@ -110,6 +116,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
@@ -123,6 +130,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
@@ -136,6 +144,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
@@ -149,6 +158,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
@@ -162,6 +172,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
@@ -175,6 +186,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -206,6 +218,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
@@ -219,6 +232,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
@@ -232,6 +246,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
@@ -245,6 +260,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
@@ -258,6 +274,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
@@ -271,6 +288,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
@@ -284,6 +302,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
@@ -297,6 +316,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
@@ -310,6 +330,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Salary",
+						"string",
 					},
 				},
 				IndexData{
@@ -341,6 +362,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
@@ -354,6 +376,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
@@ -367,6 +390,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
@@ -380,6 +404,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
@@ -393,6 +418,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
@@ -406,6 +432,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
@@ -419,6 +446,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
@@ -432,6 +460,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
@@ -445,6 +474,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -476,6 +506,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
@@ -489,6 +520,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Team",
+						"string",
 					},
 					{
 						[]interface{}{0.0, 99.0, 30.0, 28.0},
@@ -502,6 +534,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Number",
+						"float64",
 					},
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
@@ -515,6 +548,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Position",
+						"string",
 					},
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
@@ -528,6 +562,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
@@ -541,6 +576,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Height",
+						"string",
 					},
 					{
 						[]interface{}{180.0, 235.0, 205.0, 185.0},
@@ -554,6 +590,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Weight",
+						"float64",
 					},
 					{
 						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
@@ -567,6 +604,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"College",
+						"string",
 					},
 					{
 						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
@@ -580,6 +618,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position", "College"},
 						},
 						"Salary",
+						"float64",
 					},
 				},
 				IndexData{
@@ -672,6 +711,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{
@@ -686,6 +726,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{
@@ -700,6 +741,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -731,6 +773,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Name",
+						"string",
 					},
 					{
 						[]interface{}{
@@ -745,6 +788,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{
@@ -759,6 +803,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{
@@ -804,6 +849,7 @@ func TestIoReadJsonByRows(t *testing.T) {
 							[]string{"index"},
 						},
 						"index",
+						"string",
 					},
 					{
 						[]interface{}{
@@ -818,6 +864,7 @@ func TestIoReadJsonByRows(t *testing.T) {
 							[]string{"index"},
 						},
 						"Age",
+						"float64",
 					},
 					{
 						[]interface{}{
@@ -832,6 +879,7 @@ func TestIoReadJsonByRows(t *testing.T) {
 							[]string{"index"},
 						},
 						"Sex",
+						"string",
 					},
 				},
 				IndexData{

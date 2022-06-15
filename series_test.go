@@ -26,6 +26,7 @@ func TestSeriesPrint(t *testing.T) {
 					[]string{"RangeIndex"},
 				},
 				"People",
+				"string",
 			},
 		},
 		{
@@ -40,6 +41,7 @@ func TestSeriesPrint(t *testing.T) {
 					[]string{"ID", "Color"},
 				},
 				"Fruit",
+				"string",
 			},
 		},
 	}
@@ -66,6 +68,7 @@ func TestSeriesPrintRange(t *testing.T) {
 					[]string{"RangeIndex"},
 				},
 				"People",
+				"string",
 			},
 		},
 		{
@@ -80,6 +83,7 @@ func TestSeriesPrintRange(t *testing.T) {
 					[]string{"ID", "Color"},
 				},
 				"Fruit",
+				"string",
 			},
 		},
 	}
@@ -106,6 +110,7 @@ func TestSeriesHead(t *testing.T) {
 					[]string{"RangeIndex"},
 				},
 				"People",
+				"string",
 			},
 		},
 		{
@@ -120,6 +125,7 @@ func TestSeriesHead(t *testing.T) {
 					[]string{"Index"},
 				},
 				"Fruit",
+				"string",
 			},
 		},
 	}
@@ -146,6 +152,7 @@ func TestSeriesTail(t *testing.T) {
 					[]string{"RangeIndex"},
 				},
 				"People",
+				"string",
 			},
 		},
 		{
@@ -160,6 +167,7 @@ func TestSeriesTail(t *testing.T) {
 					[]string{"Index"},
 				},
 				"Fruit",
+				"string",
 			},
 		},
 	}
@@ -188,6 +196,7 @@ func TestSeriesAt(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 			[]interface{}{0},
 			"alice",
@@ -204,6 +213,7 @@ func TestSeriesAt(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 			[]interface{}{"b"},
 			"banana",
@@ -237,6 +247,7 @@ func TestSeriesIAt(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 			0,
 			"alice",
@@ -253,6 +264,7 @@ func TestSeriesIAt(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 			1,
 			"banana",
@@ -286,6 +298,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{0}, {1}},
 			&Series{
@@ -298,6 +311,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 			nil,
 		},
@@ -313,6 +327,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 			[][]interface{}{{"b"}, {"c"}},
 			&Series{
@@ -325,6 +340,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 			nil,
 		},
@@ -342,6 +358,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"female"}},
 			&Series{
@@ -354,6 +371,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			nil,
 		},
@@ -371,6 +389,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"male", "volleyball"}},
 			&Series{
@@ -380,6 +399,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			nil,
 		},
@@ -397,6 +417,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"male"}, {"volleyball"}},
 			nil,
@@ -416,6 +437,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"volleyball"}},
 			nil,
@@ -435,6 +457,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"female"}, {"male"}},
 			&Series{
@@ -450,6 +473,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			nil,
 		},
@@ -467,6 +491,7 @@ func TestSeriesLoc(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"female"}, {"volleyball"}},
 			nil,
@@ -502,6 +527,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{0}, {1}},
 			[]interface{}{"alice", "bob"},
@@ -519,6 +545,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 			[][]interface{}{{"b"}, {"c"}},
 			[]interface{}{"banana", "cherry"},
@@ -538,6 +565,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"female"}},
 			[]interface{}{"clara", "anna"},
@@ -557,6 +585,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"male", "volleyball"}},
 			[]interface{}{"brian"},
@@ -576,6 +605,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"male"}, {"volleyball"}},
 			nil,
@@ -595,6 +625,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"volleyball"}},
 			nil,
@@ -614,6 +645,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"female"}, {"male"}},
 			[]interface{}{"clara", "anna", "brian", "dorian", "michael"},
@@ -633,6 +665,7 @@ func TestSeriesLocItems(t *testing.T) {
 					[]string{"sex", "sports"},
 				},
 				"People",
+				"string",
 			},
 			[][]interface{}{{"female"}, {"volleyball"}},
 			nil,
@@ -668,6 +701,7 @@ func TestSeriesILoc(t *testing.T) {
 					[]string{""},
 				},
 				"People",
+				"string",
 			},
 			0,
 			2,
@@ -685,6 +719,7 @@ func TestSeriesILoc(t *testing.T) {
 					[]string{""},
 				},
 				"Fruit",
+				"string",
 			},
 			0,
 			1,
@@ -719,6 +754,7 @@ func TestSeriesCount(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Count",
@@ -738,6 +774,7 @@ func TestSeriesCount(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Count",
@@ -750,6 +787,7 @@ func TestSeriesCount(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Count",
@@ -784,6 +822,7 @@ func TestSeriesMean(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Mean",
@@ -803,6 +842,7 @@ func TestSeriesMean(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Mean",
@@ -815,6 +855,7 @@ func TestSeriesMean(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Mean",
@@ -854,6 +895,7 @@ func TestSeriesMedian(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Median",
@@ -873,6 +915,7 @@ func TestSeriesMedian(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Median",
@@ -885,6 +928,7 @@ func TestSeriesMedian(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Median",
@@ -905,6 +949,7 @@ func TestSeriesMedian(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Median",
@@ -925,6 +970,7 @@ func TestSeriesMedian(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Median",
@@ -944,6 +990,7 @@ func TestSeriesMedian(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Median",
@@ -984,6 +1031,7 @@ func TestSeriesStd(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Std",
@@ -1003,6 +1051,7 @@ func TestSeriesStd(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Std",
@@ -1015,6 +1064,7 @@ func TestSeriesStd(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Std",
@@ -1035,6 +1085,7 @@ func TestSeriesStd(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Std",
@@ -1055,6 +1106,7 @@ func TestSeriesStd(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Std",
@@ -1074,6 +1126,7 @@ func TestSeriesStd(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Std",
@@ -1113,6 +1166,7 @@ func TestSeriesMin(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Min",
@@ -1132,6 +1186,7 @@ func TestSeriesMin(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Min",
@@ -1144,6 +1199,7 @@ func TestSeriesMin(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Min",
@@ -1164,6 +1220,7 @@ func TestSeriesMin(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Min",
@@ -1184,6 +1241,7 @@ func TestSeriesMin(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Min",
@@ -1203,6 +1261,7 @@ func TestSeriesMin(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Min",
@@ -1242,6 +1301,7 @@ func TestSeriesMax(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Max",
@@ -1261,6 +1321,7 @@ func TestSeriesMax(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Max",
@@ -1273,6 +1334,7 @@ func TestSeriesMax(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Max",
@@ -1293,6 +1355,7 @@ func TestSeriesMax(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Max",
@@ -1313,6 +1376,7 @@ func TestSeriesMax(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Max",
@@ -1332,6 +1396,7 @@ func TestSeriesMax(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Max",
@@ -1371,6 +1436,7 @@ func TestSeriesQ1(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Q1",
@@ -1390,6 +1456,7 @@ func TestSeriesQ1(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Q1",
@@ -1402,6 +1469,7 @@ func TestSeriesQ1(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Q1",
@@ -1422,6 +1490,7 @@ func TestSeriesQ1(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q1",
@@ -1442,6 +1511,7 @@ func TestSeriesQ1(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q1",
@@ -1461,6 +1531,7 @@ func TestSeriesQ1(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q1",
@@ -1500,6 +1571,7 @@ func TestSeriesQ2(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Q2",
@@ -1519,6 +1591,7 @@ func TestSeriesQ2(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Q2",
@@ -1531,6 +1604,7 @@ func TestSeriesQ2(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Q2",
@@ -1551,6 +1625,7 @@ func TestSeriesQ2(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q2",
@@ -1571,6 +1646,7 @@ func TestSeriesQ2(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q2",
@@ -1590,6 +1666,7 @@ func TestSeriesQ2(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q2",
@@ -1629,6 +1706,7 @@ func TestSeriesQ3(t *testing.T) {
 					[]string{""},
 				},
 				"Name",
+				"string",
 			},
 			StatsResult{
 				"Q3",
@@ -1648,6 +1726,7 @@ func TestSeriesQ3(t *testing.T) {
 					[]string{""},
 				},
 				"Age",
+				"float64",
 			},
 			StatsResult{
 				"Q3",
@@ -1660,6 +1739,7 @@ func TestSeriesQ3(t *testing.T) {
 				[]interface{}{},
 				IndexData{},
 				"Empty",
+				"",
 			},
 			StatsResult{
 				"Q3",
@@ -1680,6 +1760,7 @@ func TestSeriesQ3(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q3",
@@ -1700,6 +1781,7 @@ func TestSeriesQ3(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q3",
@@ -1719,6 +1801,7 @@ func TestSeriesQ3(t *testing.T) {
 					[]string{""},
 				},
 				"Height",
+				"float64",
 			},
 			StatsResult{
 				"Q3",
@@ -1758,6 +1841,7 @@ func TestSeriesDescribe(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			nil,
 		},
@@ -1774,6 +1858,7 @@ func TestSeriesDescribe(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"float64",
 			},
 			[]float64{3, 456.456, 456.456, 333.333, 123.123, 789.789, 123.123, 456.456, 789.789},
 		},
@@ -1808,6 +1893,7 @@ func TestSeriesValueCounts(t *testing.T) {
 					[]string{"RangeIndex"},
 				},
 				"Workplaces",
+				"string",
 			},
 			&Series{
 				[]interface{}{2, 3, 1, 1},
@@ -1821,6 +1907,7 @@ func TestSeriesValueCounts(t *testing.T) {
 					[]string{"Data"},
 				},
 				"Unique Value Count of Workplaces",
+				"int",
 			},
 		},
 	}
@@ -2043,6 +2130,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2057,6 +2145,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2072,6 +2161,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col2",
+				"string",
 			},
 			true,
 			Series{
@@ -2086,6 +2176,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col2",
+				"string",
 			},
 		},
 		{
@@ -2101,6 +2192,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col3",
+				"string",
 			},
 			false,
 			Series{
@@ -2115,6 +2207,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col3",
+				"string",
 			},
 		},
 		{
@@ -2132,6 +2225,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2148,6 +2242,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2165,6 +2260,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2181,6 +2277,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2198,6 +2295,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2214,6 +2312,7 @@ func TestSeriesSortByIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 		},
 	}
@@ -2245,6 +2344,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			IndexData{
 				[]Index{{0, []interface{}{0}}, {3, []interface{}{3}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
@@ -2262,6 +2362,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2277,6 +2378,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			IndexData{
 				[]Index{{1, []interface{}{1}}, {3, []interface{}{3}}, {2, []interface{}{2}}, {0, []interface{}{0}}},
@@ -2294,6 +2396,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2309,6 +2412,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			IndexData{
 				[]Index{{3, []interface{}{3}}, {2, []interface{}{2}}, {1, []interface{}{1}}, {0, []interface{}{0}}},
@@ -2326,6 +2430,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2343,6 +2448,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			IndexData{
 				[]Index{{3, []interface{}{"Female", 16}}, {4, []interface{}{"Female", 34}}, {0, []interface{}{"Female", 40}}, {1, []interface{}{"Male", 19}}, {2, []interface{}{"Male", 25}}, {5, []interface{}{"Male", 50}}},
@@ -2362,6 +2468,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 		},
 	}
@@ -2394,6 +2501,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2408,6 +2516,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2423,6 +2532,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2437,6 +2547,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2452,6 +2563,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 			false,
 			Series{
@@ -2466,6 +2578,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{""},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2483,6 +2596,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2499,6 +2613,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2516,6 +2631,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			true,
 			Series{
@@ -2532,6 +2648,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 		},
 		{
@@ -2549,6 +2666,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"float64",
 			},
 			true,
 			Series{
@@ -2565,6 +2683,7 @@ func TestSeriesSortByValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"float64",
 			},
 		},
 	}
@@ -2597,6 +2716,7 @@ func TestSeriesIndexHasDuplicateValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			false,
 		},
@@ -2615,6 +2735,7 @@ func TestSeriesIndexHasDuplicateValues(t *testing.T) {
 					[]string{"Sex", "Age"},
 				},
 				"col1",
+				"string",
 			},
 			true,
 		},
