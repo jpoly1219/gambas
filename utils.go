@@ -9,6 +9,10 @@ import (
 
 func checkTypeIntegrity(data []interface{}) (string, error) {
 	determinant := 0
+	isBool := 0
+	isInt := 0
+	isFloat64 := 0
+	isString := 0
 	dtype := ""
 
 	emptyValLocations := make([]int, 0)
@@ -19,15 +23,17 @@ func checkTypeIntegrity(data []interface{}) (string, error) {
 		}
 		switch d.(type) {
 		case bool:
-			determinant += 1
+			isBool = 1
 		case int:
-			determinant += 2
+			isInt = 2
 		case float64:
-			determinant += 4
+			isFloat64 = 4
 		case string:
-			determinant += 8
+			isString = 8
 		}
 	}
+
+	determinant = isBool + isInt + isFloat64 + isString
 
 	switch determinant {
 	case 1:
@@ -45,7 +51,11 @@ func checkTypeIntegrity(data []interface{}) (string, error) {
 	case 6:
 		dtype = "float64"
 	case 0:
-		return "", fmt.Errorf("invalid data type; data type should be either bool, int, float64, or string")
+		if len(emptyValLocations) == len(data) {
+			dtype = "string"
+		} else {
+			return "", fmt.Errorf("invalid data type; data type should be either bool, int, float64, or string")
+		}
 	default:
 		dtype = "string"
 	}
@@ -231,6 +241,8 @@ func interface2F64Slice(data []interface{}) ([]float64, error) {
 				continue
 			}
 			fd = append(fd, converted)
+		case int:
+			fd = append(fd, float64(converted))
 		default:
 			return nil, fmt.Errorf("data is not a float64: %v", v)
 		}
