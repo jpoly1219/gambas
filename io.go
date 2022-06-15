@@ -47,7 +47,7 @@ func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 				data2DArray = append(data2DArray, make([]interface{}, 0))
 			}
 			// each data should be checked to see what type it is
-			vChecked := checkCSVDataType(v)
+			vChecked := tryDataType(v)
 			data2DArray[i] = append(data2DArray[i], vChecked)
 		}
 		rowNum++
