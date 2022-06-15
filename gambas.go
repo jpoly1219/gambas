@@ -29,6 +29,7 @@ func NewSeries(data []interface{}, name string, index *IndexData) (*Series, erro
 	if err != nil {
 		return nil, err
 	}
+	s.dtype = dtype
 
 	switch dtype {
 	case "float64":
