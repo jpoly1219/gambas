@@ -12,6 +12,7 @@ type Series struct {
 	data  []interface{}
 	index IndexData
 	name  string
+	dtype string
 }
 
 func (s Series) Len() int {
