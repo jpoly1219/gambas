@@ -417,7 +417,7 @@ func TestDataFrameLocRows(t *testing.T) {
 							[]string{"Name", "Age"},
 						},
 						"Weight",
-						"flaot64",
+						"float64",
 					},
 					{
 						[]interface{}{"Marquette", "Texas"},
@@ -1054,7 +1054,7 @@ func TestColMul(t *testing.T) {
 							[]string{"Name"},
 						},
 						"Age",
-						"flaot64",
+						"float64",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -1540,7 +1540,7 @@ func TestNewCol(t *testing.T) {
 				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age+5",
-			make([]interface{}, 3),
+			[]interface{}{"", "", ""},
 			&DataFrame{
 				[]Series{
 					{
@@ -1571,7 +1571,7 @@ func TestNewCol(t *testing.T) {
 						"string",
 					},
 					{
-						[]interface{}{nil, nil, nil},
+						[]interface{}{"", "", ""},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
@@ -2148,7 +2148,7 @@ func TestDataFramePivot(t *testing.T) {
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{172.0, 180.0, math.NaN()},
+						[]interface{}{172, 180, math.NaN()},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
@@ -2157,7 +2157,7 @@ func TestDataFramePivot(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{math.NaN(), math.NaN(), 165.0},
+						[]interface{}{math.NaN(), math.NaN(), 165},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
@@ -2186,7 +2186,7 @@ func TestDataFramePivot(t *testing.T) {
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{"Red", "NaN"},
+						[]interface{}{"Red", ""},
 						IndexData{
 							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
 							[]string{"Time"},
@@ -2204,7 +2204,7 @@ func TestDataFramePivot(t *testing.T) {
 						"string",
 					},
 					{
-						[]interface{}{"NaN", "Red"},
+						[]interface{}{"", "Red"},
 						IndexData{
 							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
 							[]string{"Time"},
