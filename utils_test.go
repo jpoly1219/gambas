@@ -80,6 +80,292 @@ func TestI2f(t *testing.T) {
 	}
 }
 
+func TestTryBool(t *testing.T) {
+	type tryBoolTest struct {
+		arg1          string
+		expected      bool
+		expectedError error
+	}
+	tryBoolTests := []tryBoolTest{
+		{
+			"true",
+			true,
+			nil,
+		},
+		{
+			"True",
+			true,
+			nil,
+		},
+		{
+			"TRUE",
+			true,
+			nil,
+		},
+		{
+			"false",
+			false,
+			nil,
+		},
+		{
+			"False",
+			false,
+			nil,
+		},
+		{
+			"FALSE",
+			false,
+			nil,
+		},
+		{
+			"1",
+			false,
+			fmt.Errorf("ignored string"),
+		},
+		{
+			"t",
+			false,
+			fmt.Errorf("ignored string"),
+		},
+		{
+			"T",
+			false,
+			fmt.Errorf("ignored string"),
+		},
+		{
+			"0",
+			false,
+			fmt.Errorf("ignored string"),
+		},
+		{
+			"f",
+			false,
+			fmt.Errorf("ignored string"),
+		},
+		{
+			"F",
+			false,
+			fmt.Errorf("ignored string"),
+		},
+	}
+	for _, test := range tryBoolTests {
+		output, err := tryBool(test.arg1)
+		if !cmp.Equal(output, test.expected) || !cmp.Equal(fmt.Sprint(err), fmt.Sprint(test.expectedError)) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestTryInt(t *testing.T) {
+	type tryIntTest struct {
+		arg1          string
+		expected      int
+		expectedError error
+	}
+	tryIntTests := []tryIntTest{
+		{
+			"0",
+			0,
+			nil,
+		},
+		{
+			"1",
+			1,
+			nil,
+		},
+		{
+			"-1",
+			-1,
+			nil,
+		},
+		{
+			"0.0",
+			0,
+			fmt.Errorf(`strconv.Atoi: parsing "0.0": invalid syntax`),
+		},
+		{
+			"1-1",
+			0,
+			fmt.Errorf(`strconv.Atoi: parsing "1-1": invalid syntax`),
+		},
+		{
+			"1.0",
+			0,
+			fmt.Errorf(`strconv.Atoi: parsing "1.0": invalid syntax`),
+		},
+		{
+			"1.1",
+			0,
+			fmt.Errorf(`strconv.Atoi: parsing "1.1": invalid syntax`),
+		},
+	}
+	for _, test := range tryIntTests {
+		output, err := tryInt(test.arg1)
+		if !cmp.Equal(output, test.expected) || !cmp.Equal(fmt.Sprint(err), fmt.Sprint(test.expectedError)) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestTryFloat64(t *testing.T) {
+	type tryFloat64Test struct {
+		arg1          string
+		expected      float64
+		expectedError error
+	}
+	tryFloat64Tests := []tryFloat64Test{
+		{
+			"0.0",
+			0.0,
+			nil,
+		},
+		{
+			"1.0",
+			1.0,
+			nil,
+		},
+		{
+			"-1.0",
+			-1.0,
+			nil,
+		},
+		{
+			"0.5",
+			0.5,
+			nil,
+		},
+		{
+			"1-1",
+			0.0,
+			fmt.Errorf(`strconv.ParseFloat: parsing "1-1": invalid syntax`),
+		},
+		{
+			"1",
+			1.0,
+			nil,
+		},
+		{
+			"0",
+			0.0,
+			nil,
+		},
+		{
+			"-1",
+			-1.0,
+			nil,
+		},
+	}
+	for _, test := range tryFloat64Tests {
+		output, err := tryFloat64(test.arg1)
+		if !cmp.Equal(output, test.expected) || !cmp.Equal(fmt.Sprint(err), fmt.Sprint(test.expectedError)) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestTryDataType(t *testing.T) {
+	type tryDataTypeTest struct {
+		arg1     string
+		expected interface{}
+	}
+	tryDataTypeTests := []tryDataTypeTest{
+		{
+			"true",
+			true,
+		},
+		{
+			"True",
+			true,
+		},
+		{
+			"TRUE",
+			true,
+		},
+		{
+			"false",
+			false,
+		},
+		{
+			"False",
+			false,
+		},
+		{
+			"FALSE",
+			false,
+		},
+		{
+			"1",
+			1,
+		},
+		{
+			"t",
+			"t",
+		},
+		{
+			"T",
+			"T",
+		},
+		{
+			"0",
+			0,
+		},
+		{
+			"f",
+			"f",
+		},
+		{
+			"F",
+			"F",
+		},
+		{
+			"0.0",
+			0.0,
+		},
+		{
+			"1.0",
+			1.0,
+		},
+		{
+			"-1.0",
+			-1.0,
+		},
+		{
+			"0.5",
+			0.5,
+		},
+		{
+			"1-1",
+			"1-1",
+		},
+		{
+			"1",
+			1,
+		},
+		{
+			"0",
+			0,
+		},
+		{
+			"-1",
+			-1,
+		},
+		{
+			"hello",
+			"hello",
+		},
+		{
+			"5/2",
+			"5/2",
+		},
+	}
+	for _, test := range tryDataTypeTests {
+		output := tryDataType(test.arg1)
+		if !cmp.Equal(output, test.expected) {
+			t.Fatalf("expected %v, got %v", test.expected, output)
+		}
+	}
+}
+
 func TestCheckCSVDataType(t *testing.T) {
 	type checkCSVDataTypeTest struct {
 		arg1     string
