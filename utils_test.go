@@ -11,28 +11,40 @@ import (
 func TestCheckTypeIntegrity(t *testing.T) {
 	type checkTypeIntegrityTest struct {
 		arg1     []interface{}
-		expected bool
+		expected string
 	}
 	checkTypeIntegrityTests := []checkTypeIntegrityTest{
 		{
 			[]interface{}{0, 1, 2, 3, 4, 5, 6},
-			true,
+			"int",
 		},
 		{
 			[]interface{}{3.4, 5.6, 2.4, 6.5, 7},
-			true,
+			"float64",
 		},
 		{
 			[]interface{}{1, 2, "3", "4", 5},
-			false,
+			"string",
 		},
 		{
 			[]interface{}{"a", "b", "c"},
-			true,
+			"string",
 		},
 		{
 			[]interface{}{true, false, true},
-			false,
+			"bool",
+		},
+		{
+			[]interface{}{"", 1, 2, 3},
+			"float64",
+		},
+		{
+			[]interface{}{1.0, "", 2.0},
+			"float64",
+		},
+		{
+			[]interface{}{1.0, "", "2.0"},
+			"string",
 		},
 	}
 
