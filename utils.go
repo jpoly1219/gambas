@@ -210,10 +210,22 @@ func checkJsonDataType(data interface{}) interface{} {
 func consolidateToFloat64(data []interface{}) []interface{} {
 	result := make([]interface{}, len(data))
 	for i, d := range data {
-		if d == "" {
-			d = math.NaN()
+		switch dd := d.(type) {
+		case float64:
+			result[i] = dd
+		case int:
+			result[i] = float64(dd)
+		case string:
+			if dd == "" {
+				result[i] = math.NaN()
+			} else {
+				f, err := strconv.ParseFloat(fmt.Sprint(d), 64)
+				if err != nil {
+					panic("consolidateToFloat64 should be called only when data is in the form of float64")
+				}
+				result[i] = f
+			}
 		}
-		result[i] = d
 	}
 
 	return result
@@ -241,8 +253,8 @@ func interface2F64Slice(data []interface{}) ([]float64, error) {
 				continue
 			}
 			fd = append(fd, converted)
-		case int:
-			fd = append(fd, float64(converted))
+		// case int:
+		// 	fd = append(fd, float64(converted))
 		default:
 			return nil, fmt.Errorf("data is not a float64: %v", v)
 		}
