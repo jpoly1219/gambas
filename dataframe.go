@@ -67,7 +67,7 @@ func (df *DataFrame) Tail(howMany int) {
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
-func (df DataFrame) LocRows(rows ...[]interface{}) (*DataFrame, error) {
+func (df *DataFrame) LocRows(rows ...[]interface{}) (*DataFrame, error) {
 	filteredData := make([][]interface{}, 0)
 	filteredColname := make([]string, 0)
 	filteredIndex := IndexData{}
@@ -121,7 +121,7 @@ func (df *DataFrame) LocRowsItems(rows ...[]interface{}) ([][]interface{}, error
 }
 
 // LocRows returns a set of columns as a new DataFrame object, given a list of labels.
-func (df DataFrame) LocCols(cols ...string) (*DataFrame, error) {
+func (df *DataFrame) LocCols(cols ...string) (*DataFrame, error) {
 	filtered2D := make([][]interface{}, 0)
 	for _, column := range cols {
 		for _, series := range df.series {
@@ -171,7 +171,7 @@ func (df *DataFrame) LocColsItems(cols ...string) ([][]interface{}, error) {
 }
 
 // Loc indexes the DataFrame object given a slice of row and column labels.
-func (df DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, error) {
+func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, error) {
 	df1, err := df.LocCols(cols...)
 	if err != nil {
 		return nil, err
