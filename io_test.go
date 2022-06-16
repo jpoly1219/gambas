@@ -32,13 +32,13 @@ func TestReadCsv(t *testing.T) {
 						"string",
 					},
 					{
-						[]interface{}{19.0, 25.0, 22.0},
+						[]interface{}{19, 25, 22},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
 						},
 						"Age",
-						"float64",
+						"int",
 					},
 					{
 						[]interface{}{"Male", "Male", "Female"},
@@ -161,7 +161,7 @@ func TestReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"Avery Bradley"}},
@@ -305,7 +305,7 @@ func TestReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"PG"}},
@@ -330,7 +330,7 @@ func TestReadCsv(t *testing.T) {
 							[]string{"Position"},
 						},
 						"Salary",
-						"string",
+						"float64",
 					},
 				},
 				IndexData{
@@ -449,7 +449,7 @@ func TestReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"Avery Bradley"}},
@@ -500,7 +500,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -514,7 +514,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -528,7 +528,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -542,7 +542,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -556,7 +556,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -570,7 +570,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -584,7 +584,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -593,12 +593,12 @@ func TestReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "Boston University", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -612,7 +612,7 @@ func TestReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", "Boston University"}},
+								{2, []interface{}{"SG", ""}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -625,7 +625,7 @@ func TestReadCsv(t *testing.T) {
 					[]Index{
 						{0, []interface{}{"PG", "Texas"}},
 						{1, []interface{}{"SF", "Marquette"}},
-						{2, []interface{}{"SG", "Boston University"}},
+						{2, []interface{}{"SG", ""}},
 						{3, []interface{}{"SG", "Georgia State"}},
 					},
 					[]string{"Position", "College"},
@@ -820,83 +820,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 	}
 	for _, test := range readJsonByColumnsTests {
 		output, err := ReadJsonByColumns(test.arg1, test.arg2)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
-		}
-	}
-}
-
-func TestIoReadJsonByRows(t *testing.T) {
-	type readJsonByRowsTest struct {
-		arg1     string
-		expected *DataFrame
-	}
-	readJsonByRowsTests := []readJsonByRowsTest{
-		{
-			"testfiles/readjsonbyrows/1.json",
-			&DataFrame{
-				[]Series{
-					{
-						[]interface{}{
-							"Avery", "Bradley", "Candice",
-						},
-						IndexData{
-							[]Index{
-								{0, []interface{}{"Avery"}},
-								{1, []interface{}{"Bradley"}},
-								{2, []interface{}{"Candice"}},
-							},
-							[]string{"index"},
-						},
-						"index",
-						"string",
-					},
-					{
-						[]interface{}{
-							19.0, 26.0, 23.0,
-						},
-						IndexData{
-							[]Index{
-								{0, []interface{}{"Avery"}},
-								{1, []interface{}{"Bradley"}},
-								{2, []interface{}{"Candice"}},
-							},
-							[]string{"index"},
-						},
-						"Age",
-						"float64",
-					},
-					{
-						[]interface{}{
-							"Male", "Male", "Female",
-						},
-						IndexData{
-							[]Index{
-								{0, []interface{}{"Avery"}},
-								{1, []interface{}{"Bradley"}},
-								{2, []interface{}{"Candice"}},
-							},
-							[]string{"index"},
-						},
-						"Sex",
-						"string",
-					},
-				},
-				IndexData{
-					[]Index{
-						{0, []interface{}{"Avery"}},
-						{1, []interface{}{"Bradley"}},
-						{2, []interface{}{"Candice"}},
-					},
-					[]string{"index"},
-				},
-				[]string{"index", "Age", "Sex"},
-			},
-		},
-	}
-	for _, test := range readJsonByRowsTests {
-		output, err := ReadJsonByRows(test.arg1)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
