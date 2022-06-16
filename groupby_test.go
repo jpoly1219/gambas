@@ -38,6 +38,7 @@ func TestGroupByAgg(t *testing.T) {
 							[]string{"Animal"},
 						},
 						"Animal",
+						"string",
 					},
 					{
 						[]interface{}{375.000, 25.000},
@@ -49,6 +50,7 @@ func TestGroupByAgg(t *testing.T) {
 							[]string{"Animal"},
 						},
 						"Max Speed",
+						"float64",
 					},
 				},
 				IndexData{
@@ -75,35 +77,37 @@ func TestGroupByAgg(t *testing.T) {
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{1.0, 2.0, 3.0},
+						[]interface{}{1, 2, 3},
 						IndexData{
 							[]Index{
-								{1, []interface{}{1.0}},
-								{2, []interface{}{2.0}},
-								{0, []interface{}{3.0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+								{0, []interface{}{3}},
 							},
 							[]string{"Pclass"},
 						},
 						"Pclass",
+						"int",
 					},
 					{
 						[]interface{}{38.233, 29.878, 25.141},
 						IndexData{
 							[]Index{
-								{1, []interface{}{1.0}},
-								{2, []interface{}{2.0}},
-								{0, []interface{}{3.0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+								{0, []interface{}{3}},
 							},
 							[]string{"Pclass"},
 						},
 						"Age",
+						"float64",
 					},
 				},
 				IndexData{
 					[]Index{
-						{1, []interface{}{1.0}},
-						{2, []interface{}{2.0}},
-						{0, []interface{}{3.0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+						{0, []interface{}{3}},
 					},
 					[]string{"Pclass"},
 				},
@@ -136,6 +140,7 @@ func TestGroupByAgg(t *testing.T) {
 							[]string{"parameter", "location"},
 						},
 						"parameter",
+						"string",
 					},
 					{
 						[]interface{}{"BETR801", "FR04014", "London Westminster", "BETR801", "London Westminster"},
@@ -150,6 +155,7 @@ func TestGroupByAgg(t *testing.T) {
 							[]string{"parameter", "location"},
 						},
 						"location",
+						"string",
 					},
 					{
 						[]interface{}{26.951, 29.374, 29.740, 23.169, 13.444},
@@ -164,6 +170,7 @@ func TestGroupByAgg(t *testing.T) {
 							[]string{"parameter", "location"},
 						},
 						"value",
+						"float64",
 					},
 				},
 				IndexData{
