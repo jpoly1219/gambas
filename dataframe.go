@@ -448,6 +448,7 @@ func (df *DataFrame) SortIndexColFirst() {
 		for j, ser := range df.series {
 			if ser.name == indexName {
 				df.series[counter], df.series[j] = df.series[j], df.series[counter]
+				df.columns[counter], df.columns[j] = df.columns[j], df.columns[counter]
 				counter++
 			}
 		}
