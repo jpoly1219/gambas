@@ -2148,7 +2148,7 @@ func TestDataFramePivot(t *testing.T) {
 			&DataFrame{
 				[]Series{
 					{
-						[]interface{}{172, 180, math.NaN()},
+						[]interface{}{172.0, 180.0, math.NaN()},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
@@ -2157,7 +2157,7 @@ func TestDataFramePivot(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{math.NaN(), math.NaN(), 165},
+						[]interface{}{math.NaN(), math.NaN(), 165.0},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
