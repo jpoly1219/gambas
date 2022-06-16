@@ -2423,9 +2423,6 @@ func TestDataFramePivotTable(t *testing.T) {
 
 	for _, test := range pivotTableTests {
 		output, err := test.arg1.PivotTable(test.arg2, test.arg3, test.arg4, test.arg5)
-		fmt.Println(output)
-		output.Print()
-		fmt.Println("---")
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
