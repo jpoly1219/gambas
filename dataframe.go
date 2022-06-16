@@ -436,6 +436,24 @@ func (df *DataFrame) SortByValues(by string, ascending bool) error {
 	return nil
 }
 
+func (df *DataFrame) SortByColumns() {
+	sort.Slice(df.series, func(i, j int) bool {
+		return df.series[i].name < df.series[j].name
+	})
+}
+
+func (df *DataFrame) SortIndexColFirst() {
+	counter := 0
+	for _, indexName := range df.index.names {
+		for j, ser := range df.series {
+			if ser.name == indexName {
+				df.series[counter], df.series[j] = df.series[j], df.series[counter]
+				counter++
+			}
+		}
+	}
+}
+
 // DropNaN drops rows or columns with NaN values.
 // Specify axis to choose whether to remove rows with NaN or columns with NaN.
 // axis=0 is row, axis=1 is column.
