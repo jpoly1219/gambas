@@ -440,6 +440,7 @@ func (df *DataFrame) SortByColumns() {
 	sort.Slice(df.series, func(i, j int) bool {
 		return df.series[i].name < df.series[j].name
 	})
+	sort.Strings(df.columns)
 }
 
 func (df *DataFrame) SortIndexColFirst() {
