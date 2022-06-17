@@ -470,18 +470,20 @@ func (df *DataFrame) SortIndexColFirst() {
 // DropNaN drops rows or columns with NaN values.
 // Specify axis to choose whether to remove rows with NaN or columns with NaN.
 // axis=0 is row, axis=1 is column.
-func (df *DataFrame) DropNaN(axis int) error {
+func (df *DataFrame) DropNaN(axis int) (*DataFrame, error) {
 	if axis > 1 || axis < 0 {
-		return fmt.Errorf("axis can only be either 0 or 1")
+		return nil, fmt.Errorf("axis can only be either 0 or 1")
 	}
+
+	newDf := df
 
 	// for each series, iterate through the series until NaN is found
 	// if NaN, save NaN index
 	// sort the NaNindex slice
 
 	indexSlice := make([]int, 0)
-	seriesHasNaNSlice := make([]bool, len(df.series))
-	for i, ser := range df.series {
+	seriesHasNaNSlice := make([]bool, len(newDf.series))
+	for i, ser := range newDf.series {
 		for j, data := range ser.data {
 			switch v := data.(type) {
 			case string:
@@ -501,39 +503,39 @@ func (df *DataFrame) DropNaN(axis int) error {
 	sort.Ints(indexSlice)
 
 	// deleting rows containing NaN
-	// for each series, remove data at the index. length of df.series.data will decrease by 1.
-	// subtract 1 from each index so that it matches the new length df.series.data.
+	// for each series, remove data at the index. length of newDf.series.data will decrease by 1.
+	// subtract 1 from each index so that it matches the new length newDf.series.data.
 	if axis == 0 {
-		for i := range df.series {
+		for i := range newDf.series {
 			iSlice := make([]int, len(indexSlice))
 			copy(iSlice, indexSlice)
 
 			for j, index := range iSlice {
-				df.series[i].index.index = append(df.series[i].index.index[:index], df.series[i].index.index[index+1:]...)
-				df.series[i].data = append(df.series[i].data[:index], df.series[i].data[index+1:]...)
+				newDf.series[i].index.index = append(newDf.series[i].index.index[:index], newDf.series[i].index.index[index+1:]...)
+				newDf.series[i].data = append(newDf.series[i].data[:index], newDf.series[i].data[index+1:]...)
 
 				for k := j + 1; k < len(iSlice); k++ {
 					iSlice[k] -= 1
 				}
 			}
 		}
-		df.index.index = df.series[0].index.index
+		newDf.index.index = newDf.series[0].index.index
 	}
 
 	// deleting columns containing NaN
-	// for each series, remove data at the index. length of df.series.data will decrease by 1.
-	// subtract 1 from each index so that it matches the new length df.series.data.
+	// for each series, remove data at the index. length of newDf.series.data will decrease by 1.
+	// subtract 1 from each index so that it matches the new length newDf.series.data.
 	if axis == 1 {
 		for i, hasNaN := range seriesHasNaNSlice {
 			if hasNaN {
-				df.columns = append(df.columns[:i], df.columns[i+1:]...)
-				df.series = append(df.series[:i], df.series[i+1:]...)
+				newDf.columns = append(newDf.columns[:i], newDf.columns[i+1:]...)
+				newDf.series = append(newDf.series[:i], newDf.series[i+1:]...)
 				seriesHasNaNSlice = append(seriesHasNaNSlice[:i], seriesHasNaNSlice[i+1:]...)
 			}
 		}
 	}
 
-	return nil
+	return newDf, nil
 }
 
 // Pivot returns an organized dataframe that has values corresponding to the index and the given column.

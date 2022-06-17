@@ -1923,7 +1923,7 @@ func TestDropNaN(t *testing.T) {
 	type dropNaNTest struct {
 		arg1     DataFrame
 		arg2     int
-		expected DataFrame
+		expected *DataFrame
 	}
 	dropNaNTests := []dropNaNTest{
 		{
@@ -1935,7 +1935,7 @@ func TestDropNaN(t *testing.T) {
 				return *newDf
 			}(),
 			0,
-			DataFrame{
+			&DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "R.J. Hunter"},
@@ -2035,7 +2035,7 @@ func TestDropNaN(t *testing.T) {
 				return *newDf
 			}(),
 			1,
-			DataFrame{
+			&DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -2120,8 +2120,8 @@ func TestDropNaN(t *testing.T) {
 	}
 
 	for _, test := range dropNaNTests {
-		err := test.arg1.DropNaN(test.arg2)
-		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		output, err := test.arg1.DropNaN(test.arg2)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}
 	}
