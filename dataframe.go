@@ -189,7 +189,8 @@ func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, erro
 
 // ColAdd() adds the given value to each element in the specified column.
 func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
+
 	for _, series := range newDf.series {
 		if series.name == colname {
 			for i, data := range series.data {
@@ -209,7 +210,7 @@ func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
 
 // ColSub() subtracts the given value from each element in the specified column.
 func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
 			for i, data := range series.data {
@@ -229,7 +230,7 @@ func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
 
 // ColMul() multiplies each element in the specified column by the given value.
 func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
 			for i, data := range series.data {
@@ -249,7 +250,7 @@ func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
 
 // ColDiv() divides each element in the specified column by the given value.
 func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
 			for i, data := range series.data {
@@ -269,7 +270,7 @@ func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 
 // ColMod() applies modulus calculations on each element in the specified column, returning the remainder.
 func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
 			for i, data := range series.data {
@@ -290,7 +291,7 @@ func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 
 // ColGt() checks if each element in the specified column is greater than the given value.
 func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for i, series := range newDf.series {
 		if series.name == colname {
 			newDf.series[i].dtype = "bool"
@@ -311,7 +312,7 @@ func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
 
 // ColLt() checks if each element in the specified column is less than the given value.
 func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for i, series := range newDf.series {
 		if series.name == colname {
 			newDf.series[i].dtype = "bool"
@@ -332,7 +333,7 @@ func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
 
 // ColEq() checks if each element in the specified column is equal to the given value.
 func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
-	newDf := df
+	newDf := copyDf(df)
 	for i, series := range newDf.series {
 		if series.name == colname {
 			newDf.series[i].dtype = "bool"
