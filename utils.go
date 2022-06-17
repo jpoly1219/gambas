@@ -356,3 +356,21 @@ func median(data []float64) (float64, error) {
 
 	return median, nil
 }
+
+// copyDf takes a source DataFrame and returns a copy of it with different memory address.
+func copyDf(src *DataFrame) *DataFrame {
+	newDf := new(DataFrame)
+	newDf.series = make([]Series, len(src.series))
+	for i, ser := range src.series {
+		newDf.series[i].data = append(newDf.series[i].data, ser.data...)
+		newDf.series[i].index.index = append(newDf.series[i].index.index, ser.index.index...)
+		newDf.series[i].index.names = append(newDf.series[i].index.names, ser.index.names...)
+		newDf.series[i].name = ser.name
+		newDf.series[i].dtype = ser.dtype
+	}
+	newDf.index.index = append(newDf.index.index, src.index.index...)
+	newDf.index.names = append(newDf.index.names, src.index.names...)
+	newDf.columns = append(newDf.columns, src.columns...)
+
+	return newDf
+}
