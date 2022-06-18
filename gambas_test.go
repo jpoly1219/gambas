@@ -66,7 +66,7 @@ func TestNewSeries(t *testing.T) {
 		arg1     []interface{}
 		arg2     string
 		arg3     *IndexData
-		expected *Series
+		expected Series
 	}
 
 	newSeriesTests := []newSeriesTest{
@@ -77,7 +77,7 @@ func TestNewSeries(t *testing.T) {
 				[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
 				[]string{""},
 			},
-			&Series{
+			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
 					[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
@@ -94,7 +94,7 @@ func TestNewSeries(t *testing.T) {
 				[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
 				[]string{""},
 			},
-			&Series{
+			Series{
 				[]interface{}{"apple", "banana", "cherry"},
 				IndexData{
 					[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
@@ -111,7 +111,7 @@ func TestNewSeries(t *testing.T) {
 				[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
 				[]string{""},
 			},
-			&Series{
+			Series{
 				[]interface{}{"apple", "2", "cherry"},
 				IndexData{
 					[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
@@ -128,7 +128,7 @@ func TestNewSeries(t *testing.T) {
 				[]Index{{0, []interface{}{0, "female"}}, {1, []interface{}{1, "male"}}, {2, []interface{}{2, "male"}}},
 				[]string{"id", "sex"},
 			},
-			&Series{
+			Series{
 				[]interface{}{"alice", "bob", "charlie"},
 				IndexData{
 					[]Index{{0, []interface{}{0, "female"}}, {1, []interface{}{1, "male"}}, {2, []interface{}{2, "male"}}},
@@ -142,7 +142,7 @@ func TestNewSeries(t *testing.T) {
 
 	for _, test := range newSeriesTests {
 		output, err := NewSeries(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, Series{}, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -153,7 +153,7 @@ func TestNewDataFrame(t *testing.T) {
 		arg1     [][]interface{}
 		arg2     []string
 		arg3     []string
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	newDataFrameTests := []newDataFrameTest{
@@ -161,7 +161,7 @@ func TestNewDataFrame(t *testing.T) {
 			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
 			[]string{"group a", "group b", "group c"},
 			[]string{"group a"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{1, 2, 3},
@@ -202,7 +202,7 @@ func TestNewDataFrame(t *testing.T) {
 			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
 			[]string{"group a", "group b", "group c"},
 			[]string{"group a", "group c"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{1, 2, 3},
@@ -243,7 +243,7 @@ func TestNewDataFrame(t *testing.T) {
 			[][]interface{}{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
 			[]string{"group a", "group b", "group c"},
 			nil,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{1, 2, 3},
@@ -284,7 +284,7 @@ func TestNewDataFrame(t *testing.T) {
 
 	for _, test := range newDataFrameTests {
 		output, err := NewDataFrame(test.arg1, test.arg2, test.arg3)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}

@@ -129,12 +129,12 @@ func (s *Series) IAt(ind int) (interface{}, error) {
 }
 
 // Loc() returns a range of data at given rows.
-func (s *Series) Loc(idx ...[]interface{}) (*Series, error) {
+func (s *Series) Loc(idx ...[]interface{}) (Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(idx[0])
 	for i, eachIndex := range idx {
 		if indexLength != len(eachIndex) {
-			return nil, fmt.Errorf("index length does not match: %v, %v", idx[i-1], eachIndex)
+			return Series{}, fmt.Errorf("index length does not match: %v, %v", idx[i-1], eachIndex)
 		}
 	}
 
@@ -160,7 +160,7 @@ func (s *Series) Loc(idx ...[]interface{}) (*Series, error) {
 		}
 
 		if len(filtered) == 0 {
-			return nil, fmt.Errorf("no data found for index %v", inputIndex)
+			return Series{}, fmt.Errorf("no data found for index %v", inputIndex)
 		}
 		allFiltered = append(allFiltered, filtered...)
 		allFilteredIndex.index = append(allFilteredIndex.index, filteredIndex.index...)
@@ -169,20 +169,9 @@ func (s *Series) Loc(idx ...[]interface{}) (*Series, error) {
 
 	result, err := NewSeries(allFiltered, s.name, &allFilteredIndex)
 	if err != nil {
-		return nil, err
+		return Series{}, err
 	}
 	return result, nil
-
-	// result := make([]interface{}, 0)
-	// for _, row := range rows {
-	// 	atData, err := s.At(row)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	result = append(result, atData)
-	// }
-
-	// return result, nil
 }
 
 // LocItems returns a slice of data at given rows.
@@ -484,7 +473,7 @@ func (s *Series) Describe() ([]float64, error) {
 }
 
 // ValueCounts returns a Series containing the number of unique values in a given Series.
-func (s *Series) ValueCounts() (*Series, error) {
+func (s *Series) ValueCounts() (Series, error) {
 	valueCountMap := make(map[interface{}]int, 0)
 	for _, data := range s.data {
 		// if key doesn't exist, create a new key and set initial value as 1.
@@ -509,7 +498,7 @@ func (s *Series) ValueCounts() (*Series, error) {
 
 	newS, err := NewSeries(newSeriesValue, fmt.Sprintf("Unique Value Count of %v", s.name), &newSeriesIndex)
 	if err != nil {
-		return nil, err
+		return Series{}, err
 	}
 	return newS, nil
 }

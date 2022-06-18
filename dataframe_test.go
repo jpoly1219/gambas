@@ -20,7 +20,7 @@ func TestDataFramePrint(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 		},
 	}
@@ -41,7 +41,7 @@ func TestDataFramePrintRange(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 		},
 	}
@@ -62,7 +62,7 @@ func TestDataFrameHead(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 		},
 	}
@@ -83,7 +83,7 @@ func TestDataFrameTail(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 		},
 	}
@@ -96,7 +96,7 @@ func TestDataFrameLocRows(t *testing.T) {
 	type dataframeLocRowsTest struct {
 		arg1     DataFrame
 		arg2     [][]interface{}
-		expected *DataFrame
+		expected DataFrame
 	}
 	dataframeLocRowsTests := []dataframeLocRowsTest{
 		{
@@ -105,10 +105,10 @@ func TestDataFrameLocRows(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			[][]interface{}{{"Avery"}},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery"},
@@ -151,10 +151,10 @@ func TestDataFrameLocRows(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder"}},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Jae Crowder"},
@@ -251,10 +251,10 @@ func TestDataFrameLocRows(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder"}, {"Avery Bradley"}},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Jae Crowder", "Avery Bradley"},
@@ -351,10 +351,10 @@ func TestDataFrameLocRows(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder", 25.0}, {"Avery Bradley", 25.0}},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Jae Crowder", "Avery Bradley"},
@@ -451,16 +451,16 @@ func TestDataFrameLocRows(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder", 22.0}, {"Avery Bradley", 25.0}},
-			nil,
+			DataFrame{},
 		},
 	}
 
 	for _, test := range dataframeLocRowsTests {
 		output, err := test.arg1.LocRows(test.arg2...)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -479,7 +479,7 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			[][]interface{}{{"Avery"}},
 			[][]interface{}{{"Avery", 19, "Male"}},
@@ -490,7 +490,7 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder"}},
 			[][]interface{}{{"Jae Crowder", "Boston Celtics", 99.0, "SF", 25.0, "6-6", 235.0, "Marquette", 6796117.0}},
@@ -501,7 +501,7 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder"}, {"Avery Bradley"}},
 			[][]interface{}{
@@ -515,7 +515,7 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder", 25.0}, {"Avery Bradley", 25.0}},
 			[][]interface{}{
@@ -529,7 +529,7 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[][]interface{}{{"Jae Crowder", 22.0}, {"Avery Bradley", 25.0}},
 			nil,
@@ -548,7 +548,7 @@ func TestDataFrameLocCols(t *testing.T) {
 	type dataframeLocColsTest struct {
 		arg1     DataFrame
 		arg2     []string
-		expected *DataFrame
+		expected DataFrame
 	}
 	dataframeLocColsTests := []dataframeLocColsTest{
 		{
@@ -557,10 +557,10 @@ func TestDataFrameLocCols(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			[]string{"Age"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{19, 27, 22},
@@ -585,10 +585,10 @@ func TestDataFrameLocCols(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Position"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"PG", "SF", "SG", "SG"},
@@ -623,10 +623,10 @@ func TestDataFrameLocCols(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Age", "College", "Name"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{25.0, 25.0, 27.0, 22.0},
@@ -689,15 +689,15 @@ func TestDataFrameLocCols(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Avery Bradley"},
-			nil,
+			DataFrame{},
 		},
 	}
 	for _, test := range dataframeLocColsTests {
 		output, err := test.arg1.LocCols(test.arg2...)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -716,7 +716,7 @@ func TestDataFrameLocColsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			[]string{"Age"},
 			[][]interface{}{{19, 27, 22}},
@@ -727,7 +727,7 @@ func TestDataFrameLocColsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Position"},
 			[][]interface{}{{"PG", "SF", "SG", "SG"}},
@@ -738,7 +738,7 @@ func TestDataFrameLocColsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Age", "College", "Name"},
 			[][]interface{}{
@@ -753,7 +753,7 @@ func TestDataFrameLocColsItems(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Avery Bradley"},
 			nil,
@@ -772,7 +772,7 @@ func TestDataFrameLoc(t *testing.T) {
 		arg1     DataFrame
 		arg2     []string
 		arg3     [][]interface{}
-		expected *DataFrame
+		expected DataFrame
 	}
 	dataframeLocTests := []dataframeLocTest{
 		{
@@ -781,11 +781,11 @@ func TestDataFrameLoc(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			[]string{"Age"},
 			[][]interface{}{{"Bradley"}},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{27},
@@ -810,11 +810,11 @@ func TestDataFrameLoc(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			[]string{"Age", "Name"},
 			[][]interface{}{{"John Holland"}},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{27.0},
@@ -845,7 +845,7 @@ func TestDataFrameLoc(t *testing.T) {
 	}
 	for _, test := range dataframeLocTests {
 		output, err := test.arg1.Loc(test.arg2, test.arg3...)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -853,15 +853,15 @@ func TestDataFrameLoc(t *testing.T) {
 
 func TestColAdd(t *testing.T) {
 	type colAddTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colAddTests := []colAddTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -870,10 +870,10 @@ func TestColAdd(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -882,7 +882,7 @@ func TestColAdd(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			5.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -922,7 +922,7 @@ func TestColAdd(t *testing.T) {
 	}
 	for _, test := range colAddTests {
 		output, err := test.arg1.ColAdd(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -930,15 +930,15 @@ func TestColAdd(t *testing.T) {
 
 func TestColSub(t *testing.T) {
 	type colSubTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colSubTests := []colSubTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -947,10 +947,10 @@ func TestColSub(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -959,7 +959,7 @@ func TestColSub(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			5.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -999,7 +999,7 @@ func TestColSub(t *testing.T) {
 	}
 	for _, test := range colSubTests {
 		output, err := test.arg1.ColSub(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1007,15 +1007,15 @@ func TestColSub(t *testing.T) {
 
 func TestColMul(t *testing.T) {
 	type colMulTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colMulTests := []colMulTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1024,10 +1024,10 @@ func TestColMul(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1036,7 +1036,7 @@ func TestColMul(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			2.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1076,7 +1076,7 @@ func TestColMul(t *testing.T) {
 	}
 	for _, test := range colMulTests {
 		output, err := test.arg1.ColMul(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1084,15 +1084,15 @@ func TestColMul(t *testing.T) {
 
 func TestColDiv(t *testing.T) {
 	type colDivTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colDivTests := []colDivTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1101,10 +1101,10 @@ func TestColDiv(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1113,7 +1113,7 @@ func TestColDiv(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			5.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1153,7 +1153,7 @@ func TestColDiv(t *testing.T) {
 	}
 	for _, test := range colDivTests {
 		output, err := test.arg1.ColDiv(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1161,15 +1161,15 @@ func TestColDiv(t *testing.T) {
 
 func TestColMod(t *testing.T) {
 	type colModTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colModTests := []colModTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1178,10 +1178,10 @@ func TestColMod(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1190,7 +1190,7 @@ func TestColMod(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			5.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1230,7 +1230,7 @@ func TestColMod(t *testing.T) {
 	}
 	for _, test := range colModTests {
 		output, err := test.arg1.ColMod(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1238,15 +1238,15 @@ func TestColMod(t *testing.T) {
 
 func TestColGt(t *testing.T) {
 	type colGtTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colGtTests := []colGtTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1255,10 +1255,10 @@ func TestColGt(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1267,7 +1267,7 @@ func TestColGt(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			25.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1307,7 +1307,7 @@ func TestColGt(t *testing.T) {
 	}
 	for _, test := range colGtTests {
 		output, err := test.arg1.ColGt(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1315,15 +1315,15 @@ func TestColGt(t *testing.T) {
 
 func TestColLt(t *testing.T) {
 	type colLtTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colLtTests := []colLtTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1332,10 +1332,10 @@ func TestColLt(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1344,7 +1344,7 @@ func TestColLt(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			22.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1384,7 +1384,7 @@ func TestColLt(t *testing.T) {
 	}
 	for _, test := range colLtTests {
 		output, err := test.arg1.ColLt(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1392,15 +1392,15 @@ func TestColLt(t *testing.T) {
 
 func TestColEq(t *testing.T) {
 	type colEqTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     float64
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	colEqTests := []colEqTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1409,10 +1409,10 @@ func TestColEq(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Name",
 			5.0,
-			nil,
+			DataFrame{},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1421,7 +1421,7 @@ func TestColEq(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			19.0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1461,7 +1461,7 @@ func TestColEq(t *testing.T) {
 	}
 	for _, test := range colEqTests {
 		output, err := test.arg1.ColEq(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1469,14 +1469,14 @@ func TestColEq(t *testing.T) {
 
 func TestNewCol(t *testing.T) {
 	type newColTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     []interface{}
-		expected *DataFrame
+		expected DataFrame
 	}
 	newColTests := []newColTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1485,7 +1485,7 @@ func TestNewCol(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Nationality",
 			[]interface{}{"USA", "UK", "Canada"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1532,7 +1532,7 @@ func TestNewCol(t *testing.T) {
 			},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1541,7 +1541,7 @@ func TestNewCol(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age+5",
 			[]interface{}{"", "", ""},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1598,14 +1598,14 @@ func TestNewCol(t *testing.T) {
 
 func TestNewDerivedCol(t *testing.T) {
 	type newDerivedColTest struct {
-		arg1     *DataFrame
+		arg1     DataFrame
 		arg2     string
 		arg3     string
-		expected *DataFrame
+		expected DataFrame
 	}
 	newDerivedColTests := []newDerivedColTest{
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1614,7 +1614,7 @@ func TestNewDerivedCol(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"NewAge",
 			"Age",
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradley", "Candice"},
@@ -1661,7 +1661,7 @@ func TestNewDerivedCol(t *testing.T) {
 			},
 		},
 		{
-			func(data [][]interface{}, columns []string, indexCols []string) *DataFrame {
+			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
 				newDf, err := NewDataFrame(data, columns, indexCols)
 				if err != nil {
 					t.Error(err)
@@ -1670,12 +1670,12 @@ func TestNewDerivedCol(t *testing.T) {
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"NewCol",
 			"Doesn't Exist",
-			nil,
+			DataFrame{},
 		},
 	}
 	for _, test := range newDerivedColTests {
 		output, err := test.arg1.NewDerivedCol(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1694,7 +1694,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			map[string]string{"Name": "Names"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
@@ -1702,7 +1702,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "Age", "Sex"}, []string{"Names"}),
 		},
 		{
@@ -1711,7 +1711,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			map[string]string{"Age": "HowOld"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
@@ -1719,7 +1719,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "HowOld", "Sex"}, []string{"Name"}),
 		},
 		{
@@ -1728,7 +1728,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
 			map[string]string{"Name": "Names"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
@@ -1736,7 +1736,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Names", "Age", "Sex"}, []string{"Names", "Sex"}),
 		},
 		{
@@ -1745,7 +1745,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
 			map[string]string{"Names": "Name"},
 			func(data [][]interface{}, columns []string, indexCols []string) DataFrame {
@@ -1753,7 +1753,7 @@ func TestDataFrameRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Avery", "Bradley", "Candice"}, {19.0, 27.0, 22.0}, {"Male", "Male", "Female"}}, []string{"Name", "Age", "Sex"}, []string{"Name", "Sex"}),
 		},
 	}
@@ -1782,7 +1782,7 @@ func TestDataFrameSortByIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Bradley", "Candice", "Avery"}, {27.0, 22.0, 19.0}, {"Male", "Female", "Male"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			true,
 			DataFrame{
@@ -1865,7 +1865,7 @@ func TestDataFrameSortByValues(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}([][]interface{}{{"Bradley", "Candice", "Avery"}, {27.0, 22.0, 19.0}, {"Male", "Female", "Male"}}, []string{"Name", "Age", "Sex"}, []string{"Name"}),
 			"Age",
 			true,
@@ -1923,7 +1923,7 @@ func TestDropNaN(t *testing.T) {
 	type dropNaNTest struct {
 		arg1     DataFrame
 		arg2     int
-		expected *DataFrame
+		expected DataFrame
 	}
 	dropNaNTests := []dropNaNTest{
 		{
@@ -1932,10 +1932,10 @@ func TestDropNaN(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			0,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "R.J. Hunter"},
@@ -2032,10 +2032,10 @@ func TestDropNaN(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			1,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -2132,7 +2132,7 @@ func TestDataFramePivot(t *testing.T) {
 		arg1     DataFrame
 		arg2     string
 		arg3     string
-		expected *DataFrame
+		expected DataFrame
 	}
 	pivotTests := []pivotTest{
 		{
@@ -2141,11 +2141,11 @@ func TestDataFramePivot(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			"Sex",
 			"Height",
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{172.0, 180.0, math.NaN()},
@@ -2179,11 +2179,11 @@ func TestDataFramePivot(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			"Fruit",
 			"Color",
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Red", ""},
@@ -2237,7 +2237,7 @@ func TestDataFramePivotTable(t *testing.T) {
 		arg3     string
 		arg4     string
 		arg5     StatsFunc
-		expected *DataFrame
+		expected DataFrame
 	}
 	pivotTableTests := []pivotTableTest{
 		{
@@ -2246,13 +2246,13 @@ func TestDataFramePivotTable(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			"Team",
 			"Height",
 			"Salary",
 			Mean,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{math.NaN(), 1500000.0},
@@ -2385,13 +2385,13 @@ func TestDataFramePivotTable(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(),
 			"location",
 			"parameter",
 			"value",
 			Mean,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{26.951, 29.374, 29.740},
@@ -2434,7 +2434,7 @@ func TestDataFrameMelt(t *testing.T) {
 		arg1     DataFrame
 		arg2     string
 		arg3     string
-		expected *DataFrame
+		expected DataFrame
 	}
 	meltTests := []meltTest{
 		{
@@ -2444,11 +2444,11 @@ func TestDataFrameMelt(t *testing.T) {
 					t.Error(err)
 				}
 				dfPivoted, _ := newDf.PivotTable("location", "parameter", "value", Mean)
-				return *dfPivoted
+				return dfPivoted
 			}(),
 			"parameter",
 			"value",
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"BETR801", "BETR801", "FR04014", "FR04014", "London Westminster", "London Westminster"},

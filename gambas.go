@@ -23,11 +23,11 @@ func CreateRangeIndex(length int) IndexData {
 // Generally, NewSeriesFromFile will be used more often.
 // The index parameter can be set to nil when calling NewSeries on its own.
 // This field is for passing in the DataFrame's index data in NewDataFrame.
-func NewSeries(data []interface{}, name string, index *IndexData) (*Series, error) {
+func NewSeries(data []interface{}, name string, index *IndexData) (Series, error) {
 	var s Series
 	dtype, err := checkTypeIntegrity(data)
 	if err != nil {
-		return nil, err
+		return Series{}, err
 	}
 	s.dtype = dtype
 
@@ -52,14 +52,14 @@ func NewSeries(data []interface{}, name string, index *IndexData) (*Series, erro
 	}
 
 	s.name = name
-	return &s, nil
+	return s, nil
 }
 
 // NewDataFrame created a new DataFrame object from given parameters.
 // Generally, NewDataFrameFromFile will be used more often.
-func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*DataFrame, error) {
+func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (DataFrame, error) {
 	if len(data) != len(columns) {
-		return nil, fmt.Errorf("length of data (%d) and columns (%d) does not match", len(data), len(columns))
+		return DataFrame{}, fmt.Errorf("length of data (%d) and columns (%d) does not match", len(data), len(columns))
 	}
 
 	var df DataFrame
@@ -98,10 +98,10 @@ func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (*
 	for i, v := range data {
 		series, err := NewSeries(v, fmt.Sprint(columns[i]), &df.index)
 		if err != nil {
-			return nil, err
+			return DataFrame{}, err
 		}
-		df.series[i] = *series
+		df.series[i] = series
 	}
 
-	return &df, nil
+	return df, nil
 }

@@ -282,7 +282,7 @@ func TestSeriesLoc(t *testing.T) {
 	type locTest struct {
 		arg1          Series
 		arg2          [][]interface{}
-		expected      *Series
+		expected      Series
 		expectedError error
 	}
 	locTests := []locTest{
@@ -301,7 +301,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{0}, {1}},
-			&Series{
+			Series{
 				[]interface{}{"alice", "bob"},
 				IndexData{
 					[]Index{
@@ -330,7 +330,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"b"}, {"c"}},
-			&Series{
+			Series{
 				[]interface{}{"banana", "cherry"},
 				IndexData{
 					[]Index{
@@ -361,7 +361,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"female"}},
-			&Series{
+			Series{
 				[]interface{}{"clara", "anna"},
 				IndexData{
 					[]Index{
@@ -392,7 +392,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"male", "volleyball"}},
-			&Series{
+			Series{
 				[]interface{}{"brian"},
 				IndexData{
 					[]Index{{1, []interface{}{"male", "volleyball"}}},
@@ -420,7 +420,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"male"}, {"volleyball"}},
-			nil,
+			Series{},
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
 		{
@@ -440,7 +440,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"volleyball"}},
-			nil,
+			Series{},
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
 		{
@@ -460,7 +460,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"female"}, {"male"}},
-			&Series{
+			Series{
 				[]interface{}{"clara", "anna", "brian", "dorian", "michael"},
 				IndexData{
 					[]Index{
@@ -494,7 +494,7 @@ func TestSeriesLoc(t *testing.T) {
 				"string",
 			},
 			[][]interface{}{{"female"}, {"volleyball"}},
-			nil,
+			Series{},
 			fmt.Errorf("no data found for index [volleyball]"),
 		},
 	}
@@ -1874,7 +1874,7 @@ func TestSeriesDescribe(t *testing.T) {
 func TestSeriesValueCounts(t *testing.T) {
 	type valueCountsTest struct {
 		arg1     Series
-		expected *Series
+		expected Series
 	}
 	valueCountsTests := []valueCountsTest{
 		{
@@ -1895,7 +1895,7 @@ func TestSeriesValueCounts(t *testing.T) {
 				"Workplaces",
 				"string",
 			},
-			&Series{
+			Series{
 				[]interface{}{2, 3, 1, 1},
 				IndexData{
 					[]Index{
@@ -1913,7 +1913,7 @@ func TestSeriesValueCounts(t *testing.T) {
 	}
 	for _, test := range valueCountsTests {
 		output, err := test.arg1.ValueCounts()
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{}), cmpopts.IgnoreFields(Index{}, "id")) || (output != nil && err != nil) {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{}), cmpopts.IgnoreFields(Index{}, "id")) || (!cmp.Equal(output, Series{}, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -1932,7 +1932,7 @@ func TestSeriesRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -1947,7 +1947,7 @@ func TestSeriesRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Names",
@@ -1963,7 +1963,7 @@ func TestSeriesRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -1978,7 +1978,7 @@ func TestSeriesRenameCol(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Names",
@@ -2011,7 +2011,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -2025,7 +2025,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -2041,7 +2041,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -2056,7 +2056,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -2072,7 +2072,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",
@@ -2087,7 +2087,7 @@ func TestSeriesRenameIndex(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newSer
+				return newSer
 			}(
 				[]interface{}{"Avery", "Bradley", "Candice"},
 				"Name",

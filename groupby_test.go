@@ -12,7 +12,7 @@ func TestGroupByAgg(t *testing.T) {
 		arg1     GroupBy
 		arg2     []string
 		arg3     StatsFunc
-		expected *DataFrame
+		expected DataFrame
 	}
 	aggTests := []aggTest{
 		{
@@ -22,11 +22,11 @@ func TestGroupByAgg(t *testing.T) {
 					t.Error(err)
 				}
 				gb, _ := newDf.GroupBy("Animal")
-				return *gb
+				return gb
 			}(),
 			[]string{"Max Speed"},
 			Mean,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Falcon", "Parrot"},
@@ -70,11 +70,11 @@ func TestGroupByAgg(t *testing.T) {
 					t.Error(err)
 				}
 				gb, _ := newDf.GroupBy("Pclass")
-				return *gb
+				return gb
 			}(),
 			[]string{"Age"},
 			Mean,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{1, 2, 3},
@@ -121,11 +121,11 @@ func TestGroupByAgg(t *testing.T) {
 					t.Error(err)
 				}
 				gb, _ := newDf.GroupBy("parameter", "location")
-				return *gb
+				return gb
 			}(),
 			[]string{"value"},
 			Mean,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"no2", "no2", "no2", "pm25", "pm25"},

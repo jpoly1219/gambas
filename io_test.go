@@ -13,14 +13,14 @@ func TestReadCsv(t *testing.T) {
 	type readCsvTest struct {
 		arg1     string
 		arg2     []string
-		expected *DataFrame
+		expected DataFrame
 	}
 
 	readCsvTests := []readCsvTest{
 		{
 			filepath.Join("testfiles", "test1.csv"),
 			nil,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery", "Bradford", "Candice"},
@@ -60,7 +60,7 @@ func TestReadCsv(t *testing.T) {
 		{
 			filepath.Join("testfiles", "test2.csv"),
 			nil,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -204,7 +204,7 @@ func TestReadCsv(t *testing.T) {
 		{
 			filepath.Join("testfiles", "test2.csv"),
 			[]string{"Position"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -348,7 +348,7 @@ func TestReadCsv(t *testing.T) {
 		{
 			filepath.Join("testfiles", "test2.csv"),
 			nil,
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -492,7 +492,7 @@ func TestReadCsv(t *testing.T) {
 		{
 			filepath.Join("testfiles", "test2.csv"),
 			[]string{"Position", "College"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
@@ -637,7 +637,7 @@ func TestReadCsv(t *testing.T) {
 
 	for _, test := range readCsvTests {
 		output, err := ReadCsv(test.arg1, test.arg2)
-		if !cmp.Equal(*output, *test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.IgnoreTypes(0.0)) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.IgnoreTypes(0.0)) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -656,7 +656,7 @@ func TestWriteCsv(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *newDf
+				return newDf
 			}(
 				[][]interface{}{{"Avery", "Bradley", "Candice"}, {19, 27, 22}, {"Male", "Male", "Female"}},
 				[]string{"Name", "Age", "Sex"},
@@ -671,7 +671,7 @@ func TestWriteCsv(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				return *df
+				return df
 			}(),
 			filepath.Join("testfiles", "writeCsvTest2.csv"),
 			nil,
@@ -690,13 +690,13 @@ func TestIoReadJsonByColumns(t *testing.T) {
 	type readJsonByColumnsTest struct {
 		arg1     string
 		arg2     []string
-		expected *DataFrame
+		expected DataFrame
 	}
 	readJsonByColumnsTests := []readJsonByColumnsTest{
 		{
 			"testfiles/readjsonbycolumns/1.json",
 			[]string{"Name"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{
@@ -758,7 +758,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 		{
 			"testfiles/readjsonbycolumns/2.json",
 			[]string{"Name"},
-			&DataFrame{
+			DataFrame{
 				[]Series{
 					{
 						[]interface{}{

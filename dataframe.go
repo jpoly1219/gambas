@@ -67,14 +67,14 @@ func (df *DataFrame) Tail(howMany int) {
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
-func (df *DataFrame) LocRows(rows ...[]interface{}) (*DataFrame, error) {
+func (df *DataFrame) LocRows(rows ...[]interface{}) (DataFrame, error) {
 	filteredData := make([][]interface{}, 0)
 	filteredColname := make([]string, 0)
 	filteredIndex := IndexData{}
 	for _, series := range df.series {
 		located, err := series.Loc(rows...)
 		if err != nil {
-			return nil, err
+			return DataFrame{}, err
 		}
 		filteredData = append(filteredData, located.data)
 		filteredColname = append(filteredColname, located.name)
@@ -83,7 +83,7 @@ func (df *DataFrame) LocRows(rows ...[]interface{}) (*DataFrame, error) {
 
 	dataframe, err := NewDataFrame(filteredData, filteredColname, filteredIndex.names)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	// When NewDataFrame is called, the resulting dataframe may have empty index values.
@@ -121,7 +121,7 @@ func (df *DataFrame) LocRowsItems(rows ...[]interface{}) ([][]interface{}, error
 }
 
 // LocRows returns a set of columns as a new DataFrame object, given a list of labels.
-func (df *DataFrame) LocCols(cols ...string) (*DataFrame, error) {
+func (df *DataFrame) LocCols(cols ...string) (DataFrame, error) {
 	filtered2D := make([][]interface{}, 0)
 	for _, column := range cols {
 		for _, series := range df.series {
@@ -133,7 +133,7 @@ func (df *DataFrame) LocCols(cols ...string) (*DataFrame, error) {
 
 	dataframe, err := NewDataFrame(filtered2D, cols, df.index.names)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	// When NewDataFrame is called, the resulting dataframe may have empty index values.
@@ -171,15 +171,15 @@ func (df *DataFrame) LocColsItems(cols ...string) ([][]interface{}, error) {
 }
 
 // Loc indexes the DataFrame object given a slice of row and column labels.
-func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, error) {
+func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (DataFrame, error) {
 	df1, err := df.LocCols(cols...)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	df2, err := df1.LocRows(rows...)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	return df2, nil
@@ -188,7 +188,7 @@ func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (*DataFrame, erro
 // Basic arithmetic operations for columns.
 
 // ColAdd() adds the given value to each element in the specified column.
-func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColAdd(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 
 	for _, series := range newDf.series {
@@ -199,17 +199,17 @@ func (df *DataFrame) ColAdd(colname string, value float64) (*DataFrame, error) {
 					v += value
 					series.data[i] = v
 				default:
-					return nil, fmt.Errorf("cannot add, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot add, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // ColSub() subtracts the given value from each element in the specified column.
-func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColSub(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
@@ -219,17 +219,17 @@ func (df *DataFrame) ColSub(colname string, value float64) (*DataFrame, error) {
 					v -= value
 					series.data[i] = v
 				default:
-					return nil, fmt.Errorf("cannot subtract, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot subtract, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // ColMul() multiplies each element in the specified column by the given value.
-func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColMul(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
@@ -239,17 +239,17 @@ func (df *DataFrame) ColMul(colname string, value float64) (*DataFrame, error) {
 					v *= value
 					series.data[i] = v
 				default:
-					return nil, fmt.Errorf("cannot multiply, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot multiply, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // ColDiv() divides each element in the specified column by the given value.
-func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColDiv(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
@@ -259,17 +259,17 @@ func (df *DataFrame) ColDiv(colname string, value float64) (*DataFrame, error) {
 					v /= value
 					series.data[i] = v
 				default:
-					return nil, fmt.Errorf("cannot divide, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot divide, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // ColMod() applies modulus calculations on each element in the specified column, returning the remainder.
-func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColMod(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
 		if series.name == colname {
@@ -278,19 +278,19 @@ func (df *DataFrame) ColMod(colname string, value float64) (*DataFrame, error) {
 				case float64:
 					series.data[i] = math.Mod(v, value)
 				default:
-					return nil, fmt.Errorf("cannot use modulus, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot use modulus, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // Basic boolean operators for columns.
 
 // ColGt() checks if each element in the specified column is greater than the given value.
-func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColGt(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i, series := range newDf.series {
 		if series.name == colname {
@@ -301,17 +301,17 @@ func (df *DataFrame) ColGt(colname string, value float64) (*DataFrame, error) {
 					isGt := (v > value)
 					series.data[i] = isGt
 				default:
-					return nil, fmt.Errorf("cannot compare, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot compare, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // ColLt() checks if each element in the specified column is less than the given value.
-func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColLt(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i, series := range newDf.series {
 		if series.name == colname {
@@ -322,17 +322,17 @@ func (df *DataFrame) ColLt(colname string, value float64) (*DataFrame, error) {
 					isLt := (v < value)
 					series.data[i] = isLt
 				default:
-					return nil, fmt.Errorf("cannot compare, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot compare, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // ColEq() checks if each element in the specified column is equal to the given value.
-func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
+func (df *DataFrame) ColEq(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i, series := range newDf.series {
 		if series.name == colname {
@@ -343,44 +343,44 @@ func (df *DataFrame) ColEq(colname string, value float64) (*DataFrame, error) {
 					isEq := (v == value)
 					series.data[i] = isEq
 				default:
-					return nil, fmt.Errorf("cannot compare, column data type is not float64")
+					return DataFrame{}, fmt.Errorf("cannot compare, column data type is not float64")
 				}
 			}
 			return newDf, nil
 		}
 	}
-	return nil, fmt.Errorf("colname does not match any of the existing column names")
+	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
 // NewCol creates a new column with the given data and column name.
 // To create a blank column, pass in a slice with empty string values
 // like so: []interface{}{"", "", "", ...}
-func (df *DataFrame) NewCol(colname string, data []interface{}) (*DataFrame, error) {
+func (df *DataFrame) NewCol(colname string, data []interface{}) (DataFrame, error) {
 	newSeries, err := NewSeries(data, colname, &df.index)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
-	df.series = append(df.series, *newSeries)
+	df.series = append(df.series, newSeries)
 	df.columns = append(df.columns, colname)
 
-	return df, nil
+	return *df, nil
 }
 
 // NewDerivedCol creates a new column derived from an existing column.
 // It copies over the data from a column named srcCol into a new column.
 // You can then apply column operations such as ColAdd to the new column.
-func (df *DataFrame) NewDerivedCol(colname, srcCol string) (*DataFrame, error) {
+func (df *DataFrame) NewDerivedCol(colname, srcCol string) (DataFrame, error) {
 	for i := range df.series {
 		if df.series[i].name == srcCol {
 			dataframe, err := df.NewCol(colname, df.series[i].data)
 			if err != nil {
-				return nil, err
+				return DataFrame{}, err
 			}
 			return dataframe, nil
 		}
 	}
-	return nil, fmt.Errorf("the column doesn't exist: %s", srcCol)
+	return DataFrame{}, fmt.Errorf("the column doesn't exist: %s", srcCol)
 }
 
 // RenameCol renames columns in a DataFrame.
@@ -471,9 +471,9 @@ func (df *DataFrame) SortIndexColFirst() {
 // DropNaN drops rows or columns with NaN values.
 // Specify axis to choose whether to remove rows with NaN or columns with NaN.
 // axis=0 is row, axis=1 is column.
-func (df *DataFrame) DropNaN(axis int) (*DataFrame, error) {
+func (df *DataFrame) DropNaN(axis int) (DataFrame, error) {
 	if axis > 1 || axis < 0 {
-		return nil, fmt.Errorf("axis can only be either 0 or 1")
+		return DataFrame{}, fmt.Errorf("axis can only be either 0 or 1")
 	}
 
 	newDf := df
@@ -536,18 +536,18 @@ func (df *DataFrame) DropNaN(axis int) (*DataFrame, error) {
 		}
 	}
 
-	return newDf, nil
+	return *newDf, nil
 }
 
 // Pivot returns an organized dataframe that has values corresponding to the index and the given column.
-func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
+func (df *DataFrame) Pivot(column, value string) (DataFrame, error) {
 	// check if index contains duplicate entires.
 	// for the same index, if column has a value that is repeated, then raise an error.
 
 	// loc each individual values, then concat them.
 	filteredDf, err := df.LocCols(column, value)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	type dataMap struct {
@@ -579,7 +579,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 			if dm.column == colname {
 				innerKey, err := index.hashKeyValueOnly()
 				if err != nil {
-					return nil, err
+					return DataFrame{}, err
 				}
 
 				dm.indexValueMap[*innerKey] = filteredDf.series[1].data[i]
@@ -595,7 +595,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 
 					innerKey, err := index.hashKeyValueOnly()
 					if err != nil {
-						return nil, err
+						return DataFrame{}, err
 					}
 
 					val, exists := dm.indexValueMap[*innerKey]
@@ -621,7 +621,7 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 
 	newDf, err := NewDataFrame(newDfData, newDfColumns, nil)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	newDfIndex := IndexData{newDfIndexIndex, newDfIndexNames}
@@ -637,10 +637,10 @@ func (df *DataFrame) Pivot(column, value string) (*DataFrame, error) {
 // Each value will be aggregated via an aggregation function.
 // Pick three columns from the DataFrame, each to serve as the index, column, and value.
 // PivotTable ignores NaN values.
-func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) (*DataFrame, error) {
+func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) (DataFrame, error) {
 	filteredData, err := df.LocColsItems(index, column, value)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	// iterate through filteredData
@@ -672,7 +672,7 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 		index := Index{i, []interface{}{idx, col}}
 		key, err := index.hashKeyValueOnly()
 		if err != nil {
-			return nil, err
+			return DataFrame{}, err
 		}
 
 		if !containsString(uniqueHashSlice, *key) {
@@ -691,7 +691,7 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 			index := Index{i, []interface{}{idx, col}}
 			key, err := index.hashKeyValueOnly()
 			if err != nil {
-				return nil, err
+				return DataFrame{}, err
 			}
 
 			result := aggFunc(dataMap[*key])
@@ -699,7 +699,7 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 				if math.IsNaN(result.Result) {
 
 				} else {
-					return nil, result.Err
+					return DataFrame{}, result.Err
 				}
 			}
 
@@ -710,7 +710,7 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 
 	newDf, err := NewDataFrame(valSlice, uniqueColSlice, nil)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	newDfIndex := IndexData{[]Index{}, []string{index}}
@@ -726,7 +726,7 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 	return newDf, nil
 }
 
-func (df *DataFrame) Melt(colName, valueName string) (*DataFrame, error) {
+func (df *DataFrame) Melt(colName, valueName string) (DataFrame, error) {
 	newDfIndexSlice := make([]interface{}, 0)
 	newDfColumnSlice := make([]interface{}, 0)
 	newDfValueSlice := make([]interface{}, 0)
@@ -747,17 +747,17 @@ func (df *DataFrame) Melt(colName, valueName string) (*DataFrame, error) {
 	colNameSlice = append(colNameSlice, colName, valueName)
 	newDf, err := NewDataFrame(newDfSlice, colNameSlice, df.index.names)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	return newDf, nil
 }
 
 // GroupBy groups selected columns in a DataFrame object and returns a GroupBy object.
-func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
+func (df *DataFrame) GroupBy(by ...string) (GroupBy, error) {
 	filtered, err := df.LocCols(by...)
 	if err != nil {
-		return nil, err
+		return GroupBy{}, err
 	}
 
 	colIndMap := make(map[string][]interface{})
@@ -772,7 +772,7 @@ func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
 		index := Index{i, colTuple}
 		key, err := index.hashKeyValueOnly()
 		if err != nil {
-			return nil, err
+			return GroupBy{}, err
 		}
 
 		colIndMap[*key] = append(colIndMap[*key], row.id)
@@ -787,5 +787,5 @@ func (df *DataFrame) GroupBy(by ...string) (*GroupBy, error) {
 	gb.colTuples = colTuples
 	gb.colTuplesLabels = filtered.columns
 
-	return gb, nil
+	return *gb, nil
 }

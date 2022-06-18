@@ -8,10 +8,10 @@ type GroupBy struct {
 }
 
 // Agg aggregates data in the GroupBy object using the given aggFunc.
-func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error) {
+func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (DataFrame, error) {
 	filtered, err := gb.dataFrame.LocCols(targetCol...)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	newDfData := make([][]interface{}, len(gb.colTuples[0]))
@@ -27,7 +27,7 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 			colTupleIndex := Index{i, colTuple}
 			key, err := colTupleIndex.hashKeyValueOnly()
 			if err != nil {
-				return nil, err
+				return DataFrame{}, err
 			}
 
 			indexForData := gb.colIndMap[*key]
@@ -35,7 +35,7 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 			for _, id := range indexForData {
 				d, err := ser.IAt(id.(int))
 				if err != nil {
-					return nil, err
+					return DataFrame{}, err
 				}
 				data = append(data, d)
 			}
@@ -51,7 +51,7 @@ func (gb *GroupBy) Agg(targetCol []string, aggFunc StatsFunc) (*DataFrame, error
 
 	newDf, err := NewDataFrame(newDfData, newDfColumns, gb.colTuplesLabels)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	newDf.SortByIndex(true)

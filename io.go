@@ -13,11 +13,11 @@ import (
 // ReadCsv reads a CSV file and returns a new DataFrame object.
 // It is recommended to generate pathToFile using `filepath.Join`.
 // TODO: users should be able to define custom indices.
-func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
+func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
 	// read line by line
 	f, err := os.Open(pathToFile)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 	defer f.Close()
 	csvr := csv.NewReader(f)
@@ -56,14 +56,14 @@ func ReadCsv(pathToFile string, indexCols []string) (*DataFrame, error) {
 	if indexCols != nil {
 		df, err := NewDataFrame(data2DArray, columnArray, indexCols)
 		if err != nil {
-			return nil, err
+			return DataFrame{}, err
 		}
 
 		return df, nil
 	}
 	df, err := NewDataFrame(data2DArray, columnArray, []string{columnArray[0]})
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	return df, nil
@@ -131,22 +131,22 @@ func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
 // If nil, a new RangeIndex will be created.
 // Your index column should not have any missing values.
 // Order of columns is not guaranteed, but the index column will always come first.
-func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error) {
+func ReadJsonByColumns(pathToFile string, indexCols []string) (DataFrame, error) {
 	f, err := os.Open(pathToFile)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 	defer f.Close()
 
 	fbyte, err := io.ReadAll(f)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	var decoded map[string]interface{}
 	err = json.Unmarshal(fbyte, &decoded)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 
 	newDfData := make([][]interface{}, 0)
@@ -173,7 +173,7 @@ func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error
 
 	newDf, err := NewDataFrame(newDfData, newDfCols, newDfIndexNames)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 	newDf.SortByColumns()
 	newDf.SortByIndex(true)
@@ -184,10 +184,10 @@ func ReadJsonByColumns(pathToFile string, indexCols []string) (*DataFrame, error
 // ReadJsonStream reads a JSON stream and returns a new DataFrame object.
 // The JSON file should be in this format:
 // {"col1":val1, "col2":val2, ...}{"col1":val1, "col2":val2, ...}
-func ReadJsonStream(pathToFile string, indexCols []string) (*DataFrame, error) {
+func ReadJsonStream(pathToFile string, indexCols []string) (DataFrame, error) {
 	f, err := os.Open(pathToFile)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 	defer f.Close()
 
@@ -201,7 +201,7 @@ func ReadJsonStream(pathToFile string, indexCols []string) (*DataFrame, error) {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			return nil, err
+			return DataFrame{}, err
 		}
 
 		for k, v := range row {
@@ -218,7 +218,7 @@ func ReadJsonStream(pathToFile string, indexCols []string) (*DataFrame, error) {
 
 	newDf, err := NewDataFrame(newDfData, newDfCols, indexCols)
 	if err != nil {
-		return nil, err
+		return DataFrame{}, err
 	}
 	return newDf, nil
 }
