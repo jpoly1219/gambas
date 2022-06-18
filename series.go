@@ -101,7 +101,7 @@ func (s *Series) Tail(howMany int) {
 
 // At() returns an element at a given index.
 // For multiindex, you need to pass in the whole index tuple.
-func (s Series) At(ind ...interface{}) (interface{}, error) {
+func (s *Series) At(ind ...interface{}) (interface{}, error) {
 	for i, index := range s.index.index {
 		matchExists := false
 		for j := 0; j < len(index.value); j++ {
@@ -118,7 +118,7 @@ func (s Series) At(ind ...interface{}) (interface{}, error) {
 }
 
 // IAt() returns an element at a given integer index.
-func (s Series) IAt(ind int) (interface{}, error) {
+func (s *Series) IAt(ind int) (interface{}, error) {
 	if ind >= len(s.data) {
 		return nil, fmt.Errorf("index out of bounds: %v", ind)
 	}
@@ -129,7 +129,7 @@ func (s Series) IAt(ind int) (interface{}, error) {
 }
 
 // Loc() returns a range of data at given rows.
-func (s Series) Loc(idx ...[]interface{}) (*Series, error) {
+func (s *Series) Loc(idx ...[]interface{}) (*Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(idx[0])
 	for i, eachIndex := range idx {
@@ -224,7 +224,7 @@ func (s *Series) LocItems(idx ...[]interface{}) ([]interface{}, error) {
 }
 
 // ILoc() returns an array of elements at a given integer index range.
-func (s Series) ILoc(min, max int) ([]interface{}, error) {
+func (s *Series) ILoc(min, max int) ([]interface{}, error) {
 	result := make([]interface{}, 0)
 	for i := min; i < max; i++ {
 		iatData, err := s.IAt(i)
@@ -240,7 +240,7 @@ func (s Series) ILoc(min, max int) ([]interface{}, error) {
 // Summary statistics functions
 
 // Count() counts the number of non-NA elements in a column.
-func (s Series) Count() StatsResult {
+func (s *Series) Count() StatsResult {
 	count := 0
 	for _, v := range s.data {
 		if v != nil || v != math.NaN() {
@@ -252,7 +252,7 @@ func (s Series) Count() StatsResult {
 }
 
 // Mean() returns the mean of the elements in a column.
-func (s Series) Mean() StatsResult {
+func (s *Series) Mean() StatsResult {
 	mean := 0.0
 
 	data, err := interface2F64Slice(s.data)
@@ -277,7 +277,7 @@ func (s Series) Mean() StatsResult {
 }
 
 // Median() returns the median of the elements in a column.
-func (s Series) Median() StatsResult {
+func (s *Series) Median() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Median", math.NaN(), err}
@@ -305,7 +305,7 @@ func (s Series) Median() StatsResult {
 }
 
 // Std() returns the sample standard deviation of the elements in a column.
-func (s Series) Std() StatsResult {
+func (s *Series) Std() StatsResult {
 	std := 0.0
 	meanResult := s.Mean() // this also checks that all data can be converted to float64.
 	if meanResult.Err != nil {
@@ -330,7 +330,7 @@ func (s Series) Std() StatsResult {
 }
 
 // Min() returns the smallest element in a column.
-func (s Series) Min() StatsResult {
+func (s *Series) Min() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Min", math.NaN(), err}
@@ -346,7 +346,7 @@ func (s Series) Min() StatsResult {
 }
 
 // Max() returns the largest element is a column.
-func (s Series) Max() StatsResult {
+func (s *Series) Max() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Max", math.NaN(), err}
@@ -363,7 +363,7 @@ func (s Series) Max() StatsResult {
 
 // Q1() returns the lower quartile (25%) of the elements in a column.
 // This does not include the median during calculation.
-func (s Series) Q1() StatsResult {
+func (s *Series) Q1() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Q1", math.NaN(), err}
@@ -389,7 +389,7 @@ func (s Series) Q1() StatsResult {
 
 // Q2() returns the middle quartile (50%) of the elements in a column.
 // This accomplishes the same thing as s.Median().
-func (s Series) Q2() StatsResult {
+func (s *Series) Q2() StatsResult {
 	q2Result := s.Median()
 	if q2Result.Err != nil {
 		return StatsResult{"Q2", math.NaN(), q2Result.Err}
@@ -400,7 +400,7 @@ func (s Series) Q2() StatsResult {
 
 // Q3() returns the upper quartile (75%) of the elements in a column.
 // This does not include the median during calculation.
-func (s Series) Q3() StatsResult {
+func (s *Series) Q3() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Q3", math.NaN(), err}
@@ -424,7 +424,7 @@ func (s Series) Q3() StatsResult {
 	}
 }
 
-func (s Series) Describe() ([]float64, error) {
+func (s *Series) Describe() ([]float64, error) {
 	count := s.Count()
 	fmt.Println("Count:", count.Result)
 
@@ -484,7 +484,7 @@ func (s Series) Describe() ([]float64, error) {
 }
 
 // ValueCounts returns a Series containing the number of unique values in a given Series.
-func (s Series) ValueCounts() (*Series, error) {
+func (s *Series) ValueCounts() (*Series, error) {
 	valueCountMap := make(map[interface{}]int, 0)
 	for _, data := range s.data {
 		// if key doesn't exist, create a new key and set initial value as 1.
