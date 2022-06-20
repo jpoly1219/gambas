@@ -1,6 +1,7 @@
 package gambas
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"os"
@@ -12,6 +13,44 @@ type DataFrame struct {
 	series  []Series
 	index   IndexData
 	columns []string
+}
+
+func (df *DataFrame) MarshalJSON() ([]byte, error) {
+	type serJson struct {
+		Data  []interface{} `json:"data"`
+		Name  string        `json:"name"`
+		Dtype string        `json:"dtype"`
+	}
+	type dfJson struct {
+		Series  []serJson `json:"series"`
+		Columns []string  `json:"columns"`
+	}
+
+	serjs := make([]serJson, 0)
+	for _, ser := range df.series {
+		serj := new(serJson)
+		for _, data := range ser.data {
+			switch v := data.(type) {
+			case float64:
+				if math.IsNaN(v) {
+					serj.Data = append(serj.Data, nil)
+				} else {
+					serj.Data = append(serj.Data, data)
+				}
+			default:
+				serj.Data = append(serj.Data, data)
+			}
+		}
+		serj.Name = ser.name
+		serj.Dtype = ser.dtype
+
+		serjs = append(serjs, *serj)
+	}
+
+	dfj := new(dfJson)
+	dfj.Series = append(dfj.Series, serjs...)
+	dfj.Columns = append(dfj.Columns, df.columns...)
+	return json.Marshal(dfj)
 }
 
 // Print prints all data in a DataFrame object.
