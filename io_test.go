@@ -825,3 +825,41 @@ func TestIoReadJsonByColumns(t *testing.T) {
 		}
 	}
 }
+
+func TestIoWriteJson(t *testing.T) {
+	type writeJsonTest struct {
+		arg1     DataFrame
+		arg2     string
+		expected error
+	}
+	writeJsonTests := []writeJsonTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/airquality.csv", []string{"date.utc"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			filepath.Join("testfiles", "writejsontest1.json"),
+			nil,
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			filepath.Join("testfiles", "writejsontest2.json"),
+			nil,
+		},
+	}
+	for _, test := range writeJsonTests {
+		output, err := WriteJson(test.arg1, test.arg2)
+		if output != nil && err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
