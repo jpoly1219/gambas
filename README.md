@@ -16,8 +16,8 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] Writing to CSV files
     - [ ] Reading Excel files
     - [ ] Writing to Excel files
-    - [p] Reading JSON files
-    - [ ] Writing to JSON files
+    - [x] Reading JSON files
+    - [x] Writing to JSON files
   - [x] Selecting a subset of data
     - [x] At, IAt
     - [x] Loc, ILoc
