@@ -222,3 +222,27 @@ func ReadJsonStream(pathToFile string, indexCols []string) (DataFrame, error) {
 	}
 	return newDf, nil
 }
+
+// WriteJson writes a DataFrame object to a file.
+func WriteJson(df DataFrame, pathToFile string) (os.FileInfo, error) {
+	f, err := os.Create(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	w := bufio.NewWriter(f)
+
+	jsonByte, err := json.MarshalIndent(df, "", "    ")
+	if err != nil {
+		return nil, err
+	}
+	w.Write(jsonByte)
+	w.Flush()
+
+	info, err := os.Stat(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
+}
