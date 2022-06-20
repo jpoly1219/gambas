@@ -233,7 +233,7 @@ func WriteJson(df DataFrame, pathToFile string) (os.FileInfo, error) {
 
 	w := bufio.NewWriter(f)
 
-	jsonByte, err := json.MarshalIndent(df, "", "    ")
+	jsonByte, err := json.MarshalIndent(&df, "", "\t")
 	if err != nil {
 		return nil, err
 	}
