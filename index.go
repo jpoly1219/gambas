@@ -16,6 +16,7 @@ type Index struct {
 	value []interface{}
 }
 
+// hashKey creates a hash of the Index object for use in maps.
 func (i Index) hashKey() (*string, error) {
 	if len(i.value) == 0 {
 		return nil, fmt.Errorf("no index")
@@ -35,6 +36,7 @@ func (i Index) hashKey() (*string, error) {
 	return &resultHex, nil
 }
 
+// hashKey creates a hash of the Index object for use in maps without using Index.id.
 func (i Index) hashKeyValueOnly() (*string, error) {
 	if len(i.value) == 0 {
 		return nil, fmt.Errorf("no index")
@@ -53,15 +55,18 @@ func (i Index) hashKeyValueOnly() (*string, error) {
 	return &resultHex, nil
 }
 
+// IndexData type is used to hold index information of a Series or a DataFrame.
 type IndexData struct {
 	index []Index
 	names []string
 }
 
+// Len is used to implement the sort.Sort interface.
 func (id IndexData) Len() int {
 	return len(id.index)
 }
 
+// Less is used to implement the sort.Sort interface.
 func (id IndexData) Less(i, j int) bool {
 	var iStr, jStr string
 	for a := range id.index[0].value {
@@ -82,6 +87,7 @@ func (id IndexData) Less(i, j int) bool {
 	return iStr < jStr
 }
 
+// Swap is used to implement the sort.Sort interface.
 func (id IndexData) Swap(i, j int) {
 	id.index[i], id.index[j] = id.index[j], id.index[i]
 }

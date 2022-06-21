@@ -6,8 +6,10 @@ import (
 	"sort"
 )
 
+// StatsFunc represents any function that accepts dataset as input and returns StatsResult as output.
 type StatsFunc func(dataset []interface{}) StatsResult
 
+// StatsResult holds the results of calculation from a statistics function such as Mean or Median.
 type StatsResult struct {
 	UsedFunc string
 	Result   float64

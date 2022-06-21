@@ -1,5 +1,7 @@
 package gambas
 
+// GroupBy type is a intermediary struct that is created after running DataFrame.GroupBy().
+// It holds the necessary data for applying operations such as GroupBy.Agg().
 type GroupBy struct {
 	dataFrame       *DataFrame
 	colIndMap       map[string][]interface{}

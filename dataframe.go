@@ -9,6 +9,8 @@ import (
 	"text/tabwriter"
 )
 
+// DataFrame type represents a 2D tabular dataset.
+// A DataFrame object is comprised of multiple Series objects.
 type DataFrame struct {
 	series  []Series
 	index   IndexData

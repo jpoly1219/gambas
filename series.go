@@ -8,6 +8,7 @@ import (
 	"text/tabwriter"
 )
 
+// Series type represents a column of data.
 type Series struct {
 	data  []interface{}
 	index IndexData
@@ -15,10 +16,12 @@ type Series struct {
 	dtype string
 }
 
+// Len is used to implement the sort.Sort interface.
 func (s Series) Len() int {
 	return len(s.data)
 }
 
+// Less is used to implement the sort.Sort interface.
 func (s Series) Less(i, j int) bool {
 	if fmt.Sprint(s.data[i]) == "NaN" {
 		return false
@@ -31,6 +34,7 @@ func (s Series) Less(i, j int) bool {
 	return fmt.Sprint(s.data[i]) < fmt.Sprint(s.data[j])
 }
 
+// Swap is used to implement the sort.Sort interface.
 func (s Series) Swap(i, j int) {
 	s.data[i], s.data[j] = s.data[j], s.data[i]
 }
