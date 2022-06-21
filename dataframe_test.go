@@ -1844,7 +1844,6 @@ func TestDataFrameSortByIndex(t *testing.T) {
 		test.arg1.Print()
 		err := test.arg1.SortByIndex(test.arg2)
 		test.arg1.Print()
-		fmt.Println("----------")
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}
@@ -1912,7 +1911,6 @@ func TestDataFrameSortByValues(t *testing.T) {
 		test.arg1.Print()
 		err := test.arg1.SortByValues(test.arg2, test.arg3)
 		test.arg1.Print()
-		fmt.Println("----------")
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, test.arg1, err)
 		}

@@ -99,7 +99,7 @@ func (s *Series) Tail(howMany int) {
 	s.PrintRange(len(s.data)-howMany, len(s.data))
 }
 
-// At() returns an element at a given index.
+// At returns an element at a given index.
 // For multiindex, you need to pass in the whole index tuple.
 func (s *Series) At(ind ...interface{}) (interface{}, error) {
 	for i, index := range s.index.index {
@@ -117,7 +117,7 @@ func (s *Series) At(ind ...interface{}) (interface{}, error) {
 	return nil, fmt.Errorf("the given index does not match any of the index in the series: %v", ind)
 }
 
-// IAt() returns an element at a given integer index.
+// IAt returns an element at a given integer index.
 func (s *Series) IAt(ind int) (interface{}, error) {
 	if ind >= len(s.data) {
 		return nil, fmt.Errorf("index out of bounds: %v", ind)
@@ -128,7 +128,7 @@ func (s *Series) IAt(ind int) (interface{}, error) {
 	return s.data[ind], nil
 }
 
-// Loc() returns a range of data at given rows.
+// Loc returns a range of data at given rows.
 func (s *Series) Loc(idx ...[]interface{}) (Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(idx[0])
@@ -212,7 +212,7 @@ func (s *Series) LocItems(idx ...[]interface{}) ([]interface{}, error) {
 	return allFiltered, nil
 }
 
-// ILoc() returns an array of elements at a given integer index range.
+// ILoc returns an array of elements at a given integer index range.
 func (s *Series) ILoc(min, max int) ([]interface{}, error) {
 	result := make([]interface{}, 0)
 	for i := min; i < max; i++ {
@@ -228,7 +228,7 @@ func (s *Series) ILoc(min, max int) ([]interface{}, error) {
 
 // Summary statistics functions
 
-// Count() counts the number of non-NA elements in a column.
+// Count counts the number of non-NA elements in a column.
 func (s *Series) Count() StatsResult {
 	count := 0
 	for _, v := range s.data {
@@ -240,7 +240,7 @@ func (s *Series) Count() StatsResult {
 	return StatsResult{"Count", float64(count), nil}
 }
 
-// Mean() returns the mean of the elements in a column.
+// Mean returns the mean of the elements in a column.
 func (s *Series) Mean() StatsResult {
 	mean := 0.0
 
@@ -265,7 +265,7 @@ func (s *Series) Mean() StatsResult {
 	return StatsResult{"Mean", roundedMean, nil}
 }
 
-// Median() returns the median of the elements in a column.
+// Median returns the median of the elements in a column.
 func (s *Series) Median() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
@@ -293,7 +293,7 @@ func (s *Series) Median() StatsResult {
 	}
 }
 
-// Std() returns the sample standard deviation of the elements in a column.
+// Std returns the sample standard deviation of the elements in a column.
 func (s *Series) Std() StatsResult {
 	std := 0.0
 	meanResult := s.Mean() // this also checks that all data can be converted to float64.
@@ -318,7 +318,7 @@ func (s *Series) Std() StatsResult {
 	return StatsResult{"Std", roundedStd, nil}
 }
 
-// Min() returns the smallest element in a column.
+// Min returns the smallest element in a column.
 func (s *Series) Min() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
@@ -334,7 +334,7 @@ func (s *Series) Min() StatsResult {
 	return StatsResult{"Min", data[0], nil}
 }
 
-// Max() returns the largest element is a column.
+// Max returns the largest element is a column.
 func (s *Series) Max() StatsResult {
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
@@ -350,7 +350,7 @@ func (s *Series) Max() StatsResult {
 	return StatsResult{"Max", data[total-1], nil}
 }
 
-// Q1() returns the lower quartile (25%) of the elements in a column.
+// Q1 returns the lower quartile (25%) of the elements in a column.
 // This does not include the median during calculation.
 func (s *Series) Q1() StatsResult {
 	data, err := interface2F64Slice(s.data)
@@ -376,7 +376,7 @@ func (s *Series) Q1() StatsResult {
 	}
 }
 
-// Q2() returns the middle quartile (50%) of the elements in a column.
+// Q2 returns the middle quartile (50%) of the elements in a column.
 // This accomplishes the same thing as s.Median().
 func (s *Series) Q2() StatsResult {
 	q2Result := s.Median()
@@ -387,7 +387,7 @@ func (s *Series) Q2() StatsResult {
 	return StatsResult{"Q2", q2Result.Result, nil}
 }
 
-// Q3() returns the upper quartile (75%) of the elements in a column.
+// Q3 returns the upper quartile (75%) of the elements in a column.
 // This does not include the median during calculation.
 func (s *Series) Q3() StatsResult {
 	data, err := interface2F64Slice(s.data)
@@ -413,6 +413,8 @@ func (s *Series) Q3() StatsResult {
 	}
 }
 
+// Describe runs through the most commonly used statistics functions
+// and prints the output.
 func (s *Series) Describe() ([]float64, error) {
 	count := s.Count()
 	fmt.Println("Count:", count.Result)
@@ -528,8 +530,7 @@ func (s *Series) RenameIndex(newNames map[string]string) error {
 	return nil
 }
 
-// SortByIndex() sorts the elements in a series by the index.
-// Multiindex support is coming, but this may require an overhaul.
+// SortByIndex sorts the elements in a series by the index.
 func (s *Series) SortByIndex(ascending bool) error {
 	indDatMap := make(map[string]interface{})
 	for i, data := range s.data {
@@ -557,6 +558,7 @@ func (s *Series) SortByIndex(ascending bool) error {
 	return nil
 }
 
+// SortByGivenIndex sorts the Series by a given index.
 func (s *Series) SortByGivenIndex(index IndexData) error {
 	rowMap := make(map[string]interface{}, 0)
 	for i, data := range s.data {
@@ -580,6 +582,7 @@ func (s *Series) SortByGivenIndex(index IndexData) error {
 	return nil
 }
 
+// SortByValues sorts the Series by its values.
 func (s *Series) SortByValues(ascending bool) error {
 	rowMap := make(map[interface{}]Index, 0)
 	keyStore := make(sort.StringSlice, 0)
@@ -609,6 +612,7 @@ func (s *Series) SortByValues(ascending bool) error {
 	return nil
 }
 
+// IndexHasDuplicateValues checks if the Series have duplicate index values.
 func (s *Series) IndexHasDuplicateValues() (bool, error) {
 	indexDataMap := make(map[string]interface{}, 0)
 

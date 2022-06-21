@@ -15,6 +15,7 @@ type DataFrame struct {
 	columns []string
 }
 
+// MarshalJSON is used to implement the json.Marshaler interface{}.
 func (df *DataFrame) MarshalJSON() ([]byte, error) {
 	type serJson struct {
 		Data  []interface{} `json:"data"`
@@ -469,6 +470,7 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	return nil
 }
 
+// SortByValues sorts the items by values in a selected series.
 func (df *DataFrame) SortByValues(by string, ascending bool) error {
 	var index IndexData
 	for i := range df.series {
@@ -487,6 +489,7 @@ func (df *DataFrame) SortByValues(by string, ascending bool) error {
 	return nil
 }
 
+// SortByColumns sorts the columns of the DataFrame object.
 func (df *DataFrame) SortByColumns() {
 	sort.Slice(df.series, func(i, j int) bool {
 		return df.series[i].name < df.series[j].name
@@ -494,6 +497,7 @@ func (df *DataFrame) SortByColumns() {
 	sort.Strings(df.columns)
 }
 
+// SortIndexColFirst puts the index column at the front.
 func (df *DataFrame) SortIndexColFirst() {
 	counter := 0
 	for _, indexName := range df.index.names {
@@ -765,6 +769,8 @@ func (df *DataFrame) PivotTable(index, column, value string, aggFunc StatsFunc) 
 	return newDf, nil
 }
 
+// Melt returns the table from wide to long format.
+// Use Melt to revert to pre-Pivot format.
 func (df *DataFrame) Melt(colName, valueName string) (DataFrame, error) {
 	newDfIndexSlice := make([]interface{}, 0)
 	newDfColumnSlice := make([]interface{}, 0)

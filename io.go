@@ -12,7 +12,6 @@ import (
 
 // ReadCsv reads a CSV file and returns a new DataFrame object.
 // It is recommended to generate pathToFile using `filepath.Join`.
-// TODO: users should be able to define custom indices.
 func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
 	// read line by line
 	f, err := os.Open(pathToFile)

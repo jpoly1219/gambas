@@ -80,45 +80,6 @@ func (id IndexData) Less(i, j int) bool {
 		}
 	}
 	return iStr < jStr
-
-	// var iStrData, jStrData string
-
-	// for a := range id.index[0].value {
-	// 	switch v := id.index[i].value[a].(type) {
-	// 	case string:
-	// 		iStrData = v
-	// 	case int:
-	// 		// TODO: so all numbers in the DataFrame should be float64, we need a way to check why there is an int in the first place
-	// 		iStrData = strconv.Itoa(v)
-	// 	case float64:
-	// 		if math.IsNaN(v) {
-	// 			iStrData = "~NaN"
-	// 			break
-	// 		}
-	// 		iStrData = strconv.FormatFloat(v, 'f', -1, 64)
-	// 	}
-
-	// 	switch v := id.index[j].value[a].(type) {
-	// 	case string:
-	// 		jStrData = v
-	// 	case int:
-	// 		// TODO: so all numbers in the DataFrame should be float64, we need a way to check why there is an int in the first place
-	// 		jStrData = strconv.Itoa(v)
-	// 	case float64:
-	// 		if math.IsNaN(v) {
-	// 			jStrData = "~NaN"
-	// 			break
-	// 		}
-	// 		jStrData = strconv.FormatFloat(v, 'f', -1, 64)
-	// 	}
-
-	// 	if iStrData == jStrData {
-	// 		continue
-	// 	} else {
-	// 		break
-	// 	}
-	// }
-
 }
 
 func (id IndexData) Swap(i, j int) {
