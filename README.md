@@ -11,7 +11,7 @@ $ go get -u github.com/jpoly1219/gambas
 
 ## Documentation
 ---
-The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev).
+The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/github.com/jpoly1219/gambas).
 
 ## Project Goals
 ---
@@ -53,7 +53,7 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev).
     - [ ] ToDatetime
   - [ ] Manipulating textual data
   - [x] Multiindex
-- [ ] Documentation (pkg.go.dev page)
+- [x] Documentation (pkg.go.dev page)
 - [ ] Project website
 - [ ] Project logo
 
