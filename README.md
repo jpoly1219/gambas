@@ -1,13 +1,19 @@
 # gambas
 ---
 
-**gambas** is a data analysis package for Go, inspired by the famous Python library **pandas**. It provides an intuitive way to malipulate tabular data.
+`gambas` is a data analysis package for Go that provides an intuitive way to manipulate tabular data. The project is inspired by the famous Python library `pandas`.
 
-gambas was created to serve the needs of Go developers. We can all agree that pandas is an amazing tool, and can be considered the industry standard when it comes to data analysis. However, some of us may not enjoy using Python very much. Go is a very attractive language with a very loyal userbase (including me!). You might be a Gopher, but you also might love the features Python provides. You may have jumped ship and used Go for some time now, but you also might miss some of the libraries you used when you were using Python. 
+## Installation
+---
+```
+$ go get -u github.com/jpoly1219/gambas
+```
 
-gambas aims to scratch that itch. You will be able to tap into the superpowers of pandas while using your favorite language Go. Gophers cannot into data analysis? No, of course we can! Hope you enjoy using this package.
+## Documentation
+---
+The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev).
 
-### MVP Goals
+## Project Goals
 ---
 - Provide basic features from the pandas tutorial.
   - [x] Providing `Series` and `DataFrame` data types
@@ -30,11 +36,11 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [x] Mean, median, standard deviation
     - [x] Min, max, quartiles
     - [x] Count, describe
-  - [ ] Reshaping the layout of tables
+  - [x] Reshaping the layout of tables
     - [x] Sorting by index
     - [x] Sorting by values
     - [x] Sorting by given index
-    - [x] Groupby *(more testing is required)*
+    - [x] Groupby
     - [x] Pivot (long to wide format)
     - [x] PivotTable (long to wide format)
     - [x] Melt (wide to long format)
@@ -47,5 +53,14 @@ gambas aims to scratch that itch. You will be able to tap into the superpowers o
     - [ ] ToDatetime
   - [ ] Manipulating textual data
   - [x] Multiindex
+- [ ] Documentation (pkg.go.dev page)
+- [ ] Project website
+- [ ] Project logo
 
-- Extensive, easy to follow documentation
+## Philosophy
+---
+`gambas` was created to serve the needs of Go developers who wanted a robust data analysis package. `pandas` is an amazing tool, and is considered the industry standard when it comes to data organization and manipulation.
+
+We didn't have a solid alternative in the Go realm. According to the [Go Developer Survey 2021 Results](https://go.dev/blog/survey2021-results), **missing critical libraries** were one of **the most common barriers** to using Go. You may have used Go for some time now, but you might've missed some of the libraries you used when you were using Python. `gambas` aims to scratch that itch. You will be able to tap into the superpowers of `pandas` while using your favorite language Go.
+
+Go is a very attractive language with a very loyal userbase. It provides a pleasant developer experience with its simple syntax and strong typing. However, Go currently tends to be skewed towards developing services. 49% of projects written in Go are API/RPC services, and another 10% are for web services. The ultimate goal for `gambas` is to allow the Go programming language to be a major player in the data analysis field.
