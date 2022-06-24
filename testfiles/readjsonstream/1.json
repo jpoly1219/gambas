@@ -1,14 +1,17 @@
-{
-    "Avery": {
+[
+    {
+        "Name": "Avery",
         "Age": 19.0,
         "Sex": "Male"
     },
-    "Bradley": {
+    {
+        "Name": "Bradley",
         "Age": 26.0,
         "Sex": "Male"
     },
-    "Candice": {
+    {
+        "Name": "Candice",
         "Age": 23.0,
         "Sex": "Female"
     }
-}
+]
