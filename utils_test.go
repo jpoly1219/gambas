@@ -3,11 +3,25 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"math/rand"
+	"strconv"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
+
+func BenchmarkCheckTypeIntegrity(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		checkTypeIntegrity(list)
+	}
+}
 
 func TestCheckTypeIntegrity(t *testing.T) {
 	type checkTypeIntegrityTest struct {
@@ -57,6 +71,18 @@ func TestCheckTypeIntegrity(t *testing.T) {
 	}
 }
 
+func BenchmarkI2f(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		i2f(list)
+	}
+}
+
 func TestI2f(t *testing.T) {
 	type i2fTest struct {
 		arg1          interface{}
@@ -78,6 +104,15 @@ func TestI2f(t *testing.T) {
 		if !cmp.Equal(output, test.expected) || !cmp.Equal(fmt.Sprint(err), fmt.Sprint(test.expectedError)) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkTryBool(b *testing.B) {
+	wordList := []string{"TRUE", "True", "true", "t", "1", "FALSE", "False", "false", "f", "0"}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		tryBool(wordList[rand.Intn(10)])
 	}
 }
 
@@ -157,6 +192,15 @@ func TestTryBool(t *testing.T) {
 	}
 }
 
+func BenchmarkTryInt(b *testing.B) {
+	wordList := []string{"0", "0.0", "-1", "-1.0", "1", "1.0", "1-1", "1/2"}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		tryInt(wordList[rand.Intn(8)])
+	}
+}
+
 func TestTryInt(t *testing.T) {
 	type tryIntTest struct {
 		arg1          string
@@ -205,6 +249,15 @@ func TestTryInt(t *testing.T) {
 		if !cmp.Equal(output, test.expected) || !cmp.Equal(fmt.Sprint(err), fmt.Sprint(test.expectedError)) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkTryFloat64(b *testing.B) {
+	wordList := []string{"0", "0.0", "-1", "-1.0", "1", "1.0", "1-1", "1/2"}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		tryFloat64(wordList[rand.Intn(8)])
 	}
 }
 
@@ -261,6 +314,17 @@ func TestTryFloat64(t *testing.T) {
 		if !cmp.Equal(output, test.expected) || !cmp.Equal(fmt.Sprint(err), fmt.Sprint(test.expectedError)) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkTryDataType(b *testing.B) {
+	wordList := []string{
+		"TRUE", "True", "true", "t", "1", "FALSE", "False", "false", "f", "0", "0", "0.0", "-1", "-1.0", "1", "1.0", "1-1", "1/2",
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		tryDataType(wordList[rand.Intn(18)])
 	}
 }
 
@@ -367,6 +431,17 @@ func TestTryDataType(t *testing.T) {
 	}
 }
 
+func BenchmarkCheckCSVDataType(b *testing.B) {
+	wordList := []string{
+		"TRUE", "True", "true", "t", "1", "FALSE", "False", "false", "f", "0", "0", "0.0", "-1", "-1.0", "1", "1.0", "1-1", "1/2",
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		checkCSVDataType(wordList[rand.Intn(18)])
+	}
+}
+
 func TestCheckCSVDataType(t *testing.T) {
 	type checkCSVDataTypeTest struct {
 		arg1     string
@@ -390,6 +465,17 @@ func TestCheckCSVDataType(t *testing.T) {
 				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
+	}
+}
+
+func BenchmarkConsolidateToFloat64(b *testing.B) {
+	list := []interface{}{
+		0, 0.0, 1, 1.0, 2, 2.0,
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		consolidateToFloat64(list)
 	}
 }
 
@@ -417,6 +503,17 @@ func TestConsolidateToFloat64(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmpopts.EquateNaNs()) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
+	}
+}
+
+func BenchmarkConsolidateToString(b *testing.B) {
+	list := []interface{}{
+		0, 0.0, 1, 1.0, 2, 2.0,
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		consolidateToString(list)
 	}
 }
 
@@ -452,6 +549,18 @@ func TestConsolidateToString(t *testing.T) {
 		if !cmp.Equal(output, test.expected) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
+	}
+}
+
+func BenchmarkInterface2F64Slice(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		interface2F64Slice(list)
 	}
 }
 
@@ -494,6 +603,18 @@ func TestInterface2F64Slice(t *testing.T) {
 	}
 }
 
+func BenchmarkInterface2StringSlice(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, strconv.FormatFloat(rand.Float64(), 'f', -1, 64))
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		interface2StringSlice(list)
+	}
+}
+
 func TestInterface2StringSlice(t *testing.T) {
 	type interface2StringDataTest struct {
 		arg1     []interface{}
@@ -533,6 +654,22 @@ func TestInterface2StringSlice(t *testing.T) {
 	}
 }
 
+func BenchmarkSlicesAreEqual(b *testing.B) {
+	list1 := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list1 = append(list1, rand.Float64())
+	}
+	list2 := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list2 = append(list2, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		slicesAreEqual(list1, list2)
+	}
+}
+
 func TestSlicesAreEqual(t *testing.T) {
 	type slicesAreEqualTest struct {
 		arg1     []interface{}
@@ -564,6 +701,18 @@ func TestSlicesAreEqual(t *testing.T) {
 	}
 }
 
+func BenchmarkContainsString(b *testing.B) {
+	list := make([]string, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, strconv.FormatFloat(rand.Float64(), 'f', -1, 64))
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		containsString(list, strconv.FormatFloat(rand.Float64(), 'f', -1, 64))
+	}
+}
+
 func TestContainsString(t *testing.T) {
 	type containsStringTest struct {
 		arg1     []string
@@ -587,6 +736,18 @@ func TestContainsString(t *testing.T) {
 		if !cmp.Equal(output, test.expected) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
+	}
+}
+
+func BenchmarkContainsIndex(b *testing.B) {
+	list := make([]Index, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, Index{i, []interface{}{rand.Float64()}})
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		containsIndex(list, Index{rand.Intn(10000), []interface{}{rand.Float64()}})
 	}
 }
 
@@ -630,6 +791,18 @@ func TestContainsIndex(t *testing.T) {
 		if !cmp.Equal(output, test.expected) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
+	}
+}
+
+func BenchmarkContainsIndexWithoutId(b *testing.B) {
+	list := make([]Index, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, Index{i, []interface{}{rand.Float64()}})
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		containsIndex(list, Index{rand.Intn(10000), []interface{}{rand.Float64()}})
 	}
 }
 
