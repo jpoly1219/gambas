@@ -3,11 +3,24 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
+
+func BenchmarkCount(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Count(list)
+	}
+}
 
 func TestCount(t *testing.T) {
 	type countTest struct {
@@ -45,6 +58,18 @@ func TestCount(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmpopts.EquateErrors(), cmpopts.EquateNaNs()) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
+	}
+}
+
+func BenchmarkMean(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Mean(list)
 	}
 }
 
@@ -97,6 +122,18 @@ func TestMean(t *testing.T) {
 				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
+	}
+}
+
+func BenchmarkMedian(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Median(list)
 	}
 }
 
@@ -168,6 +205,18 @@ func TestMedian(t *testing.T) {
 	}
 }
 
+func BenchmarkStd(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Std(list)
+	}
+}
+
 func TestStd(t *testing.T) {
 	type stdTest struct {
 		arg1     []interface{}
@@ -232,6 +281,18 @@ func TestStd(t *testing.T) {
 				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
+	}
+}
+
+func BenchmarkMin(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Min(list)
 	}
 }
 
@@ -302,6 +363,18 @@ func TestMin(t *testing.T) {
 	}
 }
 
+func BenchmarkMax(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Max(list)
+	}
+}
+
 func TestMax(t *testing.T) {
 	type maxTest struct {
 		arg1     []interface{}
@@ -366,6 +439,18 @@ func TestMax(t *testing.T) {
 				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
+	}
+}
+
+func BenchmarkQ1(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Q1(list)
 	}
 }
 
@@ -436,6 +521,18 @@ func TestQ1(t *testing.T) {
 	}
 }
 
+func BenchmarkQ2(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Q2(list)
+	}
+}
+
 func TestQ2(t *testing.T) {
 	type q2Test struct {
 		arg1     []interface{}
@@ -500,6 +597,18 @@ func TestQ2(t *testing.T) {
 				t.Fatalf("expected %v, got %v", test.expected, output)
 			}
 		}
+	}
+}
+
+func BenchmarkQ3(b *testing.B) {
+	list := make([]interface{}, 0)
+	for i := 0; i < 10000; i++ {
+		list = append(list, rand.Float64())
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Q3(list)
 	}
 }
 
