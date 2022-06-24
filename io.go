@@ -227,6 +227,9 @@ func ReadJsonStream(pathToFile string, indexCols []string) (DataFrame, error) {
 	if err != nil {
 		return DataFrame{}, err
 	}
+	newDf.SortByColumns()
+	newDf.SortByIndex(true)
+	newDf.SortIndexColFirst()
 	return newDf, nil
 }
 
