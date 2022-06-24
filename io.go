@@ -194,7 +194,11 @@ func ReadJsonStream(pathToFile string, indexCols []string) (DataFrame, error) {
 	newDfCols := make([]string, 0)
 	colData := make(map[string][]interface{}, 0)
 
-	for {
+	_, err = dec.Token()
+	if err != nil {
+		return DataFrame{}, err
+	}
+	for dec.More() {
 		var row map[string]interface{}
 		err := dec.Decode(&row)
 		if err == io.EOF {
@@ -204,8 +208,12 @@ func ReadJsonStream(pathToFile string, indexCols []string) (DataFrame, error) {
 		}
 
 		for k, v := range row {
-			colData[k] = append(colData[k], v)
+			colData[k] = append(colData[k], checkJsonDataType(v))
 		}
+	}
+	_, err = dec.Token()
+	if err != nil {
+		return DataFrame{}, err
 	}
 
 	newDfData := make([][]interface{}, 0)
