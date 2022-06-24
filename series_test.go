@@ -744,6 +744,8 @@ func BenchmarkSeriesLoc(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].Loc(names[rand.Intn(len(names))])
 	}
@@ -1442,6 +1444,8 @@ func BenchmarkSeriesLocItems(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].LocItems(names[rand.Intn(len(names))])
 	}
@@ -2085,6 +2089,8 @@ func BenchmarkSeriesILoc(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].ILoc(0, rand.Intn(len(names)))
 	}
@@ -2149,6 +2155,8 @@ func BenchmarkSeriesCount(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].Count()
 	}
@@ -2228,6 +2236,8 @@ func BenchmarkSeriesMean(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Mean()
 	}
@@ -2311,6 +2321,8 @@ func BenchmarkSeriesMedian(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Median()
 	}
@@ -2456,6 +2468,8 @@ func BenchmarkSeriesStd(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Std()
 	}
@@ -2601,6 +2615,8 @@ func BenchmarkSeriesMin(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Min()
 	}
@@ -2746,6 +2762,8 @@ func BenchmarkSeriesMax(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Max()
 	}
@@ -2891,6 +2909,8 @@ func BenchmarkSeriesQ1(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Q1()
 	}
@@ -3036,6 +3056,8 @@ func BenchmarkSeriesQ2(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Q2()
 	}
@@ -3181,6 +3203,8 @@ func BenchmarkSeriesQ3(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Q3()
 	}
@@ -3326,6 +3350,8 @@ func BenchmarkSeriesDescribe(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[4].Describe()
 	}
@@ -3385,6 +3411,8 @@ func BenchmarkSeriesValueCounts(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].ValueCounts()
 	}
@@ -3443,6 +3471,8 @@ func BenchmarkSeriesRenameCol(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].RenameCol("NewName")
 	}
@@ -3532,6 +3562,8 @@ func BenchmarkSeriesRenameIndex(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].RenameIndex(map[string]string{"Name": "NewName"})
 	}
@@ -3654,6 +3686,8 @@ func BenchmarkSeriesSortByIndex(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[1].SortByIndex(true)
 	}
@@ -3878,6 +3912,8 @@ func BenchmarkSeriesSortByGivenIndex(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].SortByGivenIndex(testDf.index)
 	}
@@ -4045,6 +4081,8 @@ func BenchmarkSeriesSortByValues(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[1].SortByValues(true)
 	}
@@ -4269,6 +4307,8 @@ func BenchmarkSeriesIndexHasDuplicateValues(b *testing.B) {
 	if err != nil {
 		b.Error(err)
 	}
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		testDf.series[0].IndexHasDuplicateValues()
 	}
