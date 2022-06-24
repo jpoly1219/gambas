@@ -9,7 +9,13 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
-func TestReadCsv(t *testing.T) {
+func BenchmarkIoReadCsv(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ReadCsv("testfiles/nba.csv", []string{"Name"})
+	}
+}
+
+func TestIoReadCsv(t *testing.T) {
 	type readCsvTest struct {
 		arg1     string
 		arg2     []string
@@ -643,7 +649,19 @@ func TestReadCsv(t *testing.T) {
 	}
 }
 
-func TestWriteCsv(t *testing.T) {
+func BenchmarkIoWriteCsv(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		WriteCsv(testDf, "testfiles/nbaBench.csv")
+	}
+}
+
+func TestIoWriteCsv(t *testing.T) {
 	type writeCsvTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -683,6 +701,12 @@ func TestWriteCsv(t *testing.T) {
 		if output != nil && err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkIoReadJsonByColumns(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ReadJsonByColumns("testfiles/1.json", []string{"Name"})
 	}
 }
 
@@ -823,6 +847,164 @@ func TestIoReadJsonByColumns(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkIoReadJsonStream(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ReadJsonStream("testfiles/10kSamplejson.json", []string{"Serial Number"})
+	}
+}
+
+func TestIoReadJsonStream(t *testing.T) {
+	type readJsonStreamTest struct {
+		arg1     string
+		arg2     []string
+		expected DataFrame
+	}
+	readJsonStreamTests := []readJsonStreamTest{
+		{
+			"testfiles/readjsonstream/1.json",
+			[]string{"Name"},
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{
+							"Avery", "Bradley", "Candice",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{
+							19.0, 26.0, 23.0,
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Age",
+						"float64",
+					},
+					{
+						[]interface{}{
+							"Male", "Male", "Female",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Sex",
+						"string",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery"}},
+						{1, []interface{}{"Bradley"}},
+						{2, []interface{}{"Candice"}},
+					},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+		{
+			"testfiles/readjsonstream/2.json",
+			[]string{"Name"},
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{
+							"Avery", "Bradley", "Candice",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{
+							19.0, 26.0, math.NaN(),
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Age",
+						"float64",
+					},
+					{
+						[]interface{}{
+							"Male", "NaN", "Female",
+						},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"Avery"}},
+								{1, []interface{}{"Bradley"}},
+								{2, []interface{}{"Candice"}},
+							},
+							[]string{"Name"},
+						},
+						"Sex",
+						"string",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery"}},
+						{1, []interface{}{"Bradley"}},
+						{2, []interface{}{"Candice"}},
+					},
+					[]string{"Name"},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+	}
+	for _, test := range readJsonStreamTests {
+		output, err := ReadJsonStream(test.arg1, test.arg2)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func BenchmarkIoWriteJson(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		WriteCsv(testDf, "testfiles/nbaBench.json")
 	}
 }
 
