@@ -7,6 +7,18 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
+func BenchmarkGroupByAgg(b *testing.B) {
+	newDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		newDf.GroupBy("Team")
+	}
+}
+
 func TestGroupByAgg(t *testing.T) {
 	type aggTest struct {
 		arg1     GroupBy
