@@ -7,16 +7,9 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func BenchmarkGambasCreateRangeIndex(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-
-	if err != nil {
-		b.Error(err)
-	}
-	b.ResetTimer()
-
+func BenchmarkGeneratorCreateRangeIndex(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		testDf.series[0].Loc(names[rand.Intn(len(names))])
+		CreateRangeIndex(1000)
 	}
 }
 
@@ -72,6 +65,18 @@ func TestCreateRangeIndex(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(IndexData{}, Index{})) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
+	}
+}
+
+func BenchmarkGeneratorNewSeries(b *testing.B) {
+	data := make([]interface{}, 1000)
+	for i := 0; i < 1000; i++ {
+		data[i] = rand.Intn(1000)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		NewSeries(data, "Data", nil)
 	}
 }
 
@@ -159,6 +164,22 @@ func TestNewSeries(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, Series{}, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkGeneratorNewDataFrame(b *testing.B) {
+	data := make([][]interface{}, 5)
+	for i := 0; i < 5; i++ {
+		d := make([]interface{}, 1000)
+		for j := 0; j < 1000; j++ {
+			d[i] = rand.Intn(1000)
+		}
+		data[i] = d
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		NewDataFrame(data, []string{"col1", "col2", "col3", "col4", "col5"}, []string{"col1"})
 	}
 }
 
