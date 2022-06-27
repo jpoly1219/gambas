@@ -13,7 +13,7 @@ func BenchmarkGeneratorCreateRangeIndex(b *testing.B) {
 	}
 }
 
-func TestCreateRangeIndex(t *testing.T) {
+func TestGeneratorCreateRangeIndex(t *testing.T) {
 	type createRangeIndexTest struct {
 		arg1     int
 		expected IndexData
@@ -80,7 +80,7 @@ func BenchmarkGeneratorNewSeries(b *testing.B) {
 	}
 }
 
-func TestNewSeries(t *testing.T) {
+func TestGeneratorNewSeries(t *testing.T) {
 	type newSeriesTest struct {
 		arg1     []interface{}
 		arg2     string
@@ -183,7 +183,7 @@ func BenchmarkGeneratorNewDataFrame(b *testing.B) {
 	}
 }
 
-func TestNewDataFrame(t *testing.T) {
+func TestGeneratorNewDataFrame(t *testing.T) {
 	type newDataFrameTest struct {
 		arg1     [][]interface{}
 		arg2     []string

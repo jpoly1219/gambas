@@ -3,6 +3,7 @@ package gambas
 import (
 	"fmt"
 	"math"
+	"math/rand"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -92,6 +93,478 @@ func TestDataFrameTail(t *testing.T) {
 		test.arg1.Tail(3)
 	}
 }
+
+func BenchmarkDataFrameLocRows(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	names := [][]interface{}{
+		{"Avery Bradley"},
+		{"Jae Crowder"},
+		{"John Holland"},
+		{"R.J. Hunter"},
+		{"Jonas Jerebko"},
+		{"Amir Johnson"},
+		{"Jordan Mickey"},
+		{"Kelly Olynyk"},
+		{"Terry Rozier"},
+		{"Marcus Smart"},
+		{"Jared Sullinger"},
+		{"Isaiah Thomas"},
+		{"Evan Turner"},
+		{"James Young"},
+		{"Tyler Zeller"},
+		{"Bojan Bogdanovic"},
+		{"Markel Brown"},
+		{"Wayne Ellington"},
+		{"Rondae Hollis-Jefferson"},
+		{"Jarrett Jack"},
+		{"Sergey Karasev"},
+		{"Sean Kilpatrick"},
+		{"Shane Larkin"},
+		{"Brook Lopez"},
+		{"Chris McCullough"},
+		{"Willie Reed"},
+		{"Thomas Robinson"},
+		{"Henry Sims"},
+		{"Donald Sloan"},
+		{"Thaddeus Young"},
+		{"Arron Afflalo"},
+		{"Lou Amundson"},
+		{"Thanasis Antetokounmpo"},
+		{"Carmelo Anthony"},
+		{"Jose Calderon"},
+		{"Cleanthony Early"},
+		{"Langston Galloway"},
+		{"Jerian Grant"},
+		{"Robin Lopez"},
+		{"Kyle O'Quinn"},
+		{"Kristaps Porzingis"},
+		{"Kevin Seraphin"},
+		{"Lance Thomas"},
+		{"Sasha Vujacic"},
+		{"Derrick Williams"},
+		{"Tony Wroten"},
+		{"Elton Brand"},
+		{"Isaiah Canaan"},
+		{"Robert Covington"},
+		{"Joel Embiid"},
+		{"Jerami Grant"},
+		{"Richaun Holmes"},
+		{"Carl Landry"},
+		{"Kendall Marshall"},
+		{"T.J. McConnell"},
+		{"Nerlens Noel"},
+		{"Jahlil Okafor"},
+		{"Ish Smith"},
+		{"Nik Stauskas"},
+		{"Hollis Thompson"},
+		{"Christian Wood"},
+		{"Bismack Biyombo"},
+		{"Bruno Caboclo"},
+		{"DeMarre Carroll"},
+		{"DeMar DeRozan"},
+		{"James Johnson"},
+		{"Cory Joseph"},
+		{"Kyle Lowry"},
+		{"Lucas Nogueira"},
+		{"Patrick Patterson"},
+		{"Norman Powell"},
+		{"Terrence Ross"},
+		{"Luis Scola"},
+		{"Jason Thompson"},
+		{"Jonas Valanciunas"},
+		{"Delon Wright"},
+		{"Leandro Barbosa"},
+		{"Harrison Barnes"},
+		{"Andrew Bogut"},
+		{"Ian Clark"},
+		{"Stephen Curry"},
+		{"Festus Ezeli"},
+		{"Draymond Green"},
+		{"Andre Iguodala"},
+		{"Shaun Livingston"},
+		{"Kevon Looney"},
+		{"James Michael McAdoo"},
+		{"Brandon Rush"},
+		{"Marreese Speights"},
+		{"Klay Thompson"},
+		{"Anderson Varejao"},
+		{"Cole Aldrich"},
+		{"Jeff Ayres"},
+		{"Jamal Crawford"},
+		{"Branden Dawson"},
+		{"Jeff Green"},
+		{"Blake Griffin"},
+		{"Wesley Johnson"},
+		{"DeAndre Jordan"},
+		{"Luc Richard Mbah a Moute"},
+		{"Chris Paul"},
+		{"Paul Pierce"},
+		{"Pablo Prigioni"},
+		{"JJ Redick"},
+		{"Austin Rivers"},
+		{"C.J. Wilcox"},
+		{"Brandon Bass"},
+		{"Tarik Black"},
+		{"Anthony Brown"},
+		{"Kobe Bryant"},
+		{"Jordan Clarkson"},
+		{"Roy Hibbert"},
+		{"Marcelo Huertas"},
+		{"Ryan Kelly"},
+		{"Larry Nance Jr."},
+		{"Julius Randle"},
+		{"D'Angelo Russell"},
+		{"Robert Sacre"},
+		{"Louis Williams"},
+		{"Metta World Peace"},
+		{"Nick Young"},
+		{"Eric Bledsoe"},
+		{"Devin Booker"},
+		{"Chase Budinger"},
+		{"Tyson Chandler"},
+		{"Archie Goodwin"},
+		{"John Jenkins"},
+		{"Brandon Knight"},
+		{"Alex Len"},
+		{"Jon Leuer"},
+		{"Phil Pressey"},
+		{"Ronnie Price"},
+		{"Mirza Teletovic"},
+		{"P.J. Tucker"},
+		{"T.J. Warren"},
+		{"Alan Williams"},
+		{"Quincy Acy"},
+		{"James Anderson"},
+		{"Marco Belinelli"},
+		{"Caron Butler"},
+		{"Omri Casspi"},
+		{"Willie Cauley-Stein"},
+		{"Darren Collison"},
+		{"DeMarcus Cousins"},
+		{"Seth Curry"},
+		{"Duje Dukan"},
+		{"Rudy Gay"},
+		{"Kosta Koufos"},
+		{"Ben McLemore"},
+		{"Eric Moreland"},
+		{"Rajon Rondo"},
+		{"Cameron Bairstow"},
+		{"Aaron Brooks"},
+		{"Jimmy Butler"},
+		{"Mike Dunleavy"},
+		{"Cristiano Felicio"},
+		{"Pau Gasol"},
+		{"Taj Gibson"},
+		{"Justin Holiday"},
+		{"Doug McDermott"},
+		{"Nikola Mirotic"},
+		{"E'Twaun Moore"},
+		{"Joakim Noah"},
+		{"Bobby Portis"},
+		{"Derrick Rose"},
+		{"Tony Snell"},
+		{"Matthew Dellavedova"},
+		{"Channing Frye"},
+		{"Kyrie Irving"},
+		{"LeBron James"},
+		{"Richard Jefferson"},
+		{"Dahntay Jones"},
+		{"James Jones"},
+		{"Sasha Kaun"},
+		{"Kevin Love"},
+		{"Jordan McRae"},
+		{"Timofey Mozgov"},
+		{"Iman Shumpert"},
+		{"J.R. Smith"},
+		{"Tristan Thompson"},
+		{"Mo Williams"},
+		{"Joel Anthony"},
+		{"Aron Baynes"},
+		{"Steve Blake"},
+		{"Lorenzo Brown"},
+		{"Reggie Bullock"},
+		{"Kentavious Caldwell-Pope"},
+		{"Spencer Dinwiddie"},
+		{"Andre Drummond"},
+		{"Tobias Harris"},
+		{"Darrun Hilliard"},
+		{"Reggie Jackson"},
+		{"Stanley Johnson"},
+		{"Jodie Meeks"},
+		{"Marcus Morris"},
+		{"Anthony Tolliver"},
+		{"Lavoy Allen"},
+		{"Rakeem Christmas"},
+		{"Monta Ellis"},
+		{"Paul George"},
+		{"George Hill"},
+		{"Jordan Hill"},
+		{"Solomon Hill"},
+		{"Ty Lawson"},
+		{"Ian Mahinmi"},
+		{"C.J. Miles"},
+		{"Glenn Robinson III"},
+		{"Rodney Stuckey"},
+		{"Myles Turner"},
+		{"Shayne Whittington"},
+		{"Joe Young"},
+		{"Giannis Antetokounmpo"},
+		{"Jerryd Bayless"},
+		{"Michael Carter-Williams"},
+		{"Jared Cunningham"},
+		{"Tyler Ennis"},
+		{"John Henson"},
+		{"Damien Inglis"},
+		{"O.J. Mayo"},
+		{"Khris Middleton"},
+		{"Greg Monroe"},
+		{"Steve Novak"},
+		{"Johnny O'Bryant III"},
+		{"Jabari Parker"},
+		{"Miles Plumlee"},
+		{"Greivis Vasquez"},
+		{"Rashad Vaughn"},
+		{"Justin Anderson"},
+		{"J.J. Barea"},
+		{"Jeremy Evans"},
+		{"Raymond Felton"},
+		{"Devin Harris"},
+		{"David Lee"},
+		{"Wesley Matthews"},
+		{"JaVale McGee"},
+		{"Salah Mejri"},
+		{"Dirk Nowitzki"},
+		{"Zaza Pachulia"},
+		{"Chandler Parsons"},
+		{"Dwight Powell"},
+		{"Charlie Villanueva"},
+		{"Deron Williams"},
+		{"Trevor Ariza"},
+		{"Michael Beasley"},
+		{"Patrick Beverley"},
+		{"Corey Brewer"},
+		{"Clint Capela"},
+		{"Sam Dekker"},
+		{"Andrew Goudelock"},
+		{"James Harden"},
+		{"Montrezl Harrell"},
+		{"Dwight Howard"},
+		{"Terrence Jones"},
+		{"K.J. McDaniels"},
+		{"Donatas Motiejunas"},
+		{"Josh Smith"},
+		{"Jason Terry"},
+		{"Jordan Adams"},
+		{"Tony Allen"},
+		{"Chris Andersen"},
+		{"Matt Barnes"},
+		{"Vince Carter"},
+		{"Mike Conley"},
+		{"Bryce Cotton"},
+		{"Jordan Farmar"},
+		{"Marc Gasol"},
+		{"JaMychal Green"},
+		{"P.J. Hairston"},
+		{"Jarell Martin"},
+		{"Ray McCallum"},
+		{"Xavier Munford"},
+		{"Zach Randolph"},
+		{"Lance Stephenson"},
+		{"Alex Stepheson"},
+		{"Brandan Wright"},
+		{"Alexis Ajinca"},
+		{"Ryan Anderson"},
+		{"Omer Asik"},
+		{"Luke Babbitt"},
+		{"Norris Cole"},
+		{"Dante Cunningham"},
+		{"Anthony Davis"},
+		{"Bryce Dejean-Jones"},
+		{"Toney Douglas"},
+		{"James Ennis"},
+		{"Tyreke Evans"},
+		{"Tim Frazier"},
+		{"Alonzo Gee"},
+		{"Eric Gordon"},
+		{"Jordan Hamilton"},
+		{"Jrue Holiday"},
+		{"Orlando Johnson"},
+		{"Kendrick Perkins"},
+		{"Quincy Pondexter"},
+		{"LaMarcus Aldridge"},
+		{"Kyle Anderson"},
+		{"Matt Bonner"},
+		{"Boris Diaw"},
+		{"Tim Duncan"},
+		{"Manu Ginobili"},
+		{"Danny Green"},
+		{"Kawhi Leonard"},
+		{"Boban Marjanovic"},
+		{"Kevin Martin"},
+		{"Andre Miller"},
+		{"Patty Mills"},
+		{"Tony Parker"},
+		{"Jonathon Simmons"},
+		{"David West"},
+		{"Kent Bazemore"},
+		{"Tim Hardaway Jr."},
+		{"Kirk Hinrich"},
+		{"Al Horford"},
+		{"Kris Humphries"},
+		{"Kyle Korver"},
+		{"Paul Millsap"},
+		{"Mike Muscala"},
+		{"Lamar Patterson"},
+		{"Dennis Schroder"},
+		{"Mike Scott"},
+		{"Thabo Sefolosha"},
+		{"Tiago Splitter"},
+		{"Walter Tavares"},
+		{"Jeff Teague"},
+		{"Nicolas Batum"},
+		{"Troy Daniels"},
+		{"Jorge Gutierrez"},
+		{"Tyler Hansbrough"},
+		{"Aaron Harrison"},
+		{"Spencer Hawes"},
+		{"Al Jefferson"},
+		{"Frank Kaminsky III"},
+		{"Michael Kidd-Gilchrist"},
+		{"Jeremy Lamb"},
+		{"Courtney Lee"},
+		{"Jeremy Lin"},
+		{"Kemba Walker"},
+		{"Marvin Williams"},
+		{"Cody Zeller"},
+		{"Chris Bosh"},
+		{"Luol Deng"},
+		{"Goran Dragic"},
+		{"Gerald Green"},
+		{"Udonis Haslem"},
+		{"Joe Johnson"},
+		{"Tyler Johnson"},
+		{"Josh McRoberts"},
+		{"Josh Richardson"},
+		{"Amar'e Stoudemire"},
+		{"Dwyane Wade"},
+		{"Briante Weber"},
+		{"Hassan Whiteside"},
+		{"Justise Winslow"},
+		{"Dorell Wright"},
+		{"Dewayne Dedmon"},
+		{"Evan Fournier"},
+		{"Aaron Gordon"},
+		{"Mario Hezonja"},
+		{"Ersan Ilyasova"},
+		{"Brandon Jennings"},
+		{"Devyn Marble"},
+		{"Shabazz Napier"},
+		{"Andrew Nicholson"},
+		{"Victor Oladipo"},
+		{"Elfrid Payton"},
+		{"Jason Smith"},
+		{"Nikola Vucevic"},
+		{"C.J. Watson"},
+		{"Alan Anderson"},
+		{"Bradley Beal"},
+		{"Jared Dudley"},
+		{"Jarell Eddie"},
+		{"Drew Gooden"},
+		{"Marcin Gortat"},
+		{"JJ Hickson"},
+		{"Nene Hilario"},
+		{"Markieff Morris"},
+		{"Kelly Oubre Jr."},
+		{"Otto Porter Jr."},
+		{"Ramon Sessions"},
+		{"Garrett Temple"},
+		{"Marcus Thornton"},
+		{"John Wall"},
+		{"Darrell Arthur"},
+		{"D.J. Augustin"},
+		{"Will Barton"},
+		{"Wilson Chandler"},
+		{"Kenneth Faried"},
+		{"Danilo Gallinari"},
+		{"Gary Harris"},
+		{"Nikola Jokic"},
+		{"Joffrey Lauvergne"},
+		{"Mike Miller"},
+		{"Emmanuel Mudiay"},
+		{"Jameer Nelson"},
+		{"Jusuf Nurkic"},
+		{"JaKarr Sampson"},
+		{"Axel Toupane"},
+		{"Nemanja Bjelica"},
+		{"Gorgui Dieng"},
+		{"Kevin Garnett"},
+		{"Tyus Jones"},
+		{"Zach LaVine"},
+		{"Shabazz Muhammad"},
+		{"Adreian Payne"},
+		{"Nikola Pekovic"},
+		{"Tayshaun Prince"},
+		{"Ricky Rubio"},
+		{"Damjan Rudez"},
+		{"Greg Smith"},
+		{"Karl-Anthony Towns"},
+		{"Andrew Wiggins"},
+		{"Steven Adams"},
+		{"Nick Collison"},
+		{"Kevin Durant"},
+		{"Randy Foye"},
+		{"Josh Huestis"},
+		{"Serge Ibaka"},
+		{"Enes Kanter"},
+		{"Mitch McGary"},
+		{"Nazr Mohammed"},
+		{"Anthony Morrow"},
+		{"Cameron Payne"},
+		{"Andre Roberson"},
+		{"Kyle Singler"},
+		{"Dion Waiters"},
+		{"Russell Westbrook"},
+		{"Cliff Alexander"},
+		{"Al-Farouq Aminu"},
+		{"Pat Connaughton"},
+		{"Allen Crabbe"},
+		{"Ed Davis"},
+		{"Maurice Harkless"},
+		{"Gerald Henderson"},
+		{"Chris Kaman"},
+		{"Meyers Leonard"},
+		{"Damian Lillard"},
+		{"C.J. McCollum"},
+		{"Luis Montero"},
+		{"Mason Plumlee"},
+		{"Brian Roberts"},
+		{"Noah Vonleh"},
+		{"Trevor Booker"},
+		{"Trey Burke"},
+		{"Alec Burks"},
+		{"Dante Exum"},
+		{"Derrick Favors"},
+		{"Rudy Gobert"},
+		{"Gordon Hayward"},
+		{"Rodney Hood"},
+		{"Joe Ingles"},
+		{"Chris Johnson"},
+		{"Trey Lyles"},
+		{"Shelvin Mack"},
+		{"Raul Neto"},
+		{"Tibor Pleiss"},
+		{"Jeff Withey"},
+	}
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.LocRows(names[rand.Intn(len(names))])
+	}
+}
+
 func TestDataFrameLocRows(t *testing.T) {
 	type dataframeLocRowsTest struct {
 		arg1     DataFrame
@@ -466,6 +939,477 @@ func TestDataFrameLocRows(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameLocRowsItems(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	names := [][]interface{}{
+		{"Avery Bradley"},
+		{"Jae Crowder"},
+		{"John Holland"},
+		{"R.J. Hunter"},
+		{"Jonas Jerebko"},
+		{"Amir Johnson"},
+		{"Jordan Mickey"},
+		{"Kelly Olynyk"},
+		{"Terry Rozier"},
+		{"Marcus Smart"},
+		{"Jared Sullinger"},
+		{"Isaiah Thomas"},
+		{"Evan Turner"},
+		{"James Young"},
+		{"Tyler Zeller"},
+		{"Bojan Bogdanovic"},
+		{"Markel Brown"},
+		{"Wayne Ellington"},
+		{"Rondae Hollis-Jefferson"},
+		{"Jarrett Jack"},
+		{"Sergey Karasev"},
+		{"Sean Kilpatrick"},
+		{"Shane Larkin"},
+		{"Brook Lopez"},
+		{"Chris McCullough"},
+		{"Willie Reed"},
+		{"Thomas Robinson"},
+		{"Henry Sims"},
+		{"Donald Sloan"},
+		{"Thaddeus Young"},
+		{"Arron Afflalo"},
+		{"Lou Amundson"},
+		{"Thanasis Antetokounmpo"},
+		{"Carmelo Anthony"},
+		{"Jose Calderon"},
+		{"Cleanthony Early"},
+		{"Langston Galloway"},
+		{"Jerian Grant"},
+		{"Robin Lopez"},
+		{"Kyle O'Quinn"},
+		{"Kristaps Porzingis"},
+		{"Kevin Seraphin"},
+		{"Lance Thomas"},
+		{"Sasha Vujacic"},
+		{"Derrick Williams"},
+		{"Tony Wroten"},
+		{"Elton Brand"},
+		{"Isaiah Canaan"},
+		{"Robert Covington"},
+		{"Joel Embiid"},
+		{"Jerami Grant"},
+		{"Richaun Holmes"},
+		{"Carl Landry"},
+		{"Kendall Marshall"},
+		{"T.J. McConnell"},
+		{"Nerlens Noel"},
+		{"Jahlil Okafor"},
+		{"Ish Smith"},
+		{"Nik Stauskas"},
+		{"Hollis Thompson"},
+		{"Christian Wood"},
+		{"Bismack Biyombo"},
+		{"Bruno Caboclo"},
+		{"DeMarre Carroll"},
+		{"DeMar DeRozan"},
+		{"James Johnson"},
+		{"Cory Joseph"},
+		{"Kyle Lowry"},
+		{"Lucas Nogueira"},
+		{"Patrick Patterson"},
+		{"Norman Powell"},
+		{"Terrence Ross"},
+		{"Luis Scola"},
+		{"Jason Thompson"},
+		{"Jonas Valanciunas"},
+		{"Delon Wright"},
+		{"Leandro Barbosa"},
+		{"Harrison Barnes"},
+		{"Andrew Bogut"},
+		{"Ian Clark"},
+		{"Stephen Curry"},
+		{"Festus Ezeli"},
+		{"Draymond Green"},
+		{"Andre Iguodala"},
+		{"Shaun Livingston"},
+		{"Kevon Looney"},
+		{"James Michael McAdoo"},
+		{"Brandon Rush"},
+		{"Marreese Speights"},
+		{"Klay Thompson"},
+		{"Anderson Varejao"},
+		{"Cole Aldrich"},
+		{"Jeff Ayres"},
+		{"Jamal Crawford"},
+		{"Branden Dawson"},
+		{"Jeff Green"},
+		{"Blake Griffin"},
+		{"Wesley Johnson"},
+		{"DeAndre Jordan"},
+		{"Luc Richard Mbah a Moute"},
+		{"Chris Paul"},
+		{"Paul Pierce"},
+		{"Pablo Prigioni"},
+		{"JJ Redick"},
+		{"Austin Rivers"},
+		{"C.J. Wilcox"},
+		{"Brandon Bass"},
+		{"Tarik Black"},
+		{"Anthony Brown"},
+		{"Kobe Bryant"},
+		{"Jordan Clarkson"},
+		{"Roy Hibbert"},
+		{"Marcelo Huertas"},
+		{"Ryan Kelly"},
+		{"Larry Nance Jr."},
+		{"Julius Randle"},
+		{"D'Angelo Russell"},
+		{"Robert Sacre"},
+		{"Louis Williams"},
+		{"Metta World Peace"},
+		{"Nick Young"},
+		{"Eric Bledsoe"},
+		{"Devin Booker"},
+		{"Chase Budinger"},
+		{"Tyson Chandler"},
+		{"Archie Goodwin"},
+		{"John Jenkins"},
+		{"Brandon Knight"},
+		{"Alex Len"},
+		{"Jon Leuer"},
+		{"Phil Pressey"},
+		{"Ronnie Price"},
+		{"Mirza Teletovic"},
+		{"P.J. Tucker"},
+		{"T.J. Warren"},
+		{"Alan Williams"},
+		{"Quincy Acy"},
+		{"James Anderson"},
+		{"Marco Belinelli"},
+		{"Caron Butler"},
+		{"Omri Casspi"},
+		{"Willie Cauley-Stein"},
+		{"Darren Collison"},
+		{"DeMarcus Cousins"},
+		{"Seth Curry"},
+		{"Duje Dukan"},
+		{"Rudy Gay"},
+		{"Kosta Koufos"},
+		{"Ben McLemore"},
+		{"Eric Moreland"},
+		{"Rajon Rondo"},
+		{"Cameron Bairstow"},
+		{"Aaron Brooks"},
+		{"Jimmy Butler"},
+		{"Mike Dunleavy"},
+		{"Cristiano Felicio"},
+		{"Pau Gasol"},
+		{"Taj Gibson"},
+		{"Justin Holiday"},
+		{"Doug McDermott"},
+		{"Nikola Mirotic"},
+		{"E'Twaun Moore"},
+		{"Joakim Noah"},
+		{"Bobby Portis"},
+		{"Derrick Rose"},
+		{"Tony Snell"},
+		{"Matthew Dellavedova"},
+		{"Channing Frye"},
+		{"Kyrie Irving"},
+		{"LeBron James"},
+		{"Richard Jefferson"},
+		{"Dahntay Jones"},
+		{"James Jones"},
+		{"Sasha Kaun"},
+		{"Kevin Love"},
+		{"Jordan McRae"},
+		{"Timofey Mozgov"},
+		{"Iman Shumpert"},
+		{"J.R. Smith"},
+		{"Tristan Thompson"},
+		{"Mo Williams"},
+		{"Joel Anthony"},
+		{"Aron Baynes"},
+		{"Steve Blake"},
+		{"Lorenzo Brown"},
+		{"Reggie Bullock"},
+		{"Kentavious Caldwell-Pope"},
+		{"Spencer Dinwiddie"},
+		{"Andre Drummond"},
+		{"Tobias Harris"},
+		{"Darrun Hilliard"},
+		{"Reggie Jackson"},
+		{"Stanley Johnson"},
+		{"Jodie Meeks"},
+		{"Marcus Morris"},
+		{"Anthony Tolliver"},
+		{"Lavoy Allen"},
+		{"Rakeem Christmas"},
+		{"Monta Ellis"},
+		{"Paul George"},
+		{"George Hill"},
+		{"Jordan Hill"},
+		{"Solomon Hill"},
+		{"Ty Lawson"},
+		{"Ian Mahinmi"},
+		{"C.J. Miles"},
+		{"Glenn Robinson III"},
+		{"Rodney Stuckey"},
+		{"Myles Turner"},
+		{"Shayne Whittington"},
+		{"Joe Young"},
+		{"Giannis Antetokounmpo"},
+		{"Jerryd Bayless"},
+		{"Michael Carter-Williams"},
+		{"Jared Cunningham"},
+		{"Tyler Ennis"},
+		{"John Henson"},
+		{"Damien Inglis"},
+		{"O.J. Mayo"},
+		{"Khris Middleton"},
+		{"Greg Monroe"},
+		{"Steve Novak"},
+		{"Johnny O'Bryant III"},
+		{"Jabari Parker"},
+		{"Miles Plumlee"},
+		{"Greivis Vasquez"},
+		{"Rashad Vaughn"},
+		{"Justin Anderson"},
+		{"J.J. Barea"},
+		{"Jeremy Evans"},
+		{"Raymond Felton"},
+		{"Devin Harris"},
+		{"David Lee"},
+		{"Wesley Matthews"},
+		{"JaVale McGee"},
+		{"Salah Mejri"},
+		{"Dirk Nowitzki"},
+		{"Zaza Pachulia"},
+		{"Chandler Parsons"},
+		{"Dwight Powell"},
+		{"Charlie Villanueva"},
+		{"Deron Williams"},
+		{"Trevor Ariza"},
+		{"Michael Beasley"},
+		{"Patrick Beverley"},
+		{"Corey Brewer"},
+		{"Clint Capela"},
+		{"Sam Dekker"},
+		{"Andrew Goudelock"},
+		{"James Harden"},
+		{"Montrezl Harrell"},
+		{"Dwight Howard"},
+		{"Terrence Jones"},
+		{"K.J. McDaniels"},
+		{"Donatas Motiejunas"},
+		{"Josh Smith"},
+		{"Jason Terry"},
+		{"Jordan Adams"},
+		{"Tony Allen"},
+		{"Chris Andersen"},
+		{"Matt Barnes"},
+		{"Vince Carter"},
+		{"Mike Conley"},
+		{"Bryce Cotton"},
+		{"Jordan Farmar"},
+		{"Marc Gasol"},
+		{"JaMychal Green"},
+		{"P.J. Hairston"},
+		{"Jarell Martin"},
+		{"Ray McCallum"},
+		{"Xavier Munford"},
+		{"Zach Randolph"},
+		{"Lance Stephenson"},
+		{"Alex Stepheson"},
+		{"Brandan Wright"},
+		{"Alexis Ajinca"},
+		{"Ryan Anderson"},
+		{"Omer Asik"},
+		{"Luke Babbitt"},
+		{"Norris Cole"},
+		{"Dante Cunningham"},
+		{"Anthony Davis"},
+		{"Bryce Dejean-Jones"},
+		{"Toney Douglas"},
+		{"James Ennis"},
+		{"Tyreke Evans"},
+		{"Tim Frazier"},
+		{"Alonzo Gee"},
+		{"Eric Gordon"},
+		{"Jordan Hamilton"},
+		{"Jrue Holiday"},
+		{"Orlando Johnson"},
+		{"Kendrick Perkins"},
+		{"Quincy Pondexter"},
+		{"LaMarcus Aldridge"},
+		{"Kyle Anderson"},
+		{"Matt Bonner"},
+		{"Boris Diaw"},
+		{"Tim Duncan"},
+		{"Manu Ginobili"},
+		{"Danny Green"},
+		{"Kawhi Leonard"},
+		{"Boban Marjanovic"},
+		{"Kevin Martin"},
+		{"Andre Miller"},
+		{"Patty Mills"},
+		{"Tony Parker"},
+		{"Jonathon Simmons"},
+		{"David West"},
+		{"Kent Bazemore"},
+		{"Tim Hardaway Jr."},
+		{"Kirk Hinrich"},
+		{"Al Horford"},
+		{"Kris Humphries"},
+		{"Kyle Korver"},
+		{"Paul Millsap"},
+		{"Mike Muscala"},
+		{"Lamar Patterson"},
+		{"Dennis Schroder"},
+		{"Mike Scott"},
+		{"Thabo Sefolosha"},
+		{"Tiago Splitter"},
+		{"Walter Tavares"},
+		{"Jeff Teague"},
+		{"Nicolas Batum"},
+		{"Troy Daniels"},
+		{"Jorge Gutierrez"},
+		{"Tyler Hansbrough"},
+		{"Aaron Harrison"},
+		{"Spencer Hawes"},
+		{"Al Jefferson"},
+		{"Frank Kaminsky III"},
+		{"Michael Kidd-Gilchrist"},
+		{"Jeremy Lamb"},
+		{"Courtney Lee"},
+		{"Jeremy Lin"},
+		{"Kemba Walker"},
+		{"Marvin Williams"},
+		{"Cody Zeller"},
+		{"Chris Bosh"},
+		{"Luol Deng"},
+		{"Goran Dragic"},
+		{"Gerald Green"},
+		{"Udonis Haslem"},
+		{"Joe Johnson"},
+		{"Tyler Johnson"},
+		{"Josh McRoberts"},
+		{"Josh Richardson"},
+		{"Amar'e Stoudemire"},
+		{"Dwyane Wade"},
+		{"Briante Weber"},
+		{"Hassan Whiteside"},
+		{"Justise Winslow"},
+		{"Dorell Wright"},
+		{"Dewayne Dedmon"},
+		{"Evan Fournier"},
+		{"Aaron Gordon"},
+		{"Mario Hezonja"},
+		{"Ersan Ilyasova"},
+		{"Brandon Jennings"},
+		{"Devyn Marble"},
+		{"Shabazz Napier"},
+		{"Andrew Nicholson"},
+		{"Victor Oladipo"},
+		{"Elfrid Payton"},
+		{"Jason Smith"},
+		{"Nikola Vucevic"},
+		{"C.J. Watson"},
+		{"Alan Anderson"},
+		{"Bradley Beal"},
+		{"Jared Dudley"},
+		{"Jarell Eddie"},
+		{"Drew Gooden"},
+		{"Marcin Gortat"},
+		{"JJ Hickson"},
+		{"Nene Hilario"},
+		{"Markieff Morris"},
+		{"Kelly Oubre Jr."},
+		{"Otto Porter Jr."},
+		{"Ramon Sessions"},
+		{"Garrett Temple"},
+		{"Marcus Thornton"},
+		{"John Wall"},
+		{"Darrell Arthur"},
+		{"D.J. Augustin"},
+		{"Will Barton"},
+		{"Wilson Chandler"},
+		{"Kenneth Faried"},
+		{"Danilo Gallinari"},
+		{"Gary Harris"},
+		{"Nikola Jokic"},
+		{"Joffrey Lauvergne"},
+		{"Mike Miller"},
+		{"Emmanuel Mudiay"},
+		{"Jameer Nelson"},
+		{"Jusuf Nurkic"},
+		{"JaKarr Sampson"},
+		{"Axel Toupane"},
+		{"Nemanja Bjelica"},
+		{"Gorgui Dieng"},
+		{"Kevin Garnett"},
+		{"Tyus Jones"},
+		{"Zach LaVine"},
+		{"Shabazz Muhammad"},
+		{"Adreian Payne"},
+		{"Nikola Pekovic"},
+		{"Tayshaun Prince"},
+		{"Ricky Rubio"},
+		{"Damjan Rudez"},
+		{"Greg Smith"},
+		{"Karl-Anthony Towns"},
+		{"Andrew Wiggins"},
+		{"Steven Adams"},
+		{"Nick Collison"},
+		{"Kevin Durant"},
+		{"Randy Foye"},
+		{"Josh Huestis"},
+		{"Serge Ibaka"},
+		{"Enes Kanter"},
+		{"Mitch McGary"},
+		{"Nazr Mohammed"},
+		{"Anthony Morrow"},
+		{"Cameron Payne"},
+		{"Andre Roberson"},
+		{"Kyle Singler"},
+		{"Dion Waiters"},
+		{"Russell Westbrook"},
+		{"Cliff Alexander"},
+		{"Al-Farouq Aminu"},
+		{"Pat Connaughton"},
+		{"Allen Crabbe"},
+		{"Ed Davis"},
+		{"Maurice Harkless"},
+		{"Gerald Henderson"},
+		{"Chris Kaman"},
+		{"Meyers Leonard"},
+		{"Damian Lillard"},
+		{"C.J. McCollum"},
+		{"Luis Montero"},
+		{"Mason Plumlee"},
+		{"Brian Roberts"},
+		{"Noah Vonleh"},
+		{"Trevor Booker"},
+		{"Trey Burke"},
+		{"Alec Burks"},
+		{"Dante Exum"},
+		{"Derrick Favors"},
+		{"Rudy Gobert"},
+		{"Gordon Hayward"},
+		{"Rodney Hood"},
+		{"Joe Ingles"},
+		{"Chris Johnson"},
+		{"Trey Lyles"},
+		{"Shelvin Mack"},
+		{"Raul Neto"},
+		{"Tibor Pleiss"},
+		{"Jeff Withey"},
+	}
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.LocRowsItems(names[rand.Intn(len(names))])
+	}
+}
+
 func TestDataFrameLocRowsItems(t *testing.T) {
 	type dataframeLocRowsItemsTest struct {
 		arg1     DataFrame
@@ -541,6 +1485,18 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkDataFrameLocCols(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.LocCols("Name")
 	}
 }
 
@@ -703,6 +1659,18 @@ func TestDataFrameLocCols(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameLocColsItems(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.LocColsItems("Name")
+	}
+}
+
 func TestDataFrameLocColsItems(t *testing.T) {
 	type dataframeLocColsItemsTest struct {
 		arg1     DataFrame
@@ -764,6 +1732,477 @@ func TestDataFrameLocColsItems(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (output != nil && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkDataFrameLoc(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	names := [][]interface{}{
+		{"Avery Bradley"},
+		{"Jae Crowder"},
+		{"John Holland"},
+		{"R.J. Hunter"},
+		{"Jonas Jerebko"},
+		{"Amir Johnson"},
+		{"Jordan Mickey"},
+		{"Kelly Olynyk"},
+		{"Terry Rozier"},
+		{"Marcus Smart"},
+		{"Jared Sullinger"},
+		{"Isaiah Thomas"},
+		{"Evan Turner"},
+		{"James Young"},
+		{"Tyler Zeller"},
+		{"Bojan Bogdanovic"},
+		{"Markel Brown"},
+		{"Wayne Ellington"},
+		{"Rondae Hollis-Jefferson"},
+		{"Jarrett Jack"},
+		{"Sergey Karasev"},
+		{"Sean Kilpatrick"},
+		{"Shane Larkin"},
+		{"Brook Lopez"},
+		{"Chris McCullough"},
+		{"Willie Reed"},
+		{"Thomas Robinson"},
+		{"Henry Sims"},
+		{"Donald Sloan"},
+		{"Thaddeus Young"},
+		{"Arron Afflalo"},
+		{"Lou Amundson"},
+		{"Thanasis Antetokounmpo"},
+		{"Carmelo Anthony"},
+		{"Jose Calderon"},
+		{"Cleanthony Early"},
+		{"Langston Galloway"},
+		{"Jerian Grant"},
+		{"Robin Lopez"},
+		{"Kyle O'Quinn"},
+		{"Kristaps Porzingis"},
+		{"Kevin Seraphin"},
+		{"Lance Thomas"},
+		{"Sasha Vujacic"},
+		{"Derrick Williams"},
+		{"Tony Wroten"},
+		{"Elton Brand"},
+		{"Isaiah Canaan"},
+		{"Robert Covington"},
+		{"Joel Embiid"},
+		{"Jerami Grant"},
+		{"Richaun Holmes"},
+		{"Carl Landry"},
+		{"Kendall Marshall"},
+		{"T.J. McConnell"},
+		{"Nerlens Noel"},
+		{"Jahlil Okafor"},
+		{"Ish Smith"},
+		{"Nik Stauskas"},
+		{"Hollis Thompson"},
+		{"Christian Wood"},
+		{"Bismack Biyombo"},
+		{"Bruno Caboclo"},
+		{"DeMarre Carroll"},
+		{"DeMar DeRozan"},
+		{"James Johnson"},
+		{"Cory Joseph"},
+		{"Kyle Lowry"},
+		{"Lucas Nogueira"},
+		{"Patrick Patterson"},
+		{"Norman Powell"},
+		{"Terrence Ross"},
+		{"Luis Scola"},
+		{"Jason Thompson"},
+		{"Jonas Valanciunas"},
+		{"Delon Wright"},
+		{"Leandro Barbosa"},
+		{"Harrison Barnes"},
+		{"Andrew Bogut"},
+		{"Ian Clark"},
+		{"Stephen Curry"},
+		{"Festus Ezeli"},
+		{"Draymond Green"},
+		{"Andre Iguodala"},
+		{"Shaun Livingston"},
+		{"Kevon Looney"},
+		{"James Michael McAdoo"},
+		{"Brandon Rush"},
+		{"Marreese Speights"},
+		{"Klay Thompson"},
+		{"Anderson Varejao"},
+		{"Cole Aldrich"},
+		{"Jeff Ayres"},
+		{"Jamal Crawford"},
+		{"Branden Dawson"},
+		{"Jeff Green"},
+		{"Blake Griffin"},
+		{"Wesley Johnson"},
+		{"DeAndre Jordan"},
+		{"Luc Richard Mbah a Moute"},
+		{"Chris Paul"},
+		{"Paul Pierce"},
+		{"Pablo Prigioni"},
+		{"JJ Redick"},
+		{"Austin Rivers"},
+		{"C.J. Wilcox"},
+		{"Brandon Bass"},
+		{"Tarik Black"},
+		{"Anthony Brown"},
+		{"Kobe Bryant"},
+		{"Jordan Clarkson"},
+		{"Roy Hibbert"},
+		{"Marcelo Huertas"},
+		{"Ryan Kelly"},
+		{"Larry Nance Jr."},
+		{"Julius Randle"},
+		{"D'Angelo Russell"},
+		{"Robert Sacre"},
+		{"Louis Williams"},
+		{"Metta World Peace"},
+		{"Nick Young"},
+		{"Eric Bledsoe"},
+		{"Devin Booker"},
+		{"Chase Budinger"},
+		{"Tyson Chandler"},
+		{"Archie Goodwin"},
+		{"John Jenkins"},
+		{"Brandon Knight"},
+		{"Alex Len"},
+		{"Jon Leuer"},
+		{"Phil Pressey"},
+		{"Ronnie Price"},
+		{"Mirza Teletovic"},
+		{"P.J. Tucker"},
+		{"T.J. Warren"},
+		{"Alan Williams"},
+		{"Quincy Acy"},
+		{"James Anderson"},
+		{"Marco Belinelli"},
+		{"Caron Butler"},
+		{"Omri Casspi"},
+		{"Willie Cauley-Stein"},
+		{"Darren Collison"},
+		{"DeMarcus Cousins"},
+		{"Seth Curry"},
+		{"Duje Dukan"},
+		{"Rudy Gay"},
+		{"Kosta Koufos"},
+		{"Ben McLemore"},
+		{"Eric Moreland"},
+		{"Rajon Rondo"},
+		{"Cameron Bairstow"},
+		{"Aaron Brooks"},
+		{"Jimmy Butler"},
+		{"Mike Dunleavy"},
+		{"Cristiano Felicio"},
+		{"Pau Gasol"},
+		{"Taj Gibson"},
+		{"Justin Holiday"},
+		{"Doug McDermott"},
+		{"Nikola Mirotic"},
+		{"E'Twaun Moore"},
+		{"Joakim Noah"},
+		{"Bobby Portis"},
+		{"Derrick Rose"},
+		{"Tony Snell"},
+		{"Matthew Dellavedova"},
+		{"Channing Frye"},
+		{"Kyrie Irving"},
+		{"LeBron James"},
+		{"Richard Jefferson"},
+		{"Dahntay Jones"},
+		{"James Jones"},
+		{"Sasha Kaun"},
+		{"Kevin Love"},
+		{"Jordan McRae"},
+		{"Timofey Mozgov"},
+		{"Iman Shumpert"},
+		{"J.R. Smith"},
+		{"Tristan Thompson"},
+		{"Mo Williams"},
+		{"Joel Anthony"},
+		{"Aron Baynes"},
+		{"Steve Blake"},
+		{"Lorenzo Brown"},
+		{"Reggie Bullock"},
+		{"Kentavious Caldwell-Pope"},
+		{"Spencer Dinwiddie"},
+		{"Andre Drummond"},
+		{"Tobias Harris"},
+		{"Darrun Hilliard"},
+		{"Reggie Jackson"},
+		{"Stanley Johnson"},
+		{"Jodie Meeks"},
+		{"Marcus Morris"},
+		{"Anthony Tolliver"},
+		{"Lavoy Allen"},
+		{"Rakeem Christmas"},
+		{"Monta Ellis"},
+		{"Paul George"},
+		{"George Hill"},
+		{"Jordan Hill"},
+		{"Solomon Hill"},
+		{"Ty Lawson"},
+		{"Ian Mahinmi"},
+		{"C.J. Miles"},
+		{"Glenn Robinson III"},
+		{"Rodney Stuckey"},
+		{"Myles Turner"},
+		{"Shayne Whittington"},
+		{"Joe Young"},
+		{"Giannis Antetokounmpo"},
+		{"Jerryd Bayless"},
+		{"Michael Carter-Williams"},
+		{"Jared Cunningham"},
+		{"Tyler Ennis"},
+		{"John Henson"},
+		{"Damien Inglis"},
+		{"O.J. Mayo"},
+		{"Khris Middleton"},
+		{"Greg Monroe"},
+		{"Steve Novak"},
+		{"Johnny O'Bryant III"},
+		{"Jabari Parker"},
+		{"Miles Plumlee"},
+		{"Greivis Vasquez"},
+		{"Rashad Vaughn"},
+		{"Justin Anderson"},
+		{"J.J. Barea"},
+		{"Jeremy Evans"},
+		{"Raymond Felton"},
+		{"Devin Harris"},
+		{"David Lee"},
+		{"Wesley Matthews"},
+		{"JaVale McGee"},
+		{"Salah Mejri"},
+		{"Dirk Nowitzki"},
+		{"Zaza Pachulia"},
+		{"Chandler Parsons"},
+		{"Dwight Powell"},
+		{"Charlie Villanueva"},
+		{"Deron Williams"},
+		{"Trevor Ariza"},
+		{"Michael Beasley"},
+		{"Patrick Beverley"},
+		{"Corey Brewer"},
+		{"Clint Capela"},
+		{"Sam Dekker"},
+		{"Andrew Goudelock"},
+		{"James Harden"},
+		{"Montrezl Harrell"},
+		{"Dwight Howard"},
+		{"Terrence Jones"},
+		{"K.J. McDaniels"},
+		{"Donatas Motiejunas"},
+		{"Josh Smith"},
+		{"Jason Terry"},
+		{"Jordan Adams"},
+		{"Tony Allen"},
+		{"Chris Andersen"},
+		{"Matt Barnes"},
+		{"Vince Carter"},
+		{"Mike Conley"},
+		{"Bryce Cotton"},
+		{"Jordan Farmar"},
+		{"Marc Gasol"},
+		{"JaMychal Green"},
+		{"P.J. Hairston"},
+		{"Jarell Martin"},
+		{"Ray McCallum"},
+		{"Xavier Munford"},
+		{"Zach Randolph"},
+		{"Lance Stephenson"},
+		{"Alex Stepheson"},
+		{"Brandan Wright"},
+		{"Alexis Ajinca"},
+		{"Ryan Anderson"},
+		{"Omer Asik"},
+		{"Luke Babbitt"},
+		{"Norris Cole"},
+		{"Dante Cunningham"},
+		{"Anthony Davis"},
+		{"Bryce Dejean-Jones"},
+		{"Toney Douglas"},
+		{"James Ennis"},
+		{"Tyreke Evans"},
+		{"Tim Frazier"},
+		{"Alonzo Gee"},
+		{"Eric Gordon"},
+		{"Jordan Hamilton"},
+		{"Jrue Holiday"},
+		{"Orlando Johnson"},
+		{"Kendrick Perkins"},
+		{"Quincy Pondexter"},
+		{"LaMarcus Aldridge"},
+		{"Kyle Anderson"},
+		{"Matt Bonner"},
+		{"Boris Diaw"},
+		{"Tim Duncan"},
+		{"Manu Ginobili"},
+		{"Danny Green"},
+		{"Kawhi Leonard"},
+		{"Boban Marjanovic"},
+		{"Kevin Martin"},
+		{"Andre Miller"},
+		{"Patty Mills"},
+		{"Tony Parker"},
+		{"Jonathon Simmons"},
+		{"David West"},
+		{"Kent Bazemore"},
+		{"Tim Hardaway Jr."},
+		{"Kirk Hinrich"},
+		{"Al Horford"},
+		{"Kris Humphries"},
+		{"Kyle Korver"},
+		{"Paul Millsap"},
+		{"Mike Muscala"},
+		{"Lamar Patterson"},
+		{"Dennis Schroder"},
+		{"Mike Scott"},
+		{"Thabo Sefolosha"},
+		{"Tiago Splitter"},
+		{"Walter Tavares"},
+		{"Jeff Teague"},
+		{"Nicolas Batum"},
+		{"Troy Daniels"},
+		{"Jorge Gutierrez"},
+		{"Tyler Hansbrough"},
+		{"Aaron Harrison"},
+		{"Spencer Hawes"},
+		{"Al Jefferson"},
+		{"Frank Kaminsky III"},
+		{"Michael Kidd-Gilchrist"},
+		{"Jeremy Lamb"},
+		{"Courtney Lee"},
+		{"Jeremy Lin"},
+		{"Kemba Walker"},
+		{"Marvin Williams"},
+		{"Cody Zeller"},
+		{"Chris Bosh"},
+		{"Luol Deng"},
+		{"Goran Dragic"},
+		{"Gerald Green"},
+		{"Udonis Haslem"},
+		{"Joe Johnson"},
+		{"Tyler Johnson"},
+		{"Josh McRoberts"},
+		{"Josh Richardson"},
+		{"Amar'e Stoudemire"},
+		{"Dwyane Wade"},
+		{"Briante Weber"},
+		{"Hassan Whiteside"},
+		{"Justise Winslow"},
+		{"Dorell Wright"},
+		{"Dewayne Dedmon"},
+		{"Evan Fournier"},
+		{"Aaron Gordon"},
+		{"Mario Hezonja"},
+		{"Ersan Ilyasova"},
+		{"Brandon Jennings"},
+		{"Devyn Marble"},
+		{"Shabazz Napier"},
+		{"Andrew Nicholson"},
+		{"Victor Oladipo"},
+		{"Elfrid Payton"},
+		{"Jason Smith"},
+		{"Nikola Vucevic"},
+		{"C.J. Watson"},
+		{"Alan Anderson"},
+		{"Bradley Beal"},
+		{"Jared Dudley"},
+		{"Jarell Eddie"},
+		{"Drew Gooden"},
+		{"Marcin Gortat"},
+		{"JJ Hickson"},
+		{"Nene Hilario"},
+		{"Markieff Morris"},
+		{"Kelly Oubre Jr."},
+		{"Otto Porter Jr."},
+		{"Ramon Sessions"},
+		{"Garrett Temple"},
+		{"Marcus Thornton"},
+		{"John Wall"},
+		{"Darrell Arthur"},
+		{"D.J. Augustin"},
+		{"Will Barton"},
+		{"Wilson Chandler"},
+		{"Kenneth Faried"},
+		{"Danilo Gallinari"},
+		{"Gary Harris"},
+		{"Nikola Jokic"},
+		{"Joffrey Lauvergne"},
+		{"Mike Miller"},
+		{"Emmanuel Mudiay"},
+		{"Jameer Nelson"},
+		{"Jusuf Nurkic"},
+		{"JaKarr Sampson"},
+		{"Axel Toupane"},
+		{"Nemanja Bjelica"},
+		{"Gorgui Dieng"},
+		{"Kevin Garnett"},
+		{"Tyus Jones"},
+		{"Zach LaVine"},
+		{"Shabazz Muhammad"},
+		{"Adreian Payne"},
+		{"Nikola Pekovic"},
+		{"Tayshaun Prince"},
+		{"Ricky Rubio"},
+		{"Damjan Rudez"},
+		{"Greg Smith"},
+		{"Karl-Anthony Towns"},
+		{"Andrew Wiggins"},
+		{"Steven Adams"},
+		{"Nick Collison"},
+		{"Kevin Durant"},
+		{"Randy Foye"},
+		{"Josh Huestis"},
+		{"Serge Ibaka"},
+		{"Enes Kanter"},
+		{"Mitch McGary"},
+		{"Nazr Mohammed"},
+		{"Anthony Morrow"},
+		{"Cameron Payne"},
+		{"Andre Roberson"},
+		{"Kyle Singler"},
+		{"Dion Waiters"},
+		{"Russell Westbrook"},
+		{"Cliff Alexander"},
+		{"Al-Farouq Aminu"},
+		{"Pat Connaughton"},
+		{"Allen Crabbe"},
+		{"Ed Davis"},
+		{"Maurice Harkless"},
+		{"Gerald Henderson"},
+		{"Chris Kaman"},
+		{"Meyers Leonard"},
+		{"Damian Lillard"},
+		{"C.J. McCollum"},
+		{"Luis Montero"},
+		{"Mason Plumlee"},
+		{"Brian Roberts"},
+		{"Noah Vonleh"},
+		{"Trevor Booker"},
+		{"Trey Burke"},
+		{"Alec Burks"},
+		{"Dante Exum"},
+		{"Derrick Favors"},
+		{"Rudy Gobert"},
+		{"Gordon Hayward"},
+		{"Rodney Hood"},
+		{"Joe Ingles"},
+		{"Chris Johnson"},
+		{"Trey Lyles"},
+		{"Shelvin Mack"},
+		{"Raul Neto"},
+		{"Tibor Pleiss"},
+		{"Jeff Withey"},
+	}
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.Loc([]string{"Name"}, names[rand.Intn(len(names))])
 	}
 }
 
@@ -851,7 +2290,19 @@ func TestDataFrameLoc(t *testing.T) {
 	}
 }
 
-func TestColAdd(t *testing.T) {
+func BenchmarkDataFrameColAdd(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColAdd("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColAdd(t *testing.T) {
 	type colAddTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -928,7 +2379,19 @@ func TestColAdd(t *testing.T) {
 	}
 }
 
-func TestColSub(t *testing.T) {
+func BenchmarkDataFrameColSub(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColSub("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColSub(t *testing.T) {
 	type colSubTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1005,7 +2468,19 @@ func TestColSub(t *testing.T) {
 	}
 }
 
-func TestColMul(t *testing.T) {
+func BenchmarkDataFrameColMul(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColMul("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColMul(t *testing.T) {
 	type colMulTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1082,7 +2557,19 @@ func TestColMul(t *testing.T) {
 	}
 }
 
-func TestColDiv(t *testing.T) {
+func BenchmarkDataFrameColDiv(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColDiv("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColDiv(t *testing.T) {
 	type colDivTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1159,7 +2646,19 @@ func TestColDiv(t *testing.T) {
 	}
 }
 
-func TestColMod(t *testing.T) {
+func BenchmarkDataFrameColMod(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColMod("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColMod(t *testing.T) {
 	type colModTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1236,7 +2735,19 @@ func TestColMod(t *testing.T) {
 	}
 }
 
-func TestColGt(t *testing.T) {
+func BenchmarkDataFrameColGt(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColGt("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColGt(t *testing.T) {
 	type colGtTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1313,7 +2824,19 @@ func TestColGt(t *testing.T) {
 	}
 }
 
-func TestColLt(t *testing.T) {
+func BenchmarkDataFrameColLt(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColLt("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColLt(t *testing.T) {
 	type colLtTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1390,7 +2913,19 @@ func TestColLt(t *testing.T) {
 	}
 }
 
-func TestColEq(t *testing.T) {
+func BenchmarkDataFrameColEq(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.ColEq("Salary", rand.Float64())
+	}
+}
+
+func TestDataFrameColEq(t *testing.T) {
 	type colEqTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1467,7 +3002,23 @@ func TestColEq(t *testing.T) {
 	}
 }
 
-func TestNewCol(t *testing.T) {
+func BenchmarkDataFrameNewCol(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	data := make([]interface{}, len(testDf.series[0].data))
+	for i := 0; i < len(testDf.series[0].data); i++ {
+		data[i] = rand.Float64()
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.NewCol("New Column", data)
+	}
+}
+
+func TestDataFrameNewCol(t *testing.T) {
 	type newColTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1596,7 +3147,19 @@ func TestNewCol(t *testing.T) {
 	}
 }
 
-func TestNewDerivedCol(t *testing.T) {
+func BenchmarkDataFrameNewDerivedCol(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.NewDerivedCol("New Column", "Salary")
+	}
+}
+
+func TestDataFrameNewDerivedCol(t *testing.T) {
 	type newDerivedColTest struct {
 		arg1     DataFrame
 		arg2     string
@@ -1678,6 +3241,18 @@ func TestNewDerivedCol(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkDataFrameRenameCol(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.RenameCol(map[string]string{"Name": "New Name", "Age": "New Age"})
 	}
 }
 
@@ -1769,6 +3344,18 @@ func TestDataFrameRenameCol(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameSortByIndex(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.SortByIndex(true)
+	}
+}
+
 func TestDataFrameSortByIndex(t *testing.T) {
 	type sortByIndexTest struct {
 		arg1     DataFrame
@@ -1850,6 +3437,18 @@ func TestDataFrameSortByIndex(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameSortByValues(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.SortByValues("Name", true)
+	}
+}
+
 func TestDataFrameSortByValues(t *testing.T) {
 	type sortByValuesTest struct {
 		arg1     DataFrame
@@ -1917,7 +3516,19 @@ func TestDataFrameSortByValues(t *testing.T) {
 	}
 }
 
-func TestDropNaN(t *testing.T) {
+func BenchmarkDataFrameDropNaN(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.DropNaN(0)
+	}
+}
+
+func TestDataFrameDropNaN(t *testing.T) {
 	type dropNaNTest struct {
 		arg1     DataFrame
 		arg2     int
@@ -2125,6 +3736,18 @@ func TestDropNaN(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFramePivot(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.Pivot("Sex", "Height")
+	}
+}
+
 func TestDataFramePivot(t *testing.T) {
 	type pivotTest struct {
 		arg1     DataFrame
@@ -2225,6 +3848,18 @@ func TestDataFramePivot(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkDataFramePivotTable(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.PivotTable("Team", "Height", "Salary", Mean)
 	}
 }
 
@@ -2424,6 +4059,22 @@ func TestDataFramePivotTable(t *testing.T) {
 		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
+	}
+}
+
+func BenchmarkDataFrameMelt(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/airquality.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	dfPivoted, err := testDf.PivotTable("location", "parameter", "value", Mean)
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		dfPivoted.Melt("parameter", "value")
 	}
 }
 
