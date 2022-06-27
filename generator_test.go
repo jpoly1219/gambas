@@ -1,10 +1,24 @@
 package gambas
 
 import (
+	"math/rand"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+func BenchmarkGambasCreateRangeIndex(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.series[0].Loc(names[rand.Intn(len(names))])
+	}
+}
 
 func TestCreateRangeIndex(t *testing.T) {
 	type createRangeIndexTest struct {
