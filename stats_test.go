@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
-func BenchmarkCount(b *testing.B) {
+func BenchmarkStatsCount(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -22,7 +22,7 @@ func BenchmarkCount(b *testing.B) {
 	}
 }
 
-func TestCount(t *testing.T) {
+func TestStatsCount(t *testing.T) {
 	type countTest struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -61,7 +61,7 @@ func TestCount(t *testing.T) {
 	}
 }
 
-func BenchmarkMean(b *testing.B) {
+func BenchmarkStatsMean(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -73,7 +73,7 @@ func BenchmarkMean(b *testing.B) {
 	}
 }
 
-func TestMean(t *testing.T) {
+func TestStatsMean(t *testing.T) {
 	type meanTest struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -125,7 +125,7 @@ func TestMean(t *testing.T) {
 	}
 }
 
-func BenchmarkMedian(b *testing.B) {
+func BenchmarkStatsMedian(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -137,7 +137,7 @@ func BenchmarkMedian(b *testing.B) {
 	}
 }
 
-func TestMedian(t *testing.T) {
+func TestStatsMedian(t *testing.T) {
 	type medianTest struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -205,7 +205,7 @@ func TestMedian(t *testing.T) {
 	}
 }
 
-func BenchmarkStd(b *testing.B) {
+func BenchmarkStatsStd(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -217,7 +217,7 @@ func BenchmarkStd(b *testing.B) {
 	}
 }
 
-func TestStd(t *testing.T) {
+func TestStatsStd(t *testing.T) {
 	type stdTest struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -284,7 +284,7 @@ func TestStd(t *testing.T) {
 	}
 }
 
-func BenchmarkMin(b *testing.B) {
+func BenchmarkStatsMin(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -296,7 +296,7 @@ func BenchmarkMin(b *testing.B) {
 	}
 }
 
-func TestMin(t *testing.T) {
+func TestStatsMin(t *testing.T) {
 	type minTest struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -363,7 +363,7 @@ func TestMin(t *testing.T) {
 	}
 }
 
-func BenchmarkMax(b *testing.B) {
+func BenchmarkStatsMax(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -375,7 +375,7 @@ func BenchmarkMax(b *testing.B) {
 	}
 }
 
-func TestMax(t *testing.T) {
+func TestStatsMax(t *testing.T) {
 	type maxTest struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -442,7 +442,7 @@ func TestMax(t *testing.T) {
 	}
 }
 
-func BenchmarkQ1(b *testing.B) {
+func BenchmarkStatsQ1(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -454,7 +454,7 @@ func BenchmarkQ1(b *testing.B) {
 	}
 }
 
-func TestQ1(t *testing.T) {
+func TestStatsQ1(t *testing.T) {
 	type q1Test struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -521,7 +521,7 @@ func TestQ1(t *testing.T) {
 	}
 }
 
-func BenchmarkQ2(b *testing.B) {
+func BenchmarkStatsQ2(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -533,7 +533,7 @@ func BenchmarkQ2(b *testing.B) {
 	}
 }
 
-func TestQ2(t *testing.T) {
+func TestStatsQ2(t *testing.T) {
 	type q2Test struct {
 		arg1     []interface{}
 		expected StatsResult
@@ -600,7 +600,7 @@ func TestQ2(t *testing.T) {
 	}
 }
 
-func BenchmarkQ3(b *testing.B) {
+func BenchmarkStatsQ3(b *testing.B) {
 	list := make([]interface{}, 0)
 	for i := 0; i < 10000; i++ {
 		list = append(list, rand.Float64())
@@ -612,7 +612,7 @@ func BenchmarkQ3(b *testing.B) {
 	}
 }
 
-func TestQ3(t *testing.T) {
+func TestStatsQ3(t *testing.T) {
 	type q3Test struct {
 		arg1     []interface{}
 		expected StatsResult
