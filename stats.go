@@ -36,7 +36,6 @@ func Mean(dataset []interface{}) StatsResult {
 	if err != nil {
 		return StatsResult{"Mean", math.NaN(), err}
 	}
-	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
@@ -89,18 +88,12 @@ func Std(dataset []interface{}) StatsResult {
 		return StatsResult{"Std", math.NaN(), meanResult.Err}
 	}
 
-	data, err := interface2F64Slice(dataset)
-	if err != nil {
-		return StatsResult{"Std", math.NaN(), err}
-	}
-	sort.Float64s(data)
-
 	numerator := 0.0
-	for _, v := range data {
-		temp := math.Pow(v-meanResult.Result, 2)
+	for _, v := range dataset {
+		temp := math.Pow(v.(float64)-meanResult.Result, 2)
 		numerator += temp
 	}
-	std = math.Sqrt(numerator / float64(len(data)-1))
+	std = math.Sqrt(numerator / float64(len(dataset)-1))
 	roundedStd := math.Round(std*1000) / 1000
 
 	return StatsResult{"Std", roundedStd, nil}
@@ -112,14 +105,19 @@ func Min(dataset []interface{}) StatsResult {
 	if err != nil {
 		return StatsResult{"Min", math.NaN(), err}
 	}
-	sort.Float64s(data)
 
-	total := len(data)
-	if total == 0 {
+	if len(data) == 0 {
 		return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
-	return StatsResult{"Min", data[0], nil}
+	min := math.MaxFloat64
+	for _, v := range data {
+		if v < min {
+			min = v
+		}
+	}
+
+	return StatsResult{"Min", min, nil}
 }
 
 // Max returns the largest element is a column.
@@ -128,14 +126,19 @@ func Max(dataset []interface{}) StatsResult {
 	if err != nil {
 		return StatsResult{"Max", math.NaN(), err}
 	}
-	sort.Float64s(data)
 
-	total := len(data)
-	if total == 0 {
+	if len(data) == 0 {
 		return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
-	return StatsResult{"Max", data[total-1], nil}
+	max := 0.0
+	for _, v := range data {
+		if v > max {
+			max = v
+		}
+	}
+
+	return StatsResult{"Max", max, nil}
 }
 
 // Q1 returns the lower quartile (25%) of the elements in a column.
