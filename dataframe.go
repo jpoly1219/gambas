@@ -398,24 +398,26 @@ func (df *DataFrame) ColEq(colname string, value float64) (DataFrame, error) {
 // To create a blank column, pass in a slice with empty string values
 // like so: []interface{}{"", "", "", ...}
 func (df *DataFrame) NewCol(colname string, data []interface{}) (DataFrame, error) {
-	newSeries, err := NewSeries(data, colname, &df.index)
+	newDf := copyDf(df)
+	newSeries, err := NewSeries(data, colname, &newDf.index)
 	if err != nil {
 		return DataFrame{}, err
 	}
 
-	df.series = append(df.series, newSeries)
-	df.columns = append(df.columns, colname)
+	newDf.series = append(newDf.series, newSeries)
+	newDf.columns = append(newDf.columns, colname)
 
-	return *df, nil
+	return newDf, nil
 }
 
 // NewDerivedCol creates a new column derived from an existing column.
 // It copies over the data from a column named srcCol into a new column.
 // You can then apply column operations such as ColAdd to the new column.
 func (df *DataFrame) NewDerivedCol(colname, srcCol string) (DataFrame, error) {
-	for i := range df.series {
-		if df.series[i].name == srcCol {
-			dataframe, err := df.NewCol(colname, df.series[i].data)
+	newDf := copyDf(df)
+	for i := range newDf.series {
+		if newDf.series[i].name == srcCol {
+			dataframe, err := newDf.NewCol(colname, newDf.series[i].data)
 			if err != nil {
 				return DataFrame{}, err
 			}
@@ -457,6 +459,14 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 	}
 
 	return nil
+}
+
+func (df *DataFrame) AppendColumn() {
+
+}
+
+func (df *DataFrame) MergeDataFramesVertically() {
+
 }
 
 // Sorting functions
