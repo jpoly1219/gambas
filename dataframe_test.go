@@ -2906,6 +2906,68 @@ func TestDataFrameRenameCol(t *testing.T) {
 	}
 }
 
+func TestDataFrameMergeDfsVertically(t *testing.T) {
+	type mergeDfsVerticallyTest struct {
+		arg1     DataFrame
+		arg2     DataFrame
+		expected DataFrame
+	}
+	mergeDfsVerticallyTests := []mergeDfsVerticallyTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsVertically/1src.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsVertically/1target.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsVertically/1exp.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsVertically/2src.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsVertically/2target.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsVertically/2exp.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+		},
+	}
+	for _, test := range mergeDfsVerticallyTests {
+		output, err := test.arg1.MergeDfsVertically(test.arg2)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v,\ngot %v,\nerror %v", test.expected, output, err)
+		}
+	}
+}
+
 func BenchmarkDataFrameSortByIndex(b *testing.B) {
 	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
 	if err != nil {
