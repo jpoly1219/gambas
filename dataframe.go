@@ -465,8 +465,31 @@ func (df *DataFrame) AppendColumn() {
 
 }
 
-func (df *DataFrame) MergeDataFramesVertically() {
+// MergeDataFramesVertically stacks two DataFrame objects vertically.
+func (df *DataFrame) MergeDataFramesVertically(target DataFrame) (DataFrame, error) {
+	for i, col := range df.columns {
+		if col != target.columns[i] {
+			return DataFrame{}, fmt.Errorf("column names do not match")
+		}
+	}
 
+	newDf := copyDf(df)
+	newDf.index.index = append(newDf.index.index, target.index.index...)
+	newDf.index.names = append(newDf.index.names, target.index.names...)
+
+	for i := range df.series {
+		if df.series[i].dtype != target.series[i].dtype {
+			return DataFrame{}, fmt.Errorf("column dtypes do not match")
+		}
+		if df.series[i].name != target.series[i].name {
+			return DataFrame{}, fmt.Errorf("column names do not match")
+		}
+		df.series[i].data = append(df.series[i].data, target.series[i].data)
+		df.series[i].index.index = append(df.series[i].index.index, target.series[i].index.index...)
+		df.series[i].index.names = append(df.series[i].index.names, target.series[i].index.names...)
+	}
+
+	return newDf, nil
 }
 
 // Sorting functions
