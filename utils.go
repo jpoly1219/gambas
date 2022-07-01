@@ -1,8 +1,10 @@
 package gambas
 
 import (
+	"encoding/csv"
 	"fmt"
 	"math"
+	"os"
 	"sort"
 	"strconv"
 )
@@ -216,7 +218,7 @@ func consolidateToFloat64(data []interface{}) []interface{} {
 		case int:
 			result[i] = float64(dd)
 		case string:
-			if dd == "" {
+			if dd == "" || dd == "NaN" {
 				result[i] = math.NaN()
 			} else {
 				f, err := strconv.ParseFloat(fmt.Sprint(d), 64)
@@ -237,7 +239,13 @@ func consolidateToFloat64(data []interface{}) []interface{} {
 func consolidateToString(data []interface{}) []interface{} {
 	result := make([]interface{}, len(data))
 	for i, d := range data {
-		result[i] = fmt.Sprint(d)
+		if d == "" || d == "NaN" {
+			result[i] = math.NaN()
+		} else if conv, ok := d.(float64); ok && math.IsNaN(conv) {
+			result[i] = math.NaN()
+		} else {
+			result[i] = fmt.Sprint(d)
+		}
 	}
 
 	return result
@@ -373,4 +381,36 @@ func copyDf(src *DataFrame) DataFrame {
 	newDf.columns = append(newDf.columns, src.columns...)
 
 	return *newDf
+}
+
+// readCsvColIntoData extracts a column in a CSV file to a [][]interface{}.
+func readCsvColIntoData(filepath string, col string) ([][]interface{}, error) {
+	f, err := os.Open(filepath)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	csvr := csv.NewReader(f)
+	rows, err := csvr.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([][]interface{}, 0)
+	colIndex := 0
+	for i, colLabel := range rows[0] {
+		if colLabel == col {
+			colIndex = i
+			break
+		}
+	}
+	for i, row := range rows {
+		if i == 0 {
+			continue
+		}
+		res = append(res, []interface{}{row[colIndex]})
+	}
+
+	return res, nil
 }
