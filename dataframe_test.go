@@ -2906,6 +2906,84 @@ func TestDataFrameRenameCol(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameMergeDfsHorizontally(b *testing.B) {
+	srcDf, err := ReadCsv("testfiles/mergeDfsHorizontally/1src.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	targetDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/1target.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		srcDf.MergeDfsHorizontally(targetDf)
+	}
+}
+
+func TestDataFrameMergeDfsHorizontally(t *testing.T) {
+	type mergeDfsHorizontallyTest struct {
+		arg1     DataFrame
+		arg2     DataFrame
+		expected DataFrame
+	}
+	mergeDfsHorizontallyTests := []mergeDfsHorizontallyTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/1src.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/1target.csv", []string{"Sex"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/1exp.csv", nil)
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/2src.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/2target.csv", []string{"Height"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/mergeDfsHorizontally/2exp.csv", nil)
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+		},
+	}
+	for _, test := range mergeDfsHorizontallyTests {
+		output, err := test.arg1.MergeDfsHorizontally(test.arg2)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v,\ngot %v,\nerror %v", test.expected, output, err)
+		}
+	}
+}
+
 func BenchmarkDataFrameMergeDfsVertically(b *testing.B) {
 	srcDf, err := ReadCsv("testfiles/mergeDfsVertically/1src.csv", []string{"Name"})
 	if err != nil {
