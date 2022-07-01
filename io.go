@@ -52,15 +52,7 @@ func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
 		rowNum++
 	}
 	// create new DataFrame object and return it
-	if indexCols != nil {
-		df, err := NewDataFrame(data2DArray, columnArray, indexCols)
-		if err != nil {
-			return DataFrame{}, err
-		}
-
-		return df, nil
-	}
-	df, err := NewDataFrame(data2DArray, columnArray, []string{columnArray[0]})
+	df, err := NewDataFrame(data2DArray, columnArray, indexCols)
 	if err != nil {
 		return DataFrame{}, err
 	}
