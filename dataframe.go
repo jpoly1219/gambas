@@ -463,8 +463,49 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 
 // MergeDfsHorizontally merges two DataFrame objects side by side.
 // The target DataFrame will always be appended to the right of the source DataFrame.
+// Index will reset and become a RangeIndex.
 func (df *DataFrame) MergeDfsHorizontally(target DataFrame) (DataFrame, error) {
-	
+	newDf := copyDf(df)
+	if len(newDf.series[0].data) >= len(target.series[0].data) {
+		newDf.index = CreateRangeIndex(len(newDf.series[0].data))
+		lenDiff := len(newDf.series[0].data) - len(target.series[0].data)
+
+		// fill missing data in target with NaN
+		for i, ser := range target.series {
+			for j := 0; j < lenDiff; j++ {
+				target.series[i].data = append(target.series[i].data, math.NaN())
+			}
+
+			if ser.dtype == "int" {
+				target.series[i].data = consolidateToFloat64(target.series[i].data)
+				target.series[i].dtype = "float64"
+			}
+		}
+	} else {
+		newDf.index = CreateRangeIndex(len(target.series[0].data))
+		lenDiff := len(target.series[0].data) - len(newDf.series[0].data)
+
+		// fill missing data in source with NaN
+		for i, ser := range newDf.series {
+			for j := 0; j < lenDiff; j++ {
+				newDf.series[i].data = append(newDf.series[i].data, math.NaN())
+			}
+
+			if ser.dtype == "int" {
+				newDf.series[i].data = consolidateToFloat64(newDf.series[i].data)
+				newDf.series[i].dtype = "float64"
+			}
+		}
+	}
+
+	newDf.columns = append(newDf.columns, target.columns...)
+	newDf.series = append(newDf.series, target.series...)
+
+	for i, ser := range newDf.series {
+		newDf.series[i].index = CreateRangeIndex(len(ser.data))
+	}
+
+	return newDf, nil
 }
 
 // MergeDfsVertically stacks two DataFrame objects vertically.
