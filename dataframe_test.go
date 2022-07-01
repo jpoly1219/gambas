@@ -2906,6 +2906,22 @@ func TestDataFrameRenameCol(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameMergeDfsVertically(b *testing.B) {
+	srcDf, err := ReadCsv("testfiles/mergeDfsVertically/1src.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	targetDf, err := ReadCsv("./testfiles/mergeDfsVertically/1target.csv", []string{"Name"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		srcDf.MergeDfsVertically(targetDf)
+	}
+}
+
 func TestDataFrameMergeDfsVertically(t *testing.T) {
 	type mergeDfsVerticallyTest struct {
 		arg1     DataFrame
