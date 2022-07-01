@@ -461,12 +461,17 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 	return nil
 }
 
-func (df *DataFrame) AppendColumn() {
-
+// MergeDfsHorizontally merges two DataFrame objects side by side.
+// The target DataFrame will always be appended to the right of the source DataFrame.
+func (df *DataFrame) MergeDfsHorizontally(target DataFrame) (DataFrame, error) {
+	
 }
 
-// MergeDataFramesVertically stacks two DataFrame objects vertically.
+// MergeDfsVertically stacks two DataFrame objects vertically.
 func (df *DataFrame) MergeDfsVertically(target DataFrame) (DataFrame, error) {
+	if len(target.columns) != len(df.columns) {
+		return DataFrame{}, fmt.Errorf("number of columns is different")
+	}
 	for i, col := range df.columns {
 		if col != target.columns[i] {
 			return DataFrame{}, fmt.Errorf("column names do not match")
