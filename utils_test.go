@@ -529,11 +529,11 @@ func TestConsolidateToString(t *testing.T) {
 		},
 		{
 			[]interface{}{"", 2.0, 3.0},
-			[]interface{}{"", "2", "3"},
+			[]interface{}{math.NaN(), "2", "3"},
 		},
 		{
 			[]interface{}{"", ""},
-			[]interface{}{"", ""},
+			[]interface{}{math.NaN(), math.NaN()},
 		},
 		{
 			[]interface{}{true, "false"},
@@ -541,12 +541,12 @@ func TestConsolidateToString(t *testing.T) {
 		},
 		{
 			[]interface{}{1, 2, 3, 4, ""},
-			[]interface{}{"1", "2", "3", "4", ""},
+			[]interface{}{"1", "2", "3", "4", math.NaN()},
 		},
 	}
 	for _, test := range consolidateToStringTests {
 		output := consolidateToString(test.arg1)
-		if !cmp.Equal(output, test.expected) {
+		if !cmp.Equal(output, test.expected, cmpopts.EquateNaNs()) {
 			t.Fatalf("expected %v, got %v", test.expected, output)
 		}
 	}
