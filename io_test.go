@@ -31,8 +31,8 @@ func TestIoReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Avery", "Bradford", "Candice"},
 						IndexData{
-							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
-							[]string{"Name"},
+							[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+							[]string{""},
 						},
 						"Name",
 						"string",
@@ -40,8 +40,8 @@ func TestIoReadCsv(t *testing.T) {
 					{
 						[]interface{}{19, 25, 22},
 						IndexData{
-							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
-							[]string{"Name"},
+							[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+							[]string{""},
 						},
 						"Age",
 						"int",
@@ -49,23 +49,23 @@ func TestIoReadCsv(t *testing.T) {
 					{
 						[]interface{}{"Male", "Male", "Female"},
 						IndexData{
-							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
-							[]string{"Name"},
+							[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+							[]string{""},
 						},
 						"Sex",
 						"string",
 					},
 				},
 				IndexData{
-					[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradford"}}, {2, []interface{}{"Candice"}}},
-					[]string{"Name"},
+					[]Index{{0, []interface{}{0}}, {1, []interface{}{1}}, {2, []interface{}{2}}},
+					[]string{""},
 				},
 				[]string{"Name", "Age", "Sex"},
 			},
 		},
 		{
 			filepath.Join("testfiles", "test2.csv"),
-			nil,
+			[]string{"Name"},
 			DataFrame{
 				[]Series{
 					{
@@ -167,7 +167,7 @@ func TestIoReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", math.NaN(), "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"Avery Bradley"}},
@@ -311,7 +311,7 @@ func TestIoReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", math.NaN(), "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"PG"}},
@@ -353,7 +353,7 @@ func TestIoReadCsv(t *testing.T) {
 		},
 		{
 			filepath.Join("testfiles", "test2.csv"),
-			nil,
+			[]string{"Name"},
 			DataFrame{
 				[]Series{
 					{
@@ -455,7 +455,7 @@ func TestIoReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", math.NaN(), "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"Avery Bradley"}},
@@ -506,7 +506,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -520,7 +520,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -534,7 +534,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -548,7 +548,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -562,7 +562,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -576,7 +576,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -590,7 +590,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -599,12 +599,12 @@ func TestIoReadCsv(t *testing.T) {
 						"float64",
 					},
 					{
-						[]interface{}{"Texas", "Marquette", "", "Georgia State"},
+						[]interface{}{"Texas", "Marquette", math.NaN(), "Georgia State"},
 						IndexData{
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -618,7 +618,7 @@ func TestIoReadCsv(t *testing.T) {
 							[]Index{
 								{0, []interface{}{"PG", "Texas"}},
 								{1, []interface{}{"SF", "Marquette"}},
-								{2, []interface{}{"SG", ""}},
+								{2, []interface{}{"SG", math.NaN()}},
 								{3, []interface{}{"SG", "Georgia State"}},
 							},
 							[]string{"Position", "College"},
@@ -631,7 +631,7 @@ func TestIoReadCsv(t *testing.T) {
 					[]Index{
 						{0, []interface{}{"PG", "Texas"}},
 						{1, []interface{}{"SF", "Marquette"}},
-						{2, []interface{}{"SG", ""}},
+						{2, []interface{}{"SG", math.NaN()}},
 						{3, []interface{}{"SG", "Georgia State"}},
 					},
 					[]string{"Position", "College"},
@@ -643,8 +643,8 @@ func TestIoReadCsv(t *testing.T) {
 
 	for _, test := range readCsvTests {
 		output, err := ReadCsv(test.arg1, test.arg2)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.IgnoreTypes(0.0)) || err != nil {
-			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v,\ngot %v,\nerror %v", test.expected, output, err)
 		}
 	}
 }
