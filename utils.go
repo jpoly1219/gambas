@@ -157,6 +157,9 @@ func tryInt(data string) (int, error) {
 
 // tryFloat64 checks if a string can be converted into float64.
 func tryFloat64(data string) (float64, error) {
+	if data == "" || data == "NaN" {
+		return math.NaN(), nil
+	}
 	f, err := strconv.ParseFloat(data, 64)
 	if err != nil {
 		return 0, err
