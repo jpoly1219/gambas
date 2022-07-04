@@ -816,7 +816,7 @@ func TestIoReadJsonByColumns(t *testing.T) {
 					},
 					{
 						[]interface{}{
-							"Male", "NaN", "Female",
+							"Male", math.NaN(), "Female",
 						},
 						IndexData{
 							[]Index{
@@ -962,7 +962,7 @@ func TestIoReadJsonStream(t *testing.T) {
 					},
 					{
 						[]interface{}{
-							"Male", "NaN", "Female",
+							"Male", math.NaN(), "Female",
 						},
 						IndexData{
 							[]Index{

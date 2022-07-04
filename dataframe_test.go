@@ -2684,7 +2684,7 @@ func TestDataFrameNewCol(t *testing.T) {
 						"string",
 					},
 					{
-						[]interface{}{"", "", ""},
+						[]interface{}{math.NaN(), math.NaN(), math.NaN()},
 						IndexData{
 							[]Index{{0, []interface{}{"Avery"}}, {1, []interface{}{"Bradley"}}, {2, []interface{}{"Candice"}}},
 							[]string{"Name"},
@@ -2703,7 +2703,7 @@ func TestDataFrameNewCol(t *testing.T) {
 	}
 	for _, test := range newColTests {
 		output, err := test.arg1.NewCol(test.arg2, test.arg3)
-		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || err != nil {
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
 	}
@@ -3525,7 +3525,7 @@ func TestDataFramePivot(t *testing.T) {
 			DataFrame{
 				[]Series{
 					{
-						[]interface{}{"Red", ""},
+						[]interface{}{"Red", math.NaN()},
 						IndexData{
 							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
 							[]string{"Time"},
@@ -3543,7 +3543,7 @@ func TestDataFramePivot(t *testing.T) {
 						"string",
 					},
 					{
-						[]interface{}{"", "Red"},
+						[]interface{}{math.NaN(), "Red"},
 						IndexData{
 							[]Index{{0, []interface{}{"12:00"}}, {1, []interface{}{"12:01"}}},
 							[]string{"Time"},
