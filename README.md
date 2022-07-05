@@ -44,9 +44,9 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/githu
     - [x] Pivot (long to wide format)
     - [x] PivotTable (long to wide format)
     - [x] Melt (wide to long format)
-  - [ ] Combining data from multiple tables
-    - [ ] Concatenate
-    - [ ] Merge
+  - [x] Combining data from multiple tables
+    - [x] Concatenate
+    - [x] Merge
   - [ ] Handling time series data
     - [ ] Timestamp type
     - [ ] Timestamp type methods
