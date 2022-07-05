@@ -8,6 +8,8 @@ import (
 	"io"
 	"log"
 	"os"
+
+	"github.com/xuri/excelize/v2"
 )
 
 // ReadCsv reads a CSV file and returns a new DataFrame object.
@@ -247,4 +249,67 @@ func WriteJson(df DataFrame, pathToFile string) (os.FileInfo, error) {
 		return nil, err
 	}
 	return info, nil
+}
+
+// ReadExcel reads an excel file and converts it to a DataFrame object.
+// The axis depends on the layout of the data.
+// Row-based data where each group represents a row will have an axis=0.
+// Column-based data where each group represents a column will have an axis=1.
+func ReadExcel(pathToFile, sheetName string, axis int) (DataFrame, error) {
+	f, err := excelize.OpenFile(pathToFile)
+	if err != nil {
+		return DataFrame{}, err
+	}
+	defer func() {
+		if err := f.Close(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+
+	newDfData := make([][]interface{}, 0)
+	newDfCols := make([]string, 0)
+
+	if axis == 0 {
+		rows, err := f.GetRows(sheetName)
+		if err != nil {
+			return DataFrame{}, err
+		}
+		for _, row := range rows {
+			d := make([]interface{}, 0)
+			for i, cellValue := range row {
+				if i == 0 {
+					newDfCols = append(newDfCols, cellValue)
+				} else {
+					vChecked := tryDataType(cellValue)
+					d = append(d, vChecked)
+				}
+			}
+			newDfData = append(newDfData, d)
+		}
+	}
+
+	if axis == 1 {
+		cols, err := f.GetCols(sheetName)
+		if err != nil {
+			return DataFrame{}, err
+		}
+		for _, col := range cols {
+			d := make([]interface{}, 0)
+			for i, cellValue := range col {
+				if i == 0 {
+					newDfCols = append(newDfCols, cellValue)
+				} else {
+					vChecked := tryDataType(cellValue)
+					d = append(d, vChecked)
+				}
+			}
+			newDfData = append(newDfData, d)
+		}
+	}
+
+	newDf, err := NewDataFrame(newDfData, newDfCols, nil)
+	if err != nil {
+		return DataFrame{}, err
+	}
+	return newDf, nil
 }
