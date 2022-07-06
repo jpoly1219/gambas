@@ -1308,5 +1308,173 @@ func TestReadExcel(t *testing.T) {
 }
 
 func TestWriteExcel(t *testing.T) {
+	type writeExcelTest struct {
+		arg1     DataFrame
+		arg2     string
+		expected error
+	}
+	writeExcelTests := []writeExcelTest{
+		{
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery Bradley", "Jae Crowder", "John Holland", "R.J. Hunter"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{"Boston Celtics", "Boston Celtics", "Boston Celtics", "Boston Celtics"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Team",
+						"string",
+					},
+					{
+						[]interface{}{0.0, 99.0, 30.0, 28.0},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Number",
+						"float64",
+					},
+					{
+						[]interface{}{"PG", "SF", "SG", "SG"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Position",
+						"string",
+					},
+					{
+						[]interface{}{25.0, 25.0, 27.0, 22.0},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Age",
+						"float64",
+					},
+					{
+						[]interface{}{"6-2", "6-6", "6-5", "6-5"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Height",
+						"string",
+					},
+					{
+						[]interface{}{180.0, 235.0, 205.0, 185.0},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Weight",
+						"float64",
+					},
+					{
+						[]interface{}{"Texas", "Marquette", math.NaN(), "Georgia State"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"College",
+						"string",
+					},
+					{
+						[]interface{}{7730337.0, 6796117.0, math.NaN(), 1148640.0},
+						IndexData{
+							[]Index{
+								{0, []interface{}{"PG", "Texas"}},
+								{1, []interface{}{"SF", "Marquette"}},
+								{2, []interface{}{"SG", math.NaN()}},
+								{3, []interface{}{"SG", "Georgia State"}},
+							},
+							[]string{"Position", "College"},
+						},
+						"Salary",
+						"float64",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"PG", "Texas"}},
+						{1, []interface{}{"SF", "Marquette"}},
+						{2, []interface{}{"SG", math.NaN()}},
+						{3, []interface{}{"SG", "Georgia State"}},
+					},
+					[]string{"Position", "College"},
+				},
+				[]string{"Name", "Team", "Number", "Position", "Age", "Height", "Weight", "College", "Salary"},
+			},
+			filepath.Join("testfiles", "writeexcel", "test1.xlsx"),
+			nil,
+		},
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			filepath.Join("testfiles", "writeexcel", "test2.xlsx"),
+			nil,
+		},
+	}
 
+	for _, test := range writeExcelTests {
+		output, err := WriteExcel(test.arg1, test.arg2)
+		if output != nil && err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
 }
