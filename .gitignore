@@ -2,3 +2,5 @@
 # /testfiles
 features.md
 todolist.md
+*.out
+*.test
