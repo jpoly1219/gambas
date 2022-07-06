@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"os"
 
 	"github.com/xuri/excelize/v2"
@@ -274,14 +275,25 @@ func ReadExcel(pathToFile, sheetName string, axis int) (DataFrame, error) {
 		if err != nil {
 			return DataFrame{}, err
 		}
+		longestRowLength := 0
 		for _, row := range rows {
+			if longestRowLength < len(row)-1 {
+				longestRowLength = len(row) - 1
+			}
 			d := make([]interface{}, 0)
+
 			for i, cellValue := range row {
 				if i == 0 {
 					newDfCols = append(newDfCols, cellValue)
 				} else {
 					vChecked := tryDataType(cellValue)
 					d = append(d, vChecked)
+				}
+			}
+
+			if len(d) < longestRowLength {
+				for i := 0; i < longestRowLength-len(d); i++ {
+					d = append(d, math.NaN())
 				}
 			}
 			newDfData = append(newDfData, d)
@@ -312,4 +324,35 @@ func ReadExcel(pathToFile, sheetName string, axis int) (DataFrame, error) {
 		return DataFrame{}, err
 	}
 	return newDf, nil
+}
+
+// WriteExcel writes a DataFrame object into an Excel file.
+func WriteExcel(df DataFrame, pathToFile string) (os.FileInfo, error) {
+	f := excelize.NewFile()
+	sheetIndex := f.NewSheet("Sheet1")
+
+	for i, col := range df.columns {
+		coord := fmt.Sprintf("%s1", generateAlphabets(i+1))
+		f.SetCellValue("Sheet1", coord, col)
+	}
+
+	for i, ser := range df.series {
+		xCoord := generateAlphabets(i + 1)
+		for j, data := range ser.data {
+			coord := fmt.Sprintf("%s%d", xCoord, j+2)
+			f.SetCellValue("Sheet1", coord, data)
+		}
+	}
+
+	f.SetActiveSheet(sheetIndex)
+
+	err := f.SaveAs(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	info, err := os.Stat(pathToFile)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
 }
