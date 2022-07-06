@@ -417,3 +417,20 @@ func readCsvColIntoData(filepath string, col string) ([][]interface{}, error) {
 
 	return res, nil
 }
+
+// generateAlphabets will generate alphabets based on i.
+// This is mostly used to dynamically create column labels for excel sheets.
+// For example, if i=1 then it will return A.
+// i=25, Z. i=26, AA. And vice versa...
+func generateAlphabets(i int) string {
+	i--
+	result := ""
+	if first := i / 26; first > 0 {
+		result += generateAlphabets(first)
+		result += string(rune('A' + i%26))
+	} else {
+		result += string(rune('A' + i))
+	}
+
+	return result
+}
