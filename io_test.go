@@ -1045,3 +1045,268 @@ func TestIoWriteJson(t *testing.T) {
 		}
 	}
 }
+
+func TestReadExcel(t *testing.T) {
+	type readExcelTest struct {
+		arg1     string
+		arg2     string
+		arg3     int
+		expected DataFrame
+	}
+	readExcelTests := []readExcelTest{
+		{
+			filepath.Join("testfiles", "readexcel", "test1.xlsx"),
+			"Sheet1",
+			1,
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Bradley", "Candice"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+							},
+							[]string{""},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{19, 26, 23},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+							},
+							[]string{""},
+						},
+						"Age",
+						"int",
+					},
+					{
+						[]interface{}{"Male", "Male", "Female"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+							},
+							[]string{""},
+						},
+						"Sex",
+						"string",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
+					[]string{""},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+		{
+			filepath.Join("testfiles", "readexcel", "test2.xlsx"),
+			"Sheet1",
+			1,
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", math.NaN(), "Candice"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+							},
+							[]string{""},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{19.0, 26.0, math.NaN()},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+							},
+							[]string{""},
+						},
+						"Age",
+						"float64",
+					},
+					{
+						[]interface{}{"Male", "Male", math.NaN()},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+								{2, []interface{}{2}},
+							},
+							[]string{""},
+						},
+						"Sex",
+						"string",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+						{2, []interface{}{2}},
+					},
+					[]string{""},
+				},
+				[]string{"Name", "Age", "Sex"},
+			},
+		},
+		{
+			filepath.Join("testfiles", "readexcel", "test3.xlsx"),
+			"Sheet1",
+			0,
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Beth"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{19, 26},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Age",
+						"int",
+					},
+					{
+						[]interface{}{"Male", "Female"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Sex",
+						"string",
+					},
+					{
+						[]interface{}{177.8, 163.4},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Height",
+						"float64",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+					},
+					[]string{""},
+				},
+				[]string{"Name", "Age", "Sex", "Height"},
+			},
+		},
+		{
+			filepath.Join("testfiles", "readexcel", "test4.xlsx"),
+			"Sheet1",
+			0,
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{"Avery", "Beth"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Name",
+						"string",
+					},
+					{
+						[]interface{}{19, 26},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Age",
+						"int",
+					},
+					{
+						[]interface{}{math.NaN(), "Female"},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Sex",
+						"string",
+					},
+					{
+						[]interface{}{177.8, math.NaN()},
+						IndexData{
+							[]Index{
+								{0, []interface{}{0}},
+								{1, []interface{}{1}},
+							},
+							[]string{""},
+						},
+						"Height",
+						"float64",
+					},
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{0}},
+						{1, []interface{}{1}},
+					},
+					[]string{""},
+				},
+				[]string{"Name", "Age", "Sex", "Height"},
+			},
+		},
+	}
+	for _, test := range readExcelTests {
+		output, err := ReadExcel(test.arg1, test.arg2, test.arg3)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{}), cmpopts.EquateNaNs()) || err != nil {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
+func TestWriteExcel(t *testing.T) {
+
+}
