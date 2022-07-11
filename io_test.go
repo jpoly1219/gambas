@@ -657,7 +657,7 @@ func BenchmarkIoWriteCsv(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		WriteCsv(testDf, "testfiles/nbaBench.csv")
+		WriteCsv(testDf, "testfiles/nbaBench.csv", false)
 	}
 }
 
@@ -665,6 +665,7 @@ func TestIoWriteCsv(t *testing.T) {
 	type writeCsvTest struct {
 		arg1     DataFrame
 		arg2     string
+		arg3     bool
 		expected error
 	}
 	writeCsvTests := []writeCsvTest{
@@ -681,6 +682,7 @@ func TestIoWriteCsv(t *testing.T) {
 				[]string{"Name"},
 			),
 			filepath.Join("testfiles", "writeCsvTest1.csv"),
+			false,
 			nil,
 		},
 		{
@@ -692,12 +694,13 @@ func TestIoWriteCsv(t *testing.T) {
 				return df
 			}(),
 			filepath.Join("testfiles", "writeCsvTest2.csv"),
+			true,
 			nil,
 		},
 	}
 
 	for _, test := range writeCsvTests {
-		output, err := WriteCsv(test.arg1, test.arg2)
+		output, err := WriteCsv(test.arg1, test.arg2, test.arg3)
 		if output != nil && err != nil {
 			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
 		}
@@ -1004,7 +1007,7 @@ func BenchmarkIoWriteJson(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		WriteCsv(testDf, "testfiles/nbaBench.json")
+		WriteJson(testDf, "testfiles/nbaBench.json")
 	}
 }
 
