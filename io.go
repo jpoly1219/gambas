@@ -65,7 +65,7 @@ func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
 
 // WriteCsv writes a DataFrame object to CSV file.
 // It is recommended to generate pathToFile using `filepath.Join`.
-func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
+func WriteCsv(df DataFrame, pathToFile string, skipColumnLabel bool) (os.FileInfo, error) {
 	f, err := os.Create(pathToFile)
 	if err != nil {
 		return nil, err
@@ -74,20 +74,22 @@ func WriteCsv(df DataFrame, pathToFile string) (os.FileInfo, error) {
 
 	w := bufio.NewWriter(f)
 	// write column names in the first row
-	for i, col := range df.columns {
-		_, err := w.WriteString(col)
-		if err != nil {
-			return nil, err
-		}
-
-		if i+1 != len(df.columns) {
-			_, err := w.WriteString(",")
+	if !skipColumnLabel {
+		for i, col := range df.columns {
+			_, err := w.WriteString(col)
 			if err != nil {
 				return nil, err
 			}
+
+			if i+1 != len(df.columns) {
+				_, err := w.WriteString(",")
+				if err != nil {
+					return nil, err
+				}
+			}
 		}
+		w.WriteString("\n")
 	}
-	w.WriteString("\n")
 
 	// write the data in the following rows
 	for i := range df.series[0].data {
