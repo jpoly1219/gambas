@@ -18,7 +18,7 @@ func TestPlot(t *testing.T) {
 		},
 	}
 	for _, test := range plotTests {
-		err := test.arg1.Plot("date.utc", "value")
+		err := test.arg1.Plot("date.utc", "value", SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S"))
 		if err != nil {
 			t.Fatalf("error %v", err)
 		}
