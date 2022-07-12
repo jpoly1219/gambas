@@ -10,7 +10,7 @@ import (
 
 // Plotting functionality uses gnuplot as its backend.
 
-func (df *DataFrame) Plot(xcol, ycol string) error {
+func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 	newDf, err := df.LocCols(xcol, ycol)
 	if err != nil {
 		return err
@@ -22,7 +22,14 @@ func (df *DataFrame) Plot(xcol, ycol string) error {
 		return err
 	}
 
-	cmdString := fmt.Sprintf(`%s "%s" %s`, `set xdata time; set timefmt "%Y-%m-%d %H:%M:%S+%M:%S"; plot`, path, "using 1:2")
+	var optBuf bytes.Buffer
+	for _, opt := range opts {
+		str := opt.createCmdString()
+		optBuf.WriteString(str)
+		optBuf.WriteString("; ")
+	}
+
+	cmdString := fmt.Sprintf(`%s %s "%s" %s`, optBuf.String(), "plot", path, "using 1:2")
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
