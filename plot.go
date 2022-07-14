@@ -25,6 +25,9 @@ func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 	var optBuf bytes.Buffer
 	for _, opt := range opts {
 		str := opt.createCmdString()
+		if opt.getOption() == "using" {
+			// save to the end
+		}
 		optBuf.WriteString(str)
 		optBuf.WriteString("; ")
 	}
