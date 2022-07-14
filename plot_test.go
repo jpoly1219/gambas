@@ -9,7 +9,7 @@ func TestPlot(t *testing.T) {
 	plotTests := []plotTest{
 		{
 			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/airquality.csv", []string{"Time"})
+				newDf, err := ReadCsv("./testfiles/neo_v2.csv", []string{"id"})
 				if err != nil {
 					t.Error(err)
 				}
@@ -18,7 +18,8 @@ func TestPlot(t *testing.T) {
 		},
 	}
 	for _, test := range plotTests {
-		err := test.arg1.Plot("date.utc", "value", SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S"))
+		// SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S")
+		err := test.arg1.Plot("est_diameter_min", "relative_velocity")
 		if err != nil {
 			t.Fatalf("error %v", err)
 		}
