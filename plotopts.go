@@ -8,9 +8,9 @@ type GnuplotOpt interface {
 	createCmdString() string
 }
 
-// Refer to the page below for more detailed usage of gnuplot options.
+// Refer to the page below for more detailed usage of gnuplot `set` options.
 // http://gnuplot.info/docs_5.5/loc9418.html
-// Options not included: bind, clabel, colornames, macros
+// Options not included: bind, clabel, colornames, macros, ticslevel, ticscale, version
 
 type angles struct {
 	option string
@@ -1062,6 +1062,48 @@ func Setrtics(value string) GnuplotOpt {
 	return r
 }
 
+type samples struct {
+	option string
+	value  string
+}
+
+func (s samples) createCmdString() string {
+	return fmt.Sprintf(`set samples "%s"`, s.value)
+}
+
+func Setsamples(value string) GnuplotOpt {
+	s := samples{"samples", value}
+	return s
+}
+
+type size struct {
+	option string
+	value  string
+}
+
+func (s size) createCmdString() string {
+	return fmt.Sprintf(`set size "%s"`, s.value)
+}
+
+func Setsize(value string) GnuplotOpt {
+	s := size{"size", value}
+	return s
+}
+
+type spiderplot struct {
+	option string
+	value  string
+}
+
+func (s spiderplot) createCmdString() string {
+	return "set spiderplot"
+}
+
+func Setspiderplot() GnuplotOpt {
+	s := spiderplot{"spiderplot", ""}
+	return s
+}
+
 type style struct {
 	option string
 	value  string
@@ -1074,6 +1116,104 @@ func (s style) createCmdString() string {
 func Setstyle(value string) GnuplotOpt {
 	s := style{"style", value}
 	return s
+}
+
+type surface struct {
+	option string
+	value  string
+}
+
+func (s surface) createCmdString() string {
+	return fmt.Sprintf(`set surface "%s"`, s.value)
+}
+
+func Setsurface(value string) GnuplotOpt {
+	s := surface{"surface", value}
+	return s
+}
+
+type table struct {
+	option string
+	value  string
+}
+
+func (t table) createCmdString() string {
+	return fmt.Sprintf(`set table "%s"`, t.value)
+}
+
+func Settable(value string) GnuplotOpt {
+	t := table{"table", value}
+	return t
+}
+
+type terminal struct {
+	option string
+	value  string
+}
+
+func (t terminal) createCmdString() string {
+	return fmt.Sprintf(`set terminal "%s"`, t.value)
+}
+
+func Setterminal(value string) GnuplotOpt {
+	t := terminal{"terminal", value}
+	return t
+}
+
+type termoption struct {
+	option string
+	value  string
+}
+
+func (t termoption) createCmdString() string {
+	return fmt.Sprintf(`set termoption "%s"`, t.value)
+}
+
+func Settermoption(value string) GnuplotOpt {
+	t := termoption{"termoption", value}
+	return t
+}
+
+type theta struct {
+	option string
+	value  string
+}
+
+func (t theta) createCmdString() string {
+	return fmt.Sprintf(`set theta "%s"`, t.value)
+}
+
+func Settheta(value string) GnuplotOpt {
+	t := theta{"theta", value}
+	return t
+}
+
+type tics struct {
+	option string
+	value  string
+}
+
+func (t tics) createCmdString() string {
+	return fmt.Sprintf(`set tics "%s"`, t.value)
+}
+
+func Settics(value string) GnuplotOpt {
+	t := tics{"tics", value}
+	return t
+}
+
+type timestamp struct {
+	option string
+	value  string
+}
+
+func (t timestamp) createCmdString() string {
+	return fmt.Sprintf(`set timestamp "%s"`, t.value)
+}
+
+func Settimestamp(value string) GnuplotOpt {
+	t := timestamp{"timestamp", value}
+	return t
 }
 
 type timefmt struct {
@@ -1090,15 +1230,278 @@ func SetTimefmt(value string) GnuplotOpt {
 	return t
 }
 
+type title struct {
+	option string
+	value  string
+}
+
+func (t title) createCmdString() string {
+	return fmt.Sprintf(`set title "%s"`, t.value)
+}
+
+func Settitle(value string) GnuplotOpt {
+	t := title{"title", value}
+	return t
+}
+
+type tmargin struct {
+	option string
+	value  string
+}
+
+func (t tmargin) createCmdString() string {
+	return fmt.Sprintf(`set tmargin "%s"`, t.value)
+}
+
+func Settmargin(value string) GnuplotOpt {
+	t := tmargin{"tmargin", value}
+	return t
+}
+
+type trange struct {
+	option string
+	value  string
+}
+
+func (t trange) createCmdString() string {
+	return fmt.Sprintf(`set trange "%s"`, t.value)
+}
+
+func Settrange(value string) GnuplotOpt {
+	t := trange{"trange", value}
+	return t
+}
+
+type ttics struct {
+	option string
+	value  string
+}
+
+func (t ttics) createCmdString() string {
+	return fmt.Sprintf(`set ttics "%s"`, t.value)
+}
+
+func Setttics(value string) GnuplotOpt {
+	t := ttics{"ttics", value}
+	return t
+}
+
+type urange struct {
+	option string
+	value  string
+}
+
+func (u urange) createCmdString() string {
+	return fmt.Sprintf(`set urange "%s"`, u.value)
+}
+
+func Seturange(value string) GnuplotOpt {
+	u := urange{"urange", value}
+	return u
+}
+
+type vgrid struct {
+	option string
+	value  string
+}
+
+func (v vgrid) createCmdString() string {
+	return fmt.Sprintf(`set vgrid "%s"`, v.value)
+}
+
+func Setvgrid(value string) GnuplotOpt {
+	v := vgrid{"vgrid", value}
+	return v
+}
+
+type view struct {
+	option string
+	value  string
+}
+
+func (v view) createCmdString() string {
+	return fmt.Sprintf(`set view "%s"`, v.value)
+}
+
+func Setview(value string) GnuplotOpt {
+	v := view{"view", value}
+	return v
+}
+
+type vrange struct {
+	option string
+	value  string
+}
+
+func (v vrange) createCmdString() string {
+	return fmt.Sprintf(`set vrange "%s"`, v.value)
+}
+
+func Setvrange(value string) GnuplotOpt {
+	v := vrange{"vrange", value}
+	return v
+}
+
+type vxrange struct {
+	option string
+	value  string
+}
+
+func (v vxrange) createCmdString() string {
+	return fmt.Sprintf(`set vxrange "%s"`, v.value)
+}
+
+func Setvxrange(value string) GnuplotOpt {
+	v := vxrange{"vxrange", value}
+	return v
+}
+
+type vyrange struct {
+	option string
+	value  string
+}
+
+func (v vyrange) createCmdString() string {
+	return fmt.Sprintf(`set vyrange "%s"`, v.value)
+}
+
+func Setvyrange(value string) GnuplotOpt {
+	v := vyrange{"vyrange", value}
+	return v
+}
+
+type vzrange struct {
+	option string
+	value  string
+}
+
+func (v vzrange) createCmdString() string {
+	return fmt.Sprintf(`set vzrange "%s"`, v.value)
+}
+
+func Setvzrange(value string) GnuplotOpt {
+	v := vzrange{"vzrange", value}
+	return v
+}
+
+type walls struct {
+	option string
+	value  string
+}
+
+func (w walls) createCmdString() string {
+	return fmt.Sprintf(`set walls "%s"`, w.value)
+}
+
+func Setwalls(value string) GnuplotOpt {
+	w := walls{"walls", value}
+	return w
+}
+
+type x2ata struct {
+	option string
+	value  string
+}
+
+func (x x2ata) createCmdString() string {
+	return fmt.Sprintf("set x2ata %s", x.value)
+}
+
+func Setx2ata(value string) GnuplotOpt {
+	x := x2ata{"x2ata", value}
+	return x
+}
+
+type x2dtics struct {
+	option string
+	value  string
+}
+
+func (x x2dtics) createCmdString() string {
+	return fmt.Sprintf("set x2dtics %s", x.value)
+}
+
+func Setx2dtics(value string) GnuplotOpt {
+	x := x2dtics{"x2dtics", value}
+	return x
+}
+
+type x2label struct {
+	option string
+	value  string
+}
+
+func (x x2label) createCmdString() string {
+	return fmt.Sprintf("set x2label %s", x.value)
+}
+
+func Setx2label(value string) GnuplotOpt {
+	x := x2label{"x2label", value}
+	return x
+}
+
+type x2mtics struct {
+	option string
+	value  string
+}
+
+func (x x2mtics) createCmdString() string {
+	return fmt.Sprintf("set x2mtics %s", x.value)
+}
+
+func Setx2mtics(value string) GnuplotOpt {
+	x := x2mtics{"x2mtics", value}
+	return x
+}
+
+type x2range struct {
+	option string
+	value  string
+}
+
+func (x x2range) createCmdString() string {
+	return fmt.Sprintf("set x2range %s", x.value)
+}
+
+func Setx2range(value string) GnuplotOpt {
+	x := x2range{"x2range", value}
+	return x
+}
+
+type x2tics struct {
+	option string
+	value  string
+}
+
+func (x x2tics) createCmdString() string {
+	return fmt.Sprintf("set x2tics %s", x.value)
+}
+
+func Setx2tics(value string) GnuplotOpt {
+	x := x2tics{"x2tics", value}
+	return x
+}
+
+type x2zeroaxis struct {
+	option string
+	value  string
+}
+
+func (x x2zeroaxis) createCmdString() string {
+	return fmt.Sprintf("set x2zeroaxis %s", x.value)
+}
+
+func Setx2zeroaxis(value string) GnuplotOpt {
+	x := x2zeroaxis{"x2zeroaxis", value}
+	return x
+}
+
 type xdata struct {
 	option string
 	value  string
 }
 
 func (x xdata) createCmdString() string {
-	if x.value == "" {
-		return "set xdata"
-	}
 	return fmt.Sprintf("set xdata %s", x.value)
 }
 
@@ -1107,19 +1510,492 @@ func SetXdata(value string) GnuplotOpt {
 	return x
 }
 
+type xdtics struct {
+	option string
+	value  string
+}
+
+func (x xdtics) createCmdString() string {
+	return fmt.Sprintf("set xdtics %s", x.value)
+}
+
+func Setxdtics(value string) GnuplotOpt {
+	x := xdtics{"xdtics", value}
+	return x
+}
+
+type xlabel struct {
+	option string
+	value  string
+}
+
+func (x xlabel) createCmdString() string {
+	return fmt.Sprintf("set xlabel %s", x.value)
+}
+
+func Setxlabel(value string) GnuplotOpt {
+	x := xlabel{"xlabel", value}
+	return x
+}
+
+type xmtics struct {
+	option string
+	value  string
+}
+
+func (x xmtics) createCmdString() string {
+	return fmt.Sprintf("set xmtics %s", x.value)
+}
+
+func Setxmtics(value string) GnuplotOpt {
+	x := xmtics{"xmtics", value}
+	return x
+}
+
+type xrange struct {
+	option string
+	value  string
+}
+
+func (x xrange) createCmdString() string {
+	return fmt.Sprintf("set xrange %s", x.value)
+}
+
+func Setxrange(value string) GnuplotOpt {
+	x := xrange{"xrange", value}
+	return x
+}
+
+type xtics struct {
+	option string
+	value  string
+}
+
+func (x xtics) createCmdString() string {
+	return fmt.Sprintf("set xtics %s", x.value)
+}
+
+func Setxtics(value string) GnuplotOpt {
+	x := xtics{"xtics", value}
+	return x
+}
+
+type xyplane struct {
+	option string
+	value  string
+}
+
+func (x xyplane) createCmdString() string {
+	return fmt.Sprintf("set xyplane %s", x.value)
+}
+
+func Setxyplane(value string) GnuplotOpt {
+	x := xyplane{"xyplane", value}
+	return x
+}
+
+type xzeroaxis struct {
+	option string
+	value  string
+}
+
+func (x xzeroaxis) createCmdString() string {
+	return fmt.Sprintf("set xzeroaxis %s", x.value)
+}
+
+func Setxzeroaxis(value string) GnuplotOpt {
+	x := xzeroaxis{"xzeroaxis", value}
+	return x
+}
+
+type y2data struct {
+	option string
+	value  string
+}
+
+func (y y2data) createCmdString() string {
+	return fmt.Sprintf("set y2data%s", " "+y.value)
+}
+
+func Sety2data(value string) GnuplotOpt {
+	y := y2data{"y2data", value}
+	return y
+}
+
+type y2dtics struct {
+	option string
+	value  string
+}
+
+func (y y2dtics) createCmdString() string {
+	return fmt.Sprintf("set y2dtics%s", " "+y.value)
+}
+
+func Sety2dtics(value string) GnuplotOpt {
+	y := y2dtics{"y2dtics", value}
+	return y
+}
+
+type y2label struct {
+	option string
+	value  string
+}
+
+func (y y2label) createCmdString() string {
+	return fmt.Sprintf("set y2label%s", " "+y.value)
+}
+
+func Sety2label(value string) GnuplotOpt {
+	y := y2label{"y2label", value}
+	return y
+}
+
+type y2mtics struct {
+	option string
+	value  string
+}
+
+func (y y2mtics) createCmdString() string {
+	return fmt.Sprintf("set y2mtics%s", " "+y.value)
+}
+
+func Sety2mtics(value string) GnuplotOpt {
+	y := y2mtics{"y2mtics", value}
+	return y
+}
+
+type y2range struct {
+	option string
+	value  string
+}
+
+func (y y2range) createCmdString() string {
+	return fmt.Sprintf("set y2range%s", " "+y.value)
+}
+
+func Sety2range(value string) GnuplotOpt {
+	y := y2range{"y2range", value}
+	return y
+}
+
+type y2tics struct {
+	option string
+	value  string
+}
+
+func (y y2tics) createCmdString() string {
+	return fmt.Sprintf("set y2tics%s", " "+y.value)
+}
+
+func Sety2tics(value string) GnuplotOpt {
+	y := y2tics{"y2tics", value}
+	return y
+}
+
+type y2zeroaxis struct {
+	option string
+	value  string
+}
+
+func (y y2zeroaxis) createCmdString() string {
+	return fmt.Sprintf("set y2zeroaxis%s", " "+y.value)
+}
+
+func Sety2zeroaxis(value string) GnuplotOpt {
+	y := y2zeroaxis{"y2zeroaxis", value}
+	return y
+}
+
 type ydata struct {
 	option string
 	value  string
 }
 
 func (y ydata) createCmdString() string {
-	if y.value == "" {
-		return "set ydata"
-	}
-	return fmt.Sprintf("set ydata%s", " "+y.value)
+	return fmt.Sprintf("set ydata %s", y.value)
 }
 
 func SetYdata(value string) GnuplotOpt {
 	y := ydata{"ydata", value}
 	return y
+}
+
+type ydtics struct {
+	option string
+	value  string
+}
+
+func (y ydtics) createCmdString() string {
+	return fmt.Sprintf("set ydtics %s", y.value)
+}
+
+func Setydtics(value string) GnuplotOpt {
+	y := ydtics{"ydtics", value}
+	return y
+}
+
+type ylabel struct {
+	option string
+	value  string
+}
+
+func (y ylabel) createCmdString() string {
+	return fmt.Sprintf("set ylabel %s", y.value)
+}
+
+func Setylabel(value string) GnuplotOpt {
+	y := ylabel{"ylabel", value}
+	return y
+}
+
+type ymtics struct {
+	option string
+	value  string
+}
+
+func (y ymtics) createCmdString() string {
+	return fmt.Sprintf("set ymtics %s", y.value)
+}
+
+func Setymtics(value string) GnuplotOpt {
+	y := ymtics{"ymtics", value}
+	return y
+}
+
+type yrange struct {
+	option string
+	value  string
+}
+
+func (y yrange) createCmdString() string {
+	return fmt.Sprintf("set yrange %s", y.value)
+}
+
+func Setyrange(value string) GnuplotOpt {
+	y := yrange{"yrange", value}
+	return y
+}
+
+type ytics struct {
+	option string
+	value  string
+}
+
+func (y ytics) createCmdString() string {
+	return fmt.Sprintf("set ytics %s", y.value)
+}
+
+func Setytics(value string) GnuplotOpt {
+	y := ytics{"ytics", value}
+	return y
+}
+
+type yzeroaxis struct {
+	option string
+	value  string
+}
+
+func (y yzeroaxis) createCmdString() string {
+	return fmt.Sprintf("set yzeroaxis %s", y.value)
+}
+
+func Setyzeroaxis(value string) GnuplotOpt {
+	y := yzeroaxis{"yzeroaxis", value}
+	return y
+}
+
+type zdata struct {
+	option string
+	value  string
+}
+
+func (z zdata) createCmdString() string {
+	return fmt.Sprintf("set zdata %s", z.value)
+}
+
+func Setzdata(value string) GnuplotOpt {
+	z := zdata{"zdata", value}
+	return z
+}
+
+type zdtics struct {
+	option string
+	value  string
+}
+
+func (z zdtics) createCmdString() string {
+	return fmt.Sprintf("set zdtics %s", z.value)
+}
+
+func Setzdtics(value string) GnuplotOpt {
+	z := zdtics{"zdtics", value}
+	return z
+}
+
+type zzeroaxis struct {
+	option string
+	value  string
+}
+
+func (z zzeroaxis) createCmdString() string {
+	return fmt.Sprintf("set zzeroaxis %s", z.value)
+}
+
+func Setzzeroaxis(value string) GnuplotOpt {
+	z := zzeroaxis{"zzeroaxis", value}
+	return z
+}
+
+type cbdata struct {
+	option string
+	value  string
+}
+
+func (c cbdata) createCmdString() string {
+	return fmt.Sprintf("set cbdata %s", c.value)
+}
+
+func Setcbdata(value string) GnuplotOpt {
+	c := cbdata{"cbdata", value}
+	return c
+}
+
+type cbdtics struct {
+	option string
+	value  string
+}
+
+func (c cbdtics) createCmdString() string {
+	return fmt.Sprintf("set cbdtics %s", c.value)
+}
+
+func Setcbdtics(value string) GnuplotOpt {
+	c := cbdtics{"cbdtics", value}
+	return c
+}
+
+type zero struct {
+	option string
+	value  string
+}
+
+func (z zero) createCmdString() string {
+	return fmt.Sprintf("set zero %s", z.value)
+}
+
+func Setzero(value string) GnuplotOpt {
+	z := zero{"zero", value}
+	return z
+}
+
+type zlabel struct {
+	option string
+	value  string
+}
+
+func (z zlabel) createCmdString() string {
+	return fmt.Sprintf("set zlabel %s", z.value)
+}
+
+func Setzlabel(value string) GnuplotOpt {
+	z := zlabel{"zlabel", value}
+	return z
+}
+
+type zmtics struct {
+	option string
+	value  string
+}
+
+func (z zmtics) createCmdString() string {
+	return fmt.Sprintf("set zmtics %s", z.value)
+}
+
+func Setzmtics(value string) GnuplotOpt {
+	z := zmtics{"zmtics", value}
+	return z
+}
+
+type zrange struct {
+	option string
+	value  string
+}
+
+func (z zrange) createCmdString() string {
+	return fmt.Sprintf("set zrange %s", z.value)
+}
+
+func Setzrange(value string) GnuplotOpt {
+	z := zrange{"zrange", value}
+	return z
+}
+
+type ztics struct {
+	option string
+	value  string
+}
+
+func (z ztics) createCmdString() string {
+	return fmt.Sprintf("set ztics %s", z.value)
+}
+
+func Setztics(value string) GnuplotOpt {
+	z := ztics{"ztics", value}
+	return z
+}
+
+type cblabel struct {
+	option string
+	value  string
+}
+
+func (c cblabel) createCmdString() string {
+	return fmt.Sprintf("set cblabel %s", c.value)
+}
+
+func Setcblabel(value string) GnuplotOpt {
+	c := cblabel{"cblabel", value}
+	return c
+}
+
+type cbmtics struct {
+	option string
+	value  string
+}
+
+func (c cbmtics) createCmdString() string {
+	return fmt.Sprintf("set cbmtics %s", c.value)
+}
+
+func Setcbmtics(value string) GnuplotOpt {
+	c := cbmtics{"cbmtics", value}
+	return c
+}
+
+type cbrange struct {
+	option string
+	value  string
+}
+
+func (c cbrange) createCmdString() string {
+	return fmt.Sprintf("set cbrange %s", c.value)
+}
+
+func Setcbrange(value string) GnuplotOpt {
+	c := cbrange{"cbrange", value}
+	return c
+}
+
+type cbtics struct {
+	option string
+	value  string
+}
+
+func (c cbtics) createCmdString() string {
+	return fmt.Sprintf("set cbtics %s", c.value)
+}
+
+func Setcbtics(value string) GnuplotOpt {
+	c := cbtics{"cbtics", value}
+	return c
 }
