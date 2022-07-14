@@ -29,7 +29,7 @@ func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 		optBuf.WriteString("; ")
 	}
 
-	cmdString := fmt.Sprintf(`%s %s "%s" %s`, optBuf.String(), "plot", path, "using 1:2")
+	cmdString := fmt.Sprintf(`%s %s "%s"`, optBuf.String(), "plot", path)
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
