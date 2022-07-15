@@ -36,12 +36,12 @@ type arrow struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (a arrow) createCmdString() string {
 	return fmt.Sprintf("set arrow %s", a.value)
+}
+
+func (a arrow) getOption() string {
+	return a.option
 }
 
 func Setarrow(value string) GnuplotOpt {
@@ -54,12 +54,12 @@ type autoscale struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (a autoscale) createCmdString() string {
 	return fmt.Sprintf("set autoscale %s", a.value)
+}
+
+func (a autoscale) getOption() string {
+	return a.option
 }
 
 func Setautoscale(value string) GnuplotOpt {
@@ -72,12 +72,12 @@ type bmargin struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (b bmargin) createCmdString() string {
 	return fmt.Sprintf("set bmargin %s", b.value)
+}
+
+func (b bmargin) getOption() string {
+	return b.option
 }
 
 func Setbmargin(value string) GnuplotOpt {
@@ -90,12 +90,12 @@ type border struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (b border) createCmdString() string {
 	return fmt.Sprintf("set border %s", b.value)
+}
+
+func (b border) getOption() string {
+	return b.option
 }
 
 func Setborder(value string) GnuplotOpt {
@@ -108,12 +108,12 @@ type boxwidth struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (b boxwidth) createCmdString() string {
 	return fmt.Sprintf("set boxwidth %s", b.value)
+}
+
+func (b boxwidth) getOption() string {
+	return b.option
 }
 
 func Setboxwidth(value string) GnuplotOpt {
@@ -126,12 +126,12 @@ type boxdepth struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (b boxdepth) createCmdString() string {
 	return fmt.Sprintf("set boxdepth %s", b.value)
+}
+
+func (b boxdepth) getOption() string {
+	return b.option
 }
 
 func Setboxdepth(value string) GnuplotOpt {
@@ -144,12 +144,12 @@ type color struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c color) createCmdString() string {
 	return fmt.Sprintf("set color %s", c.value)
+}
+
+func (c color) getOption() string {
+	return c.option
 }
 
 func Setcolor() GnuplotOpt {
@@ -162,12 +162,12 @@ type colormap struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c colormap) createCmdString() string {
 	return fmt.Sprintf("set colormap %s", c.value)
+}
+
+func (c colormap) getOption() string {
+	return c.option
 }
 
 func Setcolormap(value string) GnuplotOpt {
@@ -180,12 +180,12 @@ type colorsequence struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c colorsequence) createCmdString() string {
 	return fmt.Sprintf("set colorsequence %s", c.value)
+}
+
+func (c colorsequence) getOption() string {
+	return c.option
 }
 
 func Setcolorsequence(value string) GnuplotOpt {
@@ -198,12 +198,12 @@ type clip struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c clip) createCmdString() string {
 	return fmt.Sprintf("set clip %s", c.value)
+}
+
+func (c clip) getOption() string {
+	return c.option
 }
 
 func Setclip(value string) GnuplotOpt {
@@ -216,12 +216,12 @@ type cntrlabel struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cntrlabel) createCmdString() string {
 	return fmt.Sprintf("set cntrlabel %s", c.value)
+}
+
+func (c cntrlabel) getOption() string {
+	return c.option
 }
 
 func Setcntrlabel(value string) GnuplotOpt {
@@ -234,12 +234,12 @@ type cntrparam struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cntrparam) createCmdString() string {
 	return fmt.Sprintf("set cntrparam %s", c.value)
+}
+
+func (c cntrparam) getOption() string {
+	return c.option
 }
 
 func Setcntrparam(value string) GnuplotOpt {
@@ -252,12 +252,12 @@ type colorbox struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c colorbox) createCmdString() string {
 	return fmt.Sprintf("set colorbox %s", c.value)
+}
+
+func (c colorbox) getOption() string {
+	return c.option
 }
 
 func Setcolorbox(value string) GnuplotOpt {
@@ -270,12 +270,12 @@ type contour struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c contour) createCmdString() string {
 	return fmt.Sprintf("set contour %s", c.value)
+}
+
+func (c contour) getOption() string {
+	return c.option
 }
 
 func Setcontour(value string) GnuplotOpt {
@@ -288,12 +288,12 @@ type cornerpoles struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cornerpoles) createCmdString() string {
 	return "unset cornerpoles"
+}
+
+func (c cornerpoles) getOption() string {
+	return c.option
 }
 
 func Unsetcornerpoles() GnuplotOpt {
@@ -306,12 +306,12 @@ type dashtype struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (d dashtype) createCmdString() string {
 	return fmt.Sprintf("set dashtype %s", d.value)
+}
+
+func (d dashtype) getOption() string {
+	return d.option
 }
 
 func Setdashtype(value string) GnuplotOpt {
@@ -324,12 +324,12 @@ type datafile struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (d datafile) createCmdString() string {
 	return fmt.Sprintf("set datafile %s", d.value)
+}
+
+func (d datafile) getOption() string {
+	return d.option
 }
 
 func Setdatafile(value string) GnuplotOpt {
@@ -342,12 +342,12 @@ type decimalsign struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (d decimalsign) createCmdString() string {
 	return fmt.Sprintf("set decimalsign %s", d.value)
+}
+
+func (d decimalsign) getOption() string {
+	return d.option
 }
 
 func Setdecimalsign(value string) GnuplotOpt {
@@ -360,12 +360,12 @@ type dgrid3d struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (d dgrid3d) createCmdString() string {
 	return fmt.Sprintf("set dgrid3d %s", d.value)
+}
+
+func (d dgrid3d) getOption() string {
+	return d.option
 }
 
 func Setdgrid3d(value string) GnuplotOpt {
@@ -378,12 +378,12 @@ type dummy struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (d dummy) createCmdString() string {
 	return fmt.Sprintf("set dummy %s", d.value)
+}
+
+func (d dummy) getOption() string {
+	return d.option
 }
 
 func Setdummy(value string) GnuplotOpt {
@@ -396,12 +396,12 @@ type encoding struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (e encoding) createCmdString() string {
 	return fmt.Sprintf("set encoding %s", e.value)
+}
+
+func (e encoding) getOption() string {
+	return e.option
 }
 
 func Setencoding(value string) GnuplotOpt {
@@ -414,12 +414,12 @@ type errorbars struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (e errorbars) createCmdString() string {
 	return fmt.Sprintf("set errorbars %s", e.value)
+}
+
+func (e errorbars) getOption() string {
+	return e.option
 }
 
 func Seterrorbars(value string) GnuplotOpt {
@@ -432,12 +432,12 @@ type fit struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (f fit) createCmdString() string {
 	return fmt.Sprintf("set fit %s", f.value)
+}
+
+func (f fit) getOption() string {
+	return f.option
 }
 
 func Setfit(value string) GnuplotOpt {
@@ -450,8 +450,8 @@ type fontpath struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
+func (f fontpath) getOption() string {
+	return f.option
 }
 
 func (f fontpath) createCmdString() string {
@@ -468,8 +468,8 @@ type format struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
+func (f format) getOption() string {
+	return f.option
 }
 
 func (f format) createCmdString() string {
@@ -486,12 +486,12 @@ type grid struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (g grid) createCmdString() string {
 	return fmt.Sprintf(`set grid %s`, g.value)
+}
+
+func (g grid) getOption() string {
+	return g.option
 }
 
 func Setgrid(value string) GnuplotOpt {
@@ -504,12 +504,12 @@ type hidden3d struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (h hidden3d) createCmdString() string {
 	return fmt.Sprintf(`set hidden3d %s`, h.value)
+}
+
+func (h hidden3d) getOption() string {
+	return h.option
 }
 
 func Sethidden3d(value string) GnuplotOpt {
@@ -522,12 +522,12 @@ type historysize struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (h historysize) createCmdString() string {
 	return fmt.Sprintf(`set historysize %s`, h.value)
+}
+
+func (h historysize) getOption() string {
+	return h.option
 }
 
 func Sethistorysize(value string) GnuplotOpt {
@@ -540,12 +540,12 @@ type history struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (h history) createCmdString() string {
 	return fmt.Sprintf(`set history %s`, h.value)
+}
+
+func (h history) getOption() string {
+	return h.option
 }
 
 func Sethistory(value string) GnuplotOpt {
@@ -558,12 +558,12 @@ type isosamples struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (i isosamples) createCmdString() string {
 	return fmt.Sprintf(`set isosamples %s`, i.value)
+}
+
+func (i isosamples) getOption() string {
+	return i.option
 }
 
 func Setisosamples(value string) GnuplotOpt {
@@ -576,12 +576,12 @@ type isosurface struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (i isosurface) createCmdString() string {
 	return fmt.Sprintf(`set isosurface %s`, i.value)
+}
+
+func (i isosurface) getOption() string {
+	return i.option
 }
 
 func Setisosurface(value string) GnuplotOpt {
@@ -594,12 +594,12 @@ type isotropic struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (i isotropic) createCmdString() string {
 	return "set isotropic"
+}
+
+func (i isotropic) getOption() string {
+	return i.option
 }
 
 func Setisotropic() GnuplotOpt {
@@ -612,12 +612,12 @@ type jitter struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (j jitter) createCmdString() string {
 	return fmt.Sprintf(`set jitter %s`, j.value)
+}
+
+func (j jitter) getOption() string {
+	return j.option
 }
 
 func Setjitter(value string) GnuplotOpt {
@@ -630,12 +630,12 @@ type key struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (k key) createCmdString() string {
 	return fmt.Sprintf(`set key %s`, k.value)
+}
+
+func (k key) getOption() string {
+	return k.option
 }
 
 func Setkey(value string) GnuplotOpt {
@@ -648,12 +648,12 @@ type label struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l label) createCmdString() string {
 	return fmt.Sprintf(`set label %s`, l.value)
+}
+
+func (l label) getOption() string {
+	return l.option
 }
 
 func Setlabel(value string) GnuplotOpt {
@@ -666,12 +666,12 @@ type linetype struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l linetype) createCmdString() string {
 	return fmt.Sprintf("set linetype %s", l.value)
+}
+
+func (l linetype) getOption() string {
+	return l.option
 }
 
 func SetLinetype(value string) GnuplotOpt {
@@ -684,12 +684,12 @@ type link struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l link) createCmdString() string {
 	return fmt.Sprintf("set link %s", l.value)
+}
+
+func (l link) getOption() string {
+	return l.option
 }
 
 func Setlink(value string) GnuplotOpt {
@@ -702,12 +702,12 @@ type lmargin struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l lmargin) createCmdString() string {
 	return fmt.Sprintf("set lmargin %s", l.value)
+}
+
+func (l lmargin) getOption() string {
+	return l.option
 }
 
 func Setlmargin(value string) GnuplotOpt {
@@ -720,12 +720,12 @@ type loadpath struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l loadpath) createCmdString() string {
 	return fmt.Sprintf("set loadpath %s", l.value)
+}
+
+func (l loadpath) getOption() string {
+	return l.option
 }
 
 func Setloadpath(value string) GnuplotOpt {
@@ -738,12 +738,12 @@ type locale struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l locale) createCmdString() string {
 	return fmt.Sprintf("set locale %s", l.value)
+}
+
+func (l locale) getOption() string {
+	return l.option
 }
 
 func Setlocale(value string) GnuplotOpt {
@@ -756,12 +756,12 @@ type logscale struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (l logscale) createCmdString() string {
 	return fmt.Sprintf("set logscale %s", l.value)
+}
+
+func (l logscale) getOption() string {
+	return l.option
 }
 
 func Setlogscale(value string) GnuplotOpt {
@@ -774,12 +774,12 @@ type mapping struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m mapping) createCmdString() string {
 	return fmt.Sprintf("set mapping %s", m.value)
+}
+
+func (m mapping) getOption() string {
+	return m.option
 }
 
 func Setmapping(value string) GnuplotOpt {
@@ -792,12 +792,12 @@ type micro struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m micro) createCmdString() string {
 	return fmt.Sprintf("set micro %s", m.value)
+}
+
+func (m micro) getOption() string {
+	return m.option
 }
 
 func Setmicro(value string) GnuplotOpt {
@@ -810,12 +810,12 @@ type minussign struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m minussign) createCmdString() string {
 	return fmt.Sprintf("set minussign %s", m.value)
+}
+
+func (m minussign) getOption() string {
+	return m.option
 }
 
 func Setminussign(value string) GnuplotOpt {
@@ -828,12 +828,12 @@ type monochrome struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m monochrome) createCmdString() string {
 	return fmt.Sprintf("set monochrome %s", m.value)
+}
+
+func (m monochrome) getOption() string {
+	return m.option
 }
 
 func Setmonochrome(value string) GnuplotOpt {
@@ -846,12 +846,12 @@ type mouse struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m mouse) createCmdString() string {
 	return fmt.Sprintf("set mouse %s", m.value)
+}
+
+func (m mouse) getOption() string {
+	return m.option
 }
 
 func Setmouse(value string) GnuplotOpt {
@@ -864,12 +864,12 @@ type mttics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m mttics) createCmdString() string {
 	return fmt.Sprintf("set mttics %s", m.value)
+}
+
+func (m mttics) getOption() string {
+	return m.option
 }
 
 func Setmttics(value string) GnuplotOpt {
@@ -882,12 +882,12 @@ type multiplot struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m multiplot) createCmdString() string {
 	return fmt.Sprintf("set multiplot %s", m.value)
+}
+
+func (m multiplot) getOption() string {
+	return m.option
 }
 
 func Setmultiplot(value string) GnuplotOpt {
@@ -900,12 +900,12 @@ type mx2tics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m mx2tics) createCmdString() string {
 	return fmt.Sprintf("set mx2tics %s", m.value)
+}
+
+func (m mx2tics) getOption() string {
+	return m.option
 }
 
 func Setmx2tics(value string) GnuplotOpt {
@@ -918,12 +918,12 @@ type my2tics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m my2tics) createCmdString() string {
 	return fmt.Sprintf("set my2tics %s", m.value)
+}
+
+func (m my2tics) getOption() string {
+	return m.option
 }
 
 func Setmy2tics(value string) GnuplotOpt {
@@ -936,12 +936,12 @@ type mytics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m mytics) createCmdString() string {
 	return fmt.Sprintf("set mytics %s", m.value)
+}
+
+func (m mytics) getOption() string {
+	return m.option
 }
 
 func Setmytics(value string) GnuplotOpt {
@@ -954,12 +954,12 @@ type mztics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (m mztics) createCmdString() string {
 	return fmt.Sprintf("set mztics %s", m.value)
+}
+
+func (m mztics) getOption() string {
+	return m.option
 }
 
 func Setmztics(value string) GnuplotOpt {
@@ -972,12 +972,12 @@ type nonlinear struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (n nonlinear) createCmdString() string {
 	return fmt.Sprintf("set nonlinear %s", n.value)
+}
+
+func (n nonlinear) getOption() string {
+	return n.option
 }
 
 func Setnonlinear(value string) GnuplotOpt {
@@ -990,12 +990,12 @@ type object struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (o object) createCmdString() string {
 	return fmt.Sprintf("set object %s", o.value)
+}
+
+func (o object) getOption() string {
+	return o.option
 }
 
 func Setobject(value string) GnuplotOpt {
@@ -1008,12 +1008,12 @@ type offsets struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (o offsets) createCmdString() string {
 	return fmt.Sprintf("set offsets %s", o.value)
+}
+
+func (o offsets) getOption() string {
+	return o.option
 }
 
 func Setoffsets(value string) GnuplotOpt {
@@ -1026,12 +1026,12 @@ type origin struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (o origin) createCmdString() string {
 	return fmt.Sprintf("set origin %s", o.value)
+}
+
+func (o origin) getOption() string {
+	return o.option
 }
 
 func Setorigin(value string) GnuplotOpt {
@@ -1044,12 +1044,12 @@ type output struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (o output) createCmdString() string {
 	return fmt.Sprintf("set output %s", o.value)
+}
+
+func (o output) getOption() string {
+	return o.option
 }
 
 func Setoutput(value string) GnuplotOpt {
@@ -1062,12 +1062,12 @@ type overflow struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (o overflow) createCmdString() string {
 	return fmt.Sprintf("set overflow %s", o.value)
+}
+
+func (o overflow) getOption() string {
+	return o.option
 }
 
 func Setoverflow(value string) GnuplotOpt {
@@ -1080,12 +1080,12 @@ type palette struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p palette) createCmdString() string {
 	return fmt.Sprintf("set palette %s", p.value)
+}
+
+func (p palette) getOption() string {
+	return p.option
 }
 
 func Setpalette(value string) GnuplotOpt {
@@ -1098,12 +1098,12 @@ type parametric struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p parametric) createCmdString() string {
 	return fmt.Sprintf("set parametric %s", p.value)
+}
+
+func (p parametric) getOption() string {
+	return p.option
 }
 
 func Setparametric(value string) GnuplotOpt {
@@ -1116,12 +1116,12 @@ type paxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p paxis) createCmdString() string {
 	return fmt.Sprintf("set paxis %s", p.value)
+}
+
+func (p paxis) getOption() string {
+	return p.option
 }
 
 func Setpaxis(value string) GnuplotOpt {
@@ -1134,12 +1134,12 @@ type pixmap struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p pixmap) createCmdString() string {
 	return fmt.Sprintf("set pixmap %s", p.value)
+}
+
+func (p pixmap) getOption() string {
+	return p.option
 }
 
 func Setpixmap(value string) GnuplotOpt {
@@ -1152,12 +1152,12 @@ type pm3d struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p pm3d) createCmdString() string {
 	return fmt.Sprintf("set pm3d %s", p.value)
+}
+
+func (p pm3d) getOption() string {
+	return p.option
 }
 
 func Setpm3d(value string) GnuplotOpt {
@@ -1170,12 +1170,12 @@ type pointintervalbox struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p pointintervalbox) createCmdString() string {
 	return "set pointintervalbox"
+}
+
+func (p pointintervalbox) getOption() string {
+	return p.option
 }
 
 func Setpointintervalbox() GnuplotOpt {
@@ -1188,12 +1188,12 @@ type pointsize struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p pointsize) createCmdString() string {
 	return fmt.Sprintf("set pointsize %s", p.value)
+}
+
+func (p pointsize) getOption() string {
+	return p.option
 }
 
 func Setpointsize(value string) GnuplotOpt {
@@ -1206,12 +1206,12 @@ type polar struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p polar) createCmdString() string {
 	return "set polar"
+}
+
+func (p polar) getOption() string {
+	return p.option
 }
 
 func Setpolar() GnuplotOpt {
@@ -1224,12 +1224,12 @@ type print struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p print) createCmdString() string {
 	return fmt.Sprintf("set print %s", p.value)
+}
+
+func (p print) getOption() string {
+	return p.option
 }
 
 func Setprint(value string) GnuplotOpt {
@@ -1242,12 +1242,12 @@ type psdir struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (p psdir) createCmdString() string {
 	return fmt.Sprintf("set psdir %s", p.value)
+}
+
+func (p psdir) getOption() string {
+	return p.option
 }
 
 func Setpsdir(value string) GnuplotOpt {
@@ -1260,12 +1260,12 @@ type raxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (r raxis) createCmdString() string {
 	return "set raxis"
+}
+
+func (r raxis) getOption() string {
+	return r.option
 }
 
 func Setraxis() GnuplotOpt {
@@ -1278,12 +1278,12 @@ type rgbmax struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (r rgbmax) createCmdString() string {
 	return fmt.Sprintf("set rgbmax %s", r.value)
+}
+
+func (r rgbmax) getOption() string {
+	return r.option
 }
 
 func Setrgbmax(value string) GnuplotOpt {
@@ -1296,12 +1296,12 @@ type rlabel struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (r rlabel) createCmdString() string {
 	return fmt.Sprintf("set rlabel %s", r.value)
+}
+
+func (r rlabel) getOption() string {
+	return r.option
 }
 
 func Setrlabel(value string) GnuplotOpt {
@@ -1314,12 +1314,12 @@ type rmargin struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (r rmargin) createCmdString() string {
 	return fmt.Sprintf("set rmargin %s", r.value)
+}
+
+func (r rmargin) getOption() string {
+	return r.option
 }
 
 func Setrmargin(value string) GnuplotOpt {
@@ -1332,12 +1332,12 @@ type rrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (r rrange) createCmdString() string {
 	return fmt.Sprintf("set rrange %s", r.value)
+}
+
+func (r rrange) getOption() string {
+	return r.option
 }
 
 func Setrrange(value string) GnuplotOpt {
@@ -1350,12 +1350,12 @@ type rtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (r rtics) createCmdString() string {
 	return fmt.Sprintf("set rtics %s", r.value)
+}
+
+func (r rtics) getOption() string {
+	return r.option
 }
 
 func Setrtics(value string) GnuplotOpt {
@@ -1368,12 +1368,12 @@ type samples struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (s samples) createCmdString() string {
 	return fmt.Sprintf(`set samples "%s"`, s.value)
+}
+
+func (s samples) getOption() string {
+	return s.option
 }
 
 func Setsamples(value string) GnuplotOpt {
@@ -1386,12 +1386,12 @@ type size struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (s size) createCmdString() string {
 	return fmt.Sprintf(`set size "%s"`, s.value)
+}
+
+func (s size) getOption() string {
+	return s.option
 }
 
 func Setsize(value string) GnuplotOpt {
@@ -1404,12 +1404,12 @@ type spiderplot struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (s spiderplot) createCmdString() string {
 	return "set spiderplot"
+}
+
+func (s spiderplot) getOption() string {
+	return s.option
 }
 
 func Setspiderplot() GnuplotOpt {
@@ -1422,12 +1422,12 @@ type style struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (s style) createCmdString() string {
 	return fmt.Sprintf(`set style "%s"`, s.value)
+}
+
+func (s style) getOption() string {
+	return s.option
 }
 
 func Setstyle(value string) GnuplotOpt {
@@ -1440,12 +1440,12 @@ type surface struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (s surface) createCmdString() string {
 	return fmt.Sprintf(`set surface "%s"`, s.value)
+}
+
+func (s surface) getOption() string {
+	return s.option
 }
 
 func Setsurface(value string) GnuplotOpt {
@@ -1458,12 +1458,12 @@ type table struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t table) createCmdString() string {
 	return fmt.Sprintf(`set table "%s"`, t.value)
+}
+
+func (t table) getOption() string {
+	return t.option
 }
 
 func Settable(value string) GnuplotOpt {
@@ -1476,12 +1476,12 @@ type terminal struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t terminal) createCmdString() string {
 	return fmt.Sprintf(`set terminal "%s"`, t.value)
+}
+
+func (t terminal) getOption() string {
+	return t.option
 }
 
 func Setterminal(value string) GnuplotOpt {
@@ -1494,12 +1494,12 @@ type termoption struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t termoption) createCmdString() string {
 	return fmt.Sprintf(`set termoption "%s"`, t.value)
+}
+
+func (t termoption) getOption() string {
+	return t.option
 }
 
 func Settermoption(value string) GnuplotOpt {
@@ -1512,12 +1512,12 @@ type theta struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t theta) createCmdString() string {
 	return fmt.Sprintf(`set theta "%s"`, t.value)
+}
+
+func (t theta) getOption() string {
+	return t.option
 }
 
 func Settheta(value string) GnuplotOpt {
@@ -1530,12 +1530,12 @@ type tics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t tics) createCmdString() string {
 	return fmt.Sprintf(`set tics "%s"`, t.value)
+}
+
+func (t tics) getOption() string {
+	return t.option
 }
 
 func Settics(value string) GnuplotOpt {
@@ -1548,12 +1548,12 @@ type timestamp struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t timestamp) createCmdString() string {
 	return fmt.Sprintf(`set timestamp "%s"`, t.value)
+}
+
+func (t timestamp) getOption() string {
+	return t.option
 }
 
 func Settimestamp(value string) GnuplotOpt {
@@ -1566,12 +1566,12 @@ type timefmt struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t timefmt) createCmdString() string {
 	return fmt.Sprintf(`set timefmt "%s"`, t.value)
+}
+
+func (t timefmt) getOption() string {
+	return t.option
 }
 
 func SetTimefmt(value string) GnuplotOpt {
@@ -1584,12 +1584,12 @@ type title struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t title) createCmdString() string {
 	return fmt.Sprintf(`set title "%s"`, t.value)
+}
+
+func (t title) getOption() string {
+	return t.option
 }
 
 func Settitle(value string) GnuplotOpt {
@@ -1602,12 +1602,12 @@ type tmargin struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t tmargin) createCmdString() string {
 	return fmt.Sprintf(`set tmargin "%s"`, t.value)
+}
+
+func (t tmargin) getOption() string {
+	return t.option
 }
 
 func Settmargin(value string) GnuplotOpt {
@@ -1620,12 +1620,12 @@ type trange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t trange) createCmdString() string {
 	return fmt.Sprintf(`set trange "%s"`, t.value)
+}
+
+func (t trange) getOption() string {
+	return t.option
 }
 
 func Settrange(value string) GnuplotOpt {
@@ -1638,12 +1638,12 @@ type ttics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (t ttics) createCmdString() string {
 	return fmt.Sprintf(`set ttics "%s"`, t.value)
+}
+
+func (t ttics) getOption() string {
+	return t.option
 }
 
 func Setttics(value string) GnuplotOpt {
@@ -1656,12 +1656,12 @@ type urange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (u urange) createCmdString() string {
 	return fmt.Sprintf(`set urange "%s"`, u.value)
+}
+
+func (u urange) getOption() string {
+	return u.option
 }
 
 func Seturange(value string) GnuplotOpt {
@@ -1674,12 +1674,12 @@ type vgrid struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (v vgrid) createCmdString() string {
 	return fmt.Sprintf(`set vgrid "%s"`, v.value)
+}
+
+func (v vgrid) getOption() string {
+	return v.option
 }
 
 func Setvgrid(value string) GnuplotOpt {
@@ -1692,12 +1692,12 @@ type view struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (v view) createCmdString() string {
 	return fmt.Sprintf(`set view "%s"`, v.value)
+}
+
+func (v view) getOption() string {
+	return v.option
 }
 
 func Setview(value string) GnuplotOpt {
@@ -1710,12 +1710,12 @@ type vrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (v vrange) createCmdString() string {
 	return fmt.Sprintf(`set vrange "%s"`, v.value)
+}
+
+func (v vrange) getOption() string {
+	return v.option
 }
 
 func Setvrange(value string) GnuplotOpt {
@@ -1728,12 +1728,12 @@ type vxrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (v vxrange) createCmdString() string {
 	return fmt.Sprintf(`set vxrange "%s"`, v.value)
+}
+
+func (v vxrange) getOption() string {
+	return v.option
 }
 
 func Setvxrange(value string) GnuplotOpt {
@@ -1746,12 +1746,12 @@ type vyrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (v vyrange) createCmdString() string {
 	return fmt.Sprintf(`set vyrange "%s"`, v.value)
+}
+
+func (v vyrange) getOption() string {
+	return v.option
 }
 
 func Setvyrange(value string) GnuplotOpt {
@@ -1764,12 +1764,12 @@ type vzrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (v vzrange) createCmdString() string {
 	return fmt.Sprintf(`set vzrange "%s"`, v.value)
+}
+
+func (v vzrange) getOption() string {
+	return v.option
 }
 
 func Setvzrange(value string) GnuplotOpt {
@@ -1782,12 +1782,12 @@ type walls struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (w walls) createCmdString() string {
 	return fmt.Sprintf(`set walls "%s"`, w.value)
+}
+
+func (w walls) getOption() string {
+	return w.option
 }
 
 func Setwalls(value string) GnuplotOpt {
@@ -1795,21 +1795,21 @@ func Setwalls(value string) GnuplotOpt {
 	return w
 }
 
-type x2ata struct {
+type x2data struct {
 	option string
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
-func (x x2ata) createCmdString() string {
+func (x x2data) createCmdString() string {
 	return fmt.Sprintf("set x2ata %s", x.value)
 }
 
+func (x x2data) getOption() string {
+	return x.option
+}
+
 func Setx2ata(value string) GnuplotOpt {
-	x := x2ata{"x2ata", value}
+	x := x2data{"x2ata", value}
 	return x
 }
 
@@ -1818,12 +1818,12 @@ type x2dtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x x2dtics) createCmdString() string {
 	return fmt.Sprintf("set x2dtics %s", x.value)
+}
+
+func (x x2dtics) getOption() string {
+	return x.option
 }
 
 func Setx2dtics(value string) GnuplotOpt {
@@ -1836,12 +1836,12 @@ type x2label struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x x2label) createCmdString() string {
 	return fmt.Sprintf("set x2label %s", x.value)
+}
+
+func (x x2label) getOption() string {
+	return x.option
 }
 
 func Setx2label(value string) GnuplotOpt {
@@ -1854,12 +1854,12 @@ type x2mtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x x2mtics) createCmdString() string {
 	return fmt.Sprintf("set x2mtics %s", x.value)
+}
+
+func (x x2mtics) getOption() string {
+	return x.option
 }
 
 func Setx2mtics(value string) GnuplotOpt {
@@ -1872,12 +1872,12 @@ type x2range struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x x2range) createCmdString() string {
 	return fmt.Sprintf("set x2range %s", x.value)
+}
+
+func (x x2range) getOption() string {
+	return x.option
 }
 
 func Setx2range(value string) GnuplotOpt {
@@ -1890,12 +1890,12 @@ type x2tics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x x2tics) createCmdString() string {
 	return fmt.Sprintf("set x2tics %s", x.value)
+}
+
+func (x x2tics) getOption() string {
+	return x.option
 }
 
 func Setx2tics(value string) GnuplotOpt {
@@ -1908,12 +1908,12 @@ type x2zeroaxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x x2zeroaxis) createCmdString() string {
 	return fmt.Sprintf("set x2zeroaxis %s", x.value)
+}
+
+func (x x2zeroaxis) getOption() string {
+	return x.option
 }
 
 func Setx2zeroaxis(value string) GnuplotOpt {
@@ -1926,12 +1926,12 @@ type xdata struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xdata) createCmdString() string {
 	return fmt.Sprintf("set xdata %s", x.value)
+}
+
+func (x xdata) getOption() string {
+	return x.option
 }
 
 func SetXdata(value string) GnuplotOpt {
@@ -1944,12 +1944,12 @@ type xdtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xdtics) createCmdString() string {
 	return fmt.Sprintf("set xdtics %s", x.value)
+}
+
+func (x xdtics) getOption() string {
+	return x.option
 }
 
 func Setxdtics(value string) GnuplotOpt {
@@ -1962,12 +1962,12 @@ type xlabel struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xlabel) createCmdString() string {
 	return fmt.Sprintf("set xlabel %s", x.value)
+}
+
+func (x xlabel) getOption() string {
+	return x.option
 }
 
 func Setxlabel(value string) GnuplotOpt {
@@ -1980,12 +1980,12 @@ type xmtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xmtics) createCmdString() string {
 	return fmt.Sprintf("set xmtics %s", x.value)
+}
+
+func (x xmtics) getOption() string {
+	return x.option
 }
 
 func Setxmtics(value string) GnuplotOpt {
@@ -1998,12 +1998,12 @@ type xrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xrange) createCmdString() string {
 	return fmt.Sprintf("set xrange %s", x.value)
+}
+
+func (x xrange) getOption() string {
+	return x.option
 }
 
 func Setxrange(value string) GnuplotOpt {
@@ -2016,12 +2016,12 @@ type xtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xtics) createCmdString() string {
 	return fmt.Sprintf("set xtics %s", x.value)
+}
+
+func (x xtics) getOption() string {
+	return x.option
 }
 
 func Setxtics(value string) GnuplotOpt {
@@ -2034,12 +2034,12 @@ type xyplane struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xyplane) createCmdString() string {
 	return fmt.Sprintf("set xyplane %s", x.value)
+}
+
+func (x xyplane) getOption() string {
+	return x.option
 }
 
 func Setxyplane(value string) GnuplotOpt {
@@ -2052,12 +2052,12 @@ type xzeroaxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (x xzeroaxis) createCmdString() string {
 	return fmt.Sprintf("set xzeroaxis %s", x.value)
+}
+
+func (x xzeroaxis) getOption() string {
+	return x.option
 }
 
 func Setxzeroaxis(value string) GnuplotOpt {
@@ -2070,12 +2070,12 @@ type y2data struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2data) createCmdString() string {
 	return fmt.Sprintf("set y2data%s", " "+y.value)
+}
+
+func (y y2data) getOption() string {
+	return y.option
 }
 
 func Sety2data(value string) GnuplotOpt {
@@ -2088,12 +2088,12 @@ type y2dtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2dtics) createCmdString() string {
 	return fmt.Sprintf("set y2dtics%s", " "+y.value)
+}
+
+func (y y2dtics) getOption() string {
+	return y.option
 }
 
 func Sety2dtics(value string) GnuplotOpt {
@@ -2106,12 +2106,12 @@ type y2label struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2label) createCmdString() string {
 	return fmt.Sprintf("set y2label%s", " "+y.value)
+}
+
+func (y y2label) getOption() string {
+	return y.option
 }
 
 func Sety2label(value string) GnuplotOpt {
@@ -2124,12 +2124,12 @@ type y2mtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2mtics) createCmdString() string {
 	return fmt.Sprintf("set y2mtics%s", " "+y.value)
+}
+
+func (y y2mtics) getOption() string {
+	return y.option
 }
 
 func Sety2mtics(value string) GnuplotOpt {
@@ -2142,12 +2142,12 @@ type y2range struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2range) createCmdString() string {
 	return fmt.Sprintf("set y2range%s", " "+y.value)
+}
+
+func (y y2range) getOption() string {
+	return y.option
 }
 
 func Sety2range(value string) GnuplotOpt {
@@ -2160,12 +2160,12 @@ type y2tics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2tics) createCmdString() string {
 	return fmt.Sprintf("set y2tics%s", " "+y.value)
+}
+
+func (y y2tics) getOption() string {
+	return y.option
 }
 
 func Sety2tics(value string) GnuplotOpt {
@@ -2178,12 +2178,12 @@ type y2zeroaxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y y2zeroaxis) createCmdString() string {
 	return fmt.Sprintf("set y2zeroaxis%s", " "+y.value)
+}
+
+func (y y2zeroaxis) getOption() string {
+	return y.option
 }
 
 func Sety2zeroaxis(value string) GnuplotOpt {
@@ -2196,12 +2196,12 @@ type ydata struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y ydata) createCmdString() string {
 	return fmt.Sprintf("set ydata %s", y.value)
+}
+
+func (y ydata) getOption() string {
+	return y.option
 }
 
 func SetYdata(value string) GnuplotOpt {
@@ -2214,12 +2214,12 @@ type ydtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y ydtics) createCmdString() string {
 	return fmt.Sprintf("set ydtics %s", y.value)
+}
+
+func (y ydtics) getOption() string {
+	return y.option
 }
 
 func Setydtics(value string) GnuplotOpt {
@@ -2232,12 +2232,12 @@ type ylabel struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y ylabel) createCmdString() string {
 	return fmt.Sprintf("set ylabel %s", y.value)
+}
+
+func (y ylabel) getOption() string {
+	return y.option
 }
 
 func Setylabel(value string) GnuplotOpt {
@@ -2250,12 +2250,12 @@ type ymtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y ymtics) createCmdString() string {
 	return fmt.Sprintf("set ymtics %s", y.value)
+}
+
+func (y ymtics) getOption() string {
+	return y.option
 }
 
 func Setymtics(value string) GnuplotOpt {
@@ -2268,12 +2268,12 @@ type yrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y yrange) createCmdString() string {
 	return fmt.Sprintf("set yrange %s", y.value)
+}
+
+func (y yrange) getOption() string {
+	return y.option
 }
 
 func Setyrange(value string) GnuplotOpt {
@@ -2286,12 +2286,12 @@ type ytics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y ytics) createCmdString() string {
 	return fmt.Sprintf("set ytics %s", y.value)
+}
+
+func (y ytics) getOption() string {
+	return y.option
 }
 
 func Setytics(value string) GnuplotOpt {
@@ -2304,12 +2304,12 @@ type yzeroaxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (y yzeroaxis) createCmdString() string {
 	return fmt.Sprintf("set yzeroaxis %s", y.value)
+}
+
+func (y yzeroaxis) getOption() string {
+	return y.option
 }
 
 func Setyzeroaxis(value string) GnuplotOpt {
@@ -2322,12 +2322,12 @@ type zdata struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zdata) createCmdString() string {
 	return fmt.Sprintf("set zdata %s", z.value)
+}
+
+func (z zdata) getOption() string {
+	return z.option
 }
 
 func Setzdata(value string) GnuplotOpt {
@@ -2340,12 +2340,12 @@ type zdtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zdtics) createCmdString() string {
 	return fmt.Sprintf("set zdtics %s", z.value)
+}
+
+func (z zdtics) getOption() string {
+	return z.option
 }
 
 func Setzdtics(value string) GnuplotOpt {
@@ -2358,12 +2358,12 @@ type zzeroaxis struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zzeroaxis) createCmdString() string {
 	return fmt.Sprintf("set zzeroaxis %s", z.value)
+}
+
+func (z zzeroaxis) getOption() string {
+	return z.option
 }
 
 func Setzzeroaxis(value string) GnuplotOpt {
@@ -2376,12 +2376,12 @@ type cbdata struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cbdata) createCmdString() string {
 	return fmt.Sprintf("set cbdata %s", c.value)
+}
+
+func (c cbdata) getOption() string {
+	return c.option
 }
 
 func Setcbdata(value string) GnuplotOpt {
@@ -2394,12 +2394,12 @@ type cbdtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cbdtics) createCmdString() string {
 	return fmt.Sprintf("set cbdtics %s", c.value)
+}
+
+func (c cbdtics) getOption() string {
+	return c.option
 }
 
 func Setcbdtics(value string) GnuplotOpt {
@@ -2412,12 +2412,12 @@ type zero struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zero) createCmdString() string {
 	return fmt.Sprintf("set zero %s", z.value)
+}
+
+func (z zero) getOption() string {
+	return z.option
 }
 
 func Setzero(value string) GnuplotOpt {
@@ -2430,12 +2430,12 @@ type zlabel struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zlabel) createCmdString() string {
 	return fmt.Sprintf("set zlabel %s", z.value)
+}
+
+func (z zlabel) getOption() string {
+	return z.option
 }
 
 func Setzlabel(value string) GnuplotOpt {
@@ -2448,12 +2448,12 @@ type zmtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zmtics) createCmdString() string {
 	return fmt.Sprintf("set zmtics %s", z.value)
+}
+
+func (z zmtics) getOption() string {
+	return z.option
 }
 
 func Setzmtics(value string) GnuplotOpt {
@@ -2466,12 +2466,12 @@ type zrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z zrange) createCmdString() string {
 	return fmt.Sprintf("set zrange %s", z.value)
+}
+
+func (z zrange) getOption() string {
+	return z.option
 }
 
 func Setzrange(value string) GnuplotOpt {
@@ -2484,12 +2484,12 @@ type ztics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (z ztics) createCmdString() string {
 	return fmt.Sprintf("set ztics %s", z.value)
+}
+
+func (z ztics) getOption() string {
+	return z.option
 }
 
 func Setztics(value string) GnuplotOpt {
@@ -2502,12 +2502,12 @@ type cblabel struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cblabel) createCmdString() string {
 	return fmt.Sprintf("set cblabel %s", c.value)
+}
+
+func (c cblabel) getOption() string {
+	return c.option
 }
 
 func Setcblabel(value string) GnuplotOpt {
@@ -2520,12 +2520,12 @@ type cbmtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cbmtics) createCmdString() string {
 	return fmt.Sprintf("set cbmtics %s", c.value)
+}
+
+func (c cbmtics) getOption() string {
+	return c.option
 }
 
 func Setcbmtics(value string) GnuplotOpt {
@@ -2538,12 +2538,12 @@ type cbrange struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cbrange) createCmdString() string {
 	return fmt.Sprintf("set cbrange %s", c.value)
+}
+
+func (c cbrange) getOption() string {
+	return c.option
 }
 
 func Setcbrange(value string) GnuplotOpt {
@@ -2556,12 +2556,12 @@ type cbtics struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (c cbtics) createCmdString() string {
 	return fmt.Sprintf("set cbtics %s", c.value)
+}
+
+func (c cbtics) getOption() string {
+	return c.option
 }
 
 func Setcbtics(value string) GnuplotOpt {
@@ -2574,12 +2574,12 @@ type using struct {
 	value  string
 }
 
-func () getOption() string {
-	return option
-}
-
 func (u using) createCmdString() string {
 	return fmt.Sprintf("using %s", u.value)
+}
+
+func (u using) getOption() string {
+	return u.option
 }
 
 func Using(value string) GnuplotOpt {
