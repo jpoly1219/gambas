@@ -22,17 +22,19 @@ func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 		return err
 	}
 
-	var optBuf bytes.Buffer
+	var setBuf bytes.Buffer
+	var usingBuf bytes.Buffer
 	for _, opt := range opts {
 		str := opt.createCmdString()
 		if opt.getOption() == "using" {
-			// save to the end
+			usingBuf.WriteString(str)
+		} else {
+			setBuf.WriteString(str)
+			setBuf.WriteString("; ")
 		}
-		optBuf.WriteString(str)
-		optBuf.WriteString("; ")
 	}
 
-	cmdString := fmt.Sprintf(`%s %s "%s"`, optBuf.String(), "plot", path)
+	cmdString := fmt.Sprintf(`%s %s "%s" %s`, setBuf.String(), "plot", path, usingBuf.String())
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
