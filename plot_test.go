@@ -19,7 +19,7 @@ func TestPlot(t *testing.T) {
 	}
 	for _, test := range plotTests {
 		// SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S")
-		err := test.arg1.Plot("est_diameter_min", "relative_velocity")
+		err := test.arg1.Plot("est_diameter_min", "relative_velocity", Using("($0/1000):1"))
 		if err != nil {
 			t.Fatalf("error %v", err)
 		}
