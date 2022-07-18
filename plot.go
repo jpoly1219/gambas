@@ -10,6 +10,11 @@ import (
 
 // Plotting functionality uses gnuplot as its backend.
 
+// Plot plots the DataFrame object.
+// Choose two columns to use for the x axis and y axis.
+// Then pass in any options you need. Refer to the gnuplot documentation for options.
+// For example, `set xrange [-10:10]; set xlabel "myX"; set ylabel "myY"; plot "myDf.dat" using 0:1 lc 0 w lines`
+// Plot(<xcol>, <ycol>, SetXrange("[-10:10]"), SetXlabel("myX"), SetYlabel("myY"), Using("0:1 lc 0 w lines"))
 func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 	newDf, err := df.LocCols(xcol, ycol)
 	if err != nil {
