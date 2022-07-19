@@ -28,6 +28,11 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/githu
     - [x] At, IAt
     - [x] Loc, ILoc
   - [ ] Plotting
+    - [x] Set
+    - [x] Using
+    - [ ] Trendline (fit)
+    - [ ] Statistics
+    - [ ] Categorical count
   - [x] Creating new columns derived from existing columns
     - [x] Creating new columns
     - [x] Applying operations to the new column
