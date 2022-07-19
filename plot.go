@@ -132,7 +132,7 @@ func Fit(ff string, pd PlotData, opts ...GnuplotOpt) error {
 	}
 
 	var usingBuf, viaBuf bytes.Buffer
-	for _, opt := range pd.Opts {
+	for _, opt := range opts {
 		str := opt.createCmdString()
 		if opt.getOption() == "using" {
 			usingBuf.WriteString(str)
@@ -142,17 +142,14 @@ func Fit(ff string, pd PlotData, opts ...GnuplotOpt) error {
 		}
 	}
 
-	cmdString := fmt.Sprintf(`%s "%s" %s %s`, "fit f(x)", path, usingBuf.String(), viaBuf.String())
+	cmdString := fmt.Sprintf(`%s %s "%s" %s %s`, "fit", ff, path, usingBuf.String(), viaBuf.String())
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
-	var stdout, stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	err = cmd.Run()
+	combOutput, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(fmt.Sprint(err, cmd.Stderr))
+		return err
 	}
 
-	fmt.Println(cmd.Stdout)
+	fmt.Printf("%s", combOutput)
 
 	return nil
 }
