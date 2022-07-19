@@ -79,7 +79,7 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 
 	cmdString := fmt.Sprintf(`%s %s `, setBuf.String(), "plot")
 
-	for i, pd := range plotdata {
+	for _, pd := range plotdata {
 		newDf, err := pd.Df.LocCols(pd.ColumnPair...)
 		if err != nil {
 			return err
@@ -110,6 +110,49 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 	if err != nil {
 		return fmt.Errorf(fmt.Sprint(err, cmd.Stderr))
 	}
+
+	return nil
+}
+
+// Fit calculates the line of best fit.
+// ff is the fitting function.
+// pd is the PlotData you would like to fit. Only the data pd.Df and pd.ColumnPair will be used.
+// Pass options such as `using` or `via` in opts.
+func Fit(ff string, pd PlotData, opts ...GnuplotOpt) error {
+	rand.Seed(time.Now().UnixNano())
+	newDf, err := pd.Df.LocCols(pd.ColumnPair...)
+	if err != nil {
+		return err
+	}
+
+	path := filepath.Join("/", "tmp", fmt.Sprintf("%x.csv", rand.Intn(100000000)))
+	_, err = WriteCsv(newDf, path, true)
+	if err != nil {
+		return err
+	}
+
+	var usingBuf, viaBuf bytes.Buffer
+	for _, opt := range pd.Opts {
+		str := opt.createCmdString()
+		if opt.getOption() == "using" {
+			usingBuf.WriteString(str)
+		}
+		if opt.getOption() == "via" {
+			viaBuf.WriteString(str)
+		}
+	}
+
+	cmdString := fmt.Sprintf(`%s "%s" %s %s`, "fit f(x)", path, usingBuf.String(), viaBuf.String())
+	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err = cmd.Run()
+	if err != nil {
+		return fmt.Errorf(fmt.Sprint(err, cmd.Stderr))
+	}
+
+	fmt.Println(cmd.Stdout)
 
 	return nil
 }
