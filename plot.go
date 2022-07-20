@@ -54,6 +54,7 @@ func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
 	for _, setOpt := range setOpts {
 		str := setOpt.createCmdString()
 		setBuf.WriteString(str)
+		setBuf.WriteString("; ")
 	}
 
 	var usingBuf bytes.Buffer
@@ -70,6 +71,7 @@ func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
 	}
 
 	cmdString := fmt.Sprintf(`%s %s "%s" %s %s`, setBuf.String(), "plot", path, usingBuf.String(), withBuf.String())
+	fmt.Println(cmdString)
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
