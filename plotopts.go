@@ -2604,3 +2604,21 @@ func Via(value string) GnuplotOpt {
 	v := via{"via", value}
 	return v
 }
+
+type with struct {
+	option string
+	value  string
+}
+
+func (w with) createCmdString() string {
+	return fmt.Sprintf("with %s", w.value)
+}
+
+func (w with) getOption() string {
+	return w.option
+}
+
+func With(value string) GnuplotOpt {
+	w := with{"with", value}
+	return w
+}
