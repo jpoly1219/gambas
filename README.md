@@ -17,11 +17,11 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/githu
 ---
 - Provide basic features from the pandas tutorial.
   - [x] Providing `Series` and `DataFrame` data types
-  - [ ] Reading and writing tabular data
+  - [x] Reading and writing tabular data
     - [x] Reading CSV files
     - [x] Writing to CSV files
-    - [ ] Reading Excel files
-    - [ ] Writing to Excel files
+    - [x] Reading Excel files
+    - [x] Writing to Excel files
     - [x] Reading JSON files
     - [x] Writing to JSON files
   - [x] Selecting a subset of data
@@ -30,8 +30,8 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/githu
   - [ ] Plotting
     - [x] Set
     - [x] Using
-    - [ ] Trendline (fit)
-    - [ ] Statistics
+    - [x] Trendline (fit)
+    - [x] Statistics
     - [ ] Categorical count
   - [x] Creating new columns derived from existing columns
     - [x] Creating new columns
@@ -58,7 +58,8 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/githu
     - [ ] ToDatetime
   - [ ] Manipulating textual data
   - [x] Multiindex
-- [x] Documentation (pkg.go.dev page)
+- [x] pkg.go.dev page
+- [ ] Documentation
 - [ ] Project website
 - [ ] Project logo
 
