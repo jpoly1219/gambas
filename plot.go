@@ -12,17 +12,18 @@ import (
 // Plotting functionality uses gnuplot as its backend.
 
 // PlotData holds the data required for plotting a dataset.
-// Dataset is the DataFrame object you would like to plot.
-// ColumnPair is a pair of columns [xcol, ycol].
+// Df is the DataFrame object you would like to plot.
+// Columns are the columns in Df that you want to plot. Usually, it's a pair of columns [xcol, ycol].
+// If you want to create a bar graph or a histogram, you can add more columns to Columns.
 // Function is an arbitrary function such as sin(x) or an equation of the line of best fit.
-// If you want to graph an arbitrary function, leave Df and ColumnPair as nil.
+// If you want to graph an arbitrary function, leave Df and Columns as nil.
 // Otherwise, leave Function as "".
 // Opts is whatever gnuplot option you would like to set.
 type PlotData struct {
-	Df         *DataFrame
-	ColumnPair []string
-	Function   string
-	Opts       []GnuplotOpt
+	Df       *DataFrame
+	Columns  []string
+	Function string
+	Opts     []GnuplotOpt
 }
 
 // Plot plots the DataFrame object.
@@ -33,11 +34,11 @@ type PlotData struct {
 func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
 	path := ""
 
-	if pd.Function != "" && pd.Df == nil && pd.ColumnPair == nil {
+	if pd.Function != "" && pd.Df == nil && pd.Columns == nil {
 		path = pd.Function
 	} else {
 		rand.Seed(time.Now().UnixNano())
-		newDf, err := pd.Df.LocCols(pd.ColumnPair...)
+		newDf, err := pd.Df.LocCols(pd.Columns...)
 		if err != nil {
 			return err
 		}
@@ -99,10 +100,10 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 	for _, pd := range plotdata {
 		path := ``
 
-		if pd.Function != "" && pd.Df == nil && pd.ColumnPair == nil {
+		if pd.Function != "" && pd.Df == nil && pd.Columns == nil {
 			path = pd.Function
 		} else {
-			newDf, err := pd.Df.LocCols(pd.ColumnPair...)
+			newDf, err := pd.Df.LocCols(pd.Columns...)
 			if err != nil {
 				return err
 			}
@@ -145,11 +146,11 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 
 // Fit calculates the line of best fit.
 // ff is the fitting function.
-// pd is the PlotData you would like to fit. Only the data pd.Df and pd.ColumnPair will be used.
+// pd is the PlotData you would like to fit. Only the data pd.Df and pd.Columns will be used.
 // Pass options such as `using` or `via` in opts.
 func Fit(ff string, pd PlotData, opts ...GnuplotOpt) error {
 	rand.Seed(time.Now().UnixNano())
-	newDf, err := pd.Df.LocCols(pd.ColumnPair...)
+	newDf, err := pd.Df.LocCols(pd.Columns...)
 	if err != nil {
 		return err
 	}
