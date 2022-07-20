@@ -6,22 +6,27 @@ import (
 
 func TestPlot(t *testing.T) {
 	type plotTest struct {
-		arg1 DataFrame
+		arg1 PlotData
 	}
 	plotTests := []plotTest{
 		{
-			func() DataFrame {
-				newDf, err := ReadCsv("./testfiles/neo_v2.csv", []string{"id"})
-				if err != nil {
-					t.Error(err)
-				}
-				return newDf
-			}(),
+			PlotData{
+				func() *DataFrame {
+					newDf, err := ReadCsv("./testfiles/neo_v2.csv", []string{"id"})
+					if err != nil {
+						t.Error(err)
+					}
+					return &newDf
+				}(),
+				[]string{"est_diameter_min", "relative_velocity"},
+				"",
+				[]GnuplotOpt{Using("($0/1000):1"), With("lines lc 0")},
+			},
 		},
 	}
 	for _, test := range plotTests {
 		// SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S")
-		err := test.arg1.Plot("est_diameter_min", "relative_velocity", Using("($0/1000):1 lc 0 w lines"))
+		err := Plot(test.arg1)
 		if err != nil {
 			t.Fatalf("error %v", err)
 		}
@@ -37,26 +42,74 @@ func TestPlotN(t *testing.T) {
 		{
 			[]PlotData{
 				{
-					func() DataFrame {
+					func() *DataFrame {
 						newDf, err := ReadCsv("./testfiles/neo_v2.csv", []string{"id"})
 						if err != nil {
 							t.Error(err)
 						}
-						return newDf
+						return &newDf
 					}(),
 					[]string{"est_diameter_min", "relative_velocity"},
+					"",
 					[]GnuplotOpt{Using("0:1 lc 0")},
 				},
 				{
-					func() DataFrame {
+					func() *DataFrame {
 						newDf, err := ReadCsv("./testfiles/neo_v2.csv", []string{"id"})
 						if err != nil {
 							t.Error(err)
 						}
-						return newDf
+						return &newDf
 					}(),
 					[]string{"est_diameter_min", "miss_distance"},
+					"",
 					[]GnuplotOpt{Using("0:1 lc 7")},
+				},
+			},
+			[]GnuplotOpt{},
+		},
+		{
+			[]PlotData{
+				{
+					func() *DataFrame {
+						newDf, err := ReadCsv("./testfiles/neo_v2.csv", []string{"id"})
+						if err != nil {
+							t.Error(err)
+						}
+						return &newDf
+					}(),
+					[]string{"est_diameter_min", "relative_velocity"},
+					"",
+					[]GnuplotOpt{Using("0:1 lc 0")},
+				},
+				{
+					nil,
+					nil,
+					"10*sin(x)",
+					[]GnuplotOpt{With("lines lc 7")},
+				},
+			},
+			[]GnuplotOpt{},
+		},
+		{
+			[]PlotData{
+				{
+					nil,
+					nil,
+					"sin(x)",
+					[]GnuplotOpt{With("lines lc 8")},
+				},
+				{
+					nil,
+					nil,
+					"cos(x)",
+					[]GnuplotOpt{With("lines lc 3")},
+				},
+				{
+					nil,
+					nil,
+					"tan(x)",
+					[]GnuplotOpt{With("lines lc 7")},
 				},
 			},
 			[]GnuplotOpt{},
@@ -80,15 +133,16 @@ func TestFit(t *testing.T) {
 		{
 			"a*exp(b*x)",
 			PlotData{
-				func() DataFrame {
+				func() *DataFrame {
 					df, err := ReadCsv("./testfiles/airquality.csv", []string{"city"})
 					if err != nil {
 						t.Error(err)
 					}
 					newDf, _ := df.LocRows([]interface{}{"Antwerpen"})
-					return newDf
+					return &newDf
 				}(),
 				[]string{"date.utc", "value"},
+				"",
 				nil,
 			},
 			[]GnuplotOpt{Using("0:1"), Via("a,b")},
