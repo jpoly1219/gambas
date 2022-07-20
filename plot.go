@@ -15,10 +15,11 @@ import (
 // Dataset is the DataFrame object you would like to plot.
 // ColumnPair is a pair of columns [xcol, ycol].
 // Function is an arbitrary function such as sin(x) or an equation of the line of best fit.
-// If you want to graph an arbitrary function, leave Df and ColumnPair empty.
+// If you want to graph an arbitrary function, leave Df and ColumnPair as nil.
+// Otherwise, leave Function as "".
 // Opts is whatever gnuplot option you would like to set.
 type PlotData struct {
-	Df         DataFrame
+	Df         *DataFrame
 	ColumnPair []string
 	Function   string
 	Opts       []GnuplotOpt
@@ -29,23 +30,34 @@ type PlotData struct {
 // Then pass in any options you need. Refer to the gnuplot documentation for options.
 // For example, `set xrange [-10:10]; set xlabel "myX"; set ylabel "myY"; plot "myDf.dat" using 0:1 lc 0 w lines`
 // Plot(<xcol>, <ycol>, SetXrange("[-10:10]"), SetXlabel("myX"), SetYlabel("myY"), Using("0:1 lc 0 w lines"))
-func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
-	rand.Seed(time.Now().UnixNano())
-	newDf, err := df.LocCols(xcol, ycol)
-	if err != nil {
-		return err
-	}
+func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
+	path := ""
 
-	path := filepath.Join("/", "tmp", fmt.Sprintf("%x.csv", rand.Intn(100000000)))
-	_, err = WriteCsv(newDf, path, true)
-	if err != nil {
-		return err
+	if pd.Function != "" && pd.Df == nil && pd.ColumnPair == nil {
+		path = pd.Function
+	} else {
+		rand.Seed(time.Now().UnixNano())
+		newDf, err := pd.Df.LocCols(pd.ColumnPair...)
+		if err != nil {
+			return err
+		}
+
+		path = filepath.Join("/", "tmp", fmt.Sprintf("%x.csv", rand.Intn(100000000)))
+		_, err = WriteCsv(newDf, path, true)
+		if err != nil {
+			return err
+		}
 	}
 
 	var setBuf bytes.Buffer
+	for _, setOpt := range setOpts {
+		str := setOpt.createCmdString()
+		setBuf.WriteString(str)
+	}
+
 	var usingBuf bytes.Buffer
 	var withBuf bytes.Buffer
-	for _, opt := range opts {
+	for _, opt := range pd.Opts {
 		str := opt.createCmdString()
 		switch opt.getOption() {
 		case "using":
@@ -53,8 +65,6 @@ func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 		case "with":
 			withBuf.WriteString(str)
 		default:
-			setBuf.WriteString(str)
-			setBuf.WriteString("; ")
 		}
 	}
 
@@ -62,7 +72,7 @@ func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		return fmt.Errorf(fmt.Sprint(err, cmd.Stderr))
 	}
@@ -87,15 +97,22 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 	cmdString := fmt.Sprintf(`%s %s `, setBuf.String(), "plot")
 
 	for _, pd := range plotdata {
-		newDf, err := pd.Df.LocCols(pd.ColumnPair...)
-		if err != nil {
-			return err
-		}
+		path := ``
 
-		path := filepath.Join("/", "tmp", fmt.Sprintf("%x.csv", rand.Intn(100000000)))
-		_, err = WriteCsv(newDf, path, true)
-		if err != nil {
-			return err
+		if pd.Function != "" && pd.Df == nil && pd.ColumnPair == nil {
+			path = pd.Function
+		} else {
+			newDf, err := pd.Df.LocCols(pd.ColumnPair...)
+			if err != nil {
+				return err
+			}
+
+			path = filepath.Join("/", "tmp", fmt.Sprintf("%x.csv", rand.Intn(100000000)))
+			_, err = WriteCsv(newDf, path, true)
+			if err != nil {
+				return err
+			}
+			path = fmt.Sprintf(`"%s"`, path)
 		}
 
 		var usingBuf bytes.Buffer
@@ -111,10 +128,10 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 			}
 		}
 
-		cmdStringPiece := fmt.Sprintf(`"%s" %s %s,`, path, usingBuf.String(), withBuf.String())
+		cmdStringPiece := fmt.Sprintf(`%s %s %s,`, path, usingBuf.String(), withBuf.String())
 		cmdString += cmdStringPiece
 	}
-
+	fmt.Println(cmdString)
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
