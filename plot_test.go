@@ -7,6 +7,7 @@ import (
 func TestPlot(t *testing.T) {
 	type plotTest struct {
 		arg1 PlotData
+		arg2 []GnuplotOpt
 	}
 	plotTests := []plotTest{
 		{
@@ -22,11 +23,28 @@ func TestPlot(t *testing.T) {
 				"",
 				[]GnuplotOpt{Using("($0/1000):1"), With("lines lc 0")},
 			},
+			nil,
+		},
+		{
+			PlotData{
+				func() *DataFrame {
+					df, err := ReadCsv("./testfiles/airquality.csv", []string{"city"})
+					if err != nil {
+						t.Error(err)
+					}
+					newDf, _ := df.LocRows([]interface{}{"Paris"})
+					newDf.SortByValues("date.utc", true)
+					return &newDf
+				}(),
+				[]string{"date.utc", "value"},
+				"",
+				[]GnuplotOpt{Using("1:2"), With("points")},
+			},
+			[]GnuplotOpt{SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S"), Setformat(`x "%Y-%m-%d"`), Setdatafile(`sep ","`)},
 		},
 	}
 	for _, test := range plotTests {
-		// SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S")
-		err := Plot(test.arg1)
+		err := Plot(test.arg1, test.arg2...)
 		if err != nil {
 			t.Fatalf("error %v", err)
 		}
@@ -113,6 +131,53 @@ func TestPlotN(t *testing.T) {
 				},
 			},
 			[]GnuplotOpt{},
+		},
+		{
+			[]PlotData{
+				{
+					func() *DataFrame {
+						df, err := ReadCsv("./testfiles/airquality.csv", []string{"city"})
+						if err != nil {
+							t.Error(err)
+						}
+						newDf, _ := df.LocRows([]interface{}{"Antwerpen"})
+						newDf.SortByValues("date.utc", true)
+						return &newDf
+					}(),
+					[]string{"date.utc", "value"},
+					"",
+					[]GnuplotOpt{Using("1:2"), With("lines lc 6")},
+				},
+				{
+					func() *DataFrame {
+						df, err := ReadCsv("./testfiles/airquality.csv", []string{"city"})
+						if err != nil {
+							t.Error(err)
+						}
+						newDf, _ := df.LocRows([]interface{}{"Paris"})
+						newDf.SortByValues("date.utc", true)
+						return &newDf
+					}(),
+					[]string{"date.utc", "value"},
+					"",
+					[]GnuplotOpt{Using("1:2"), With("lines lc 7")},
+				},
+				{
+					func() *DataFrame {
+						df, err := ReadCsv("./testfiles/airquality.csv", []string{"city"})
+						if err != nil {
+							t.Error(err)
+						}
+						newDf, _ := df.LocRows([]interface{}{"London"})
+						newDf.SortByValues("date.utc", true)
+						return &newDf
+					}(),
+					[]string{"date.utc", "value"},
+					"",
+					[]GnuplotOpt{Using("1:2"), With("lines lc 8")},
+				},
+			},
+			[]GnuplotOpt{SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S"), Setformat(`x "%Y-%m-%d"`), Setdatafile(`sep ","`)},
 		},
 	}
 	for _, test := range plotNTests {
