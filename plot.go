@@ -14,10 +14,13 @@ import (
 // PlotData holds the data required for plotting a dataset.
 // Dataset is the DataFrame object you would like to plot.
 // ColumnPair is a pair of columns [xcol, ycol].
+// Function is an arbitrary function such as sin(x) or an equation of the line of best fit.
+// If you want to graph an arbitrary function, leave Df and ColumnPair empty.
 // Opts is whatever gnuplot option you would like to set.
 type PlotData struct {
 	Df         DataFrame
 	ColumnPair []string
+	Function   string
 	Opts       []GnuplotOpt
 }
 
@@ -41,17 +44,21 @@ func (df *DataFrame) Plot(xcol, ycol string, opts ...GnuplotOpt) error {
 
 	var setBuf bytes.Buffer
 	var usingBuf bytes.Buffer
+	var withBuf bytes.Buffer
 	for _, opt := range opts {
 		str := opt.createCmdString()
-		if opt.getOption() == "using" {
+		switch opt.getOption() {
+		case "using":
 			usingBuf.WriteString(str)
-		} else {
+		case "with":
+			withBuf.WriteString(str)
+		default:
 			setBuf.WriteString(str)
 			setBuf.WriteString("; ")
 		}
 	}
 
-	cmdString := fmt.Sprintf(`%s %s "%s" %s`, setBuf.String(), "plot", path, usingBuf.String())
+	cmdString := fmt.Sprintf(`%s %s "%s" %s %s`, setBuf.String(), "plot", path, usingBuf.String(), withBuf.String())
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -92,14 +99,19 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 		}
 
 		var usingBuf bytes.Buffer
+		var withBuf bytes.Buffer
 		for _, opt := range pd.Opts {
 			str := opt.createCmdString()
-			if opt.getOption() == "using" {
+			switch opt.getOption() {
+			case "using":
 				usingBuf.WriteString(str)
+			case "with":
+				withBuf.WriteString(str)
+			default:
 			}
 		}
 
-		cmdStringPiece := fmt.Sprintf(`"%s" %s,`, path, usingBuf.String())
+		cmdStringPiece := fmt.Sprintf(`"%s" %s %s,`, path, usingBuf.String(), withBuf.String())
 		cmdString += cmdStringPiece
 	}
 
