@@ -40,7 +40,7 @@ func TestPlot(t *testing.T) {
 				"",
 				[]GnuplotOpt{Using("1:2"), With("points")},
 			},
-			[]GnuplotOpt{SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S"), Setformat(`x "%Y-%m-%d"`), Setdatafile(`sep ","`)},
+			[]GnuplotOpt{Setxdata("time"), Settimefmt("%Y-%m-%d %H:%M:%S+%M:%S"), Setformat(`x "%Y-%m-%d"`), Setdatafile(`sep ","`)},
 		},
 	}
 	for _, test := range plotTests {
@@ -177,7 +177,7 @@ func TestPlotN(t *testing.T) {
 					[]GnuplotOpt{Using("1:2"), With("lines lc 8")},
 				},
 			},
-			[]GnuplotOpt{SetXdata("time"), SetTimefmt("%Y-%m-%d %H:%M:%S+%M:%S"), Setformat(`x "%Y-%m-%d"`), Setdatafile(`sep ","`)},
+			[]GnuplotOpt{Setxdata("time"), Settimefmt("%Y-%m-%d %H:%M:%S+%M:%S"), Setformat(`x "%Y-%m-%d"`), Setdatafile(`sep ","`)},
 		},
 	}
 	for _, test := range plotNTests {
