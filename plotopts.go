@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// A GnuplotOpt represents an option in gnuplot.
 type GnuplotOpt interface {
 	createCmdString() string
 	getOption() string
@@ -674,7 +675,7 @@ func (l linetype) getOption() string {
 	return l.option
 }
 
-func SetLinetype(value string) GnuplotOpt {
+func Setlinetype(value string) GnuplotOpt {
 	l := linetype{"linetype", value}
 	return l
 }
@@ -1574,7 +1575,7 @@ func (t timefmt) getOption() string {
 	return t.option
 }
 
-func SetTimefmt(value string) GnuplotOpt {
+func Settimefmt(value string) GnuplotOpt {
 	t := timefmt{"timefmt", value}
 	return t
 }
@@ -1934,7 +1935,7 @@ func (x xdata) getOption() string {
 	return x.option
 }
 
-func SetXdata(value string) GnuplotOpt {
+func Setxdata(value string) GnuplotOpt {
 	x := xdata{"xdata", value}
 	return x
 }
@@ -2204,7 +2205,7 @@ func (y ydata) getOption() string {
 	return y.option
 }
 
-func SetYdata(value string) GnuplotOpt {
+func Setydata(value string) GnuplotOpt {
 	y := ydata{"ydata", value}
 	return y
 }
