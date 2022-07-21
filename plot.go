@@ -11,26 +11,30 @@ import (
 
 // Plotting functionality uses gnuplot as its backend.
 
-// PlotData holds the data required for plotting a dataset.
-// Df is the DataFrame object you would like to plot.
-// Columns are the columns in Df that you want to plot. Usually, it's a pair of columns [xcol, ycol].
-// If you want to create a bar graph or a histogram, you can add more columns to Columns.
-// Function is an arbitrary function such as sin(x) or an equation of the line of best fit.
-// If you want to graph an arbitrary function, leave Df and Columns as nil.
-// Otherwise, leave Function as "".
-// Opts is whatever gnuplot option you would like to set.
+// A PlotData holds the data required for plotting.
+//
+// If you want to plot an arbitrary function, leave Df and Columns as nil.
+// Otherwise, populate Df and Columns, and leave Function as "".
 type PlotData struct {
-	Df       *DataFrame
-	Columns  []string
+	// Df is the DataFrame object you would like to plot.
+	Df *DataFrame
+
+	// Columns are the columns in Df that you want to plot. Usually, it's a pair of columns [xcol, ycol].
+	// If you want to create a bar graph or a histogram, you can add more columns.
+	Columns []string
+
+	// Function is an arbitrary function such as sin(x) or an equation of the line of best fit.
 	Function string
-	Opts     []GnuplotOpt
+
+	// Opts are options such as `using` or `with`. `set` is passed in as an argument for other plotting functions.
+	Opts []GnuplotOpt
 }
 
-// Plot plots the DataFrame object.
-// Choose two columns to use for the x axis and y axis.
-// Then pass in any options you need. Refer to the gnuplot documentation for options.
-// For example, `set xrange [-10:10]; set xlabel "myX"; set ylabel "myY"; plot "myDf.dat" using 0:1 lc 0 w lines`
-// Plot(<xcol>, <ycol>, SetXrange("[-10:10]"), SetXlabel("myX"), SetYlabel("myY"), Using("0:1 lc 0 w lines"))
+// Plot plots a set of data given by the PlotData object `pd`.
+//
+// Pass in any `set` options you need. Refer to the [gnuplot documentation] for `set` options.
+//
+// [gnuplot documentation]: http://gnuplot.info/docs_5.5/loc9418.html
 func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
 	path := ""
 
@@ -67,11 +71,11 @@ func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
 		case "with":
 			withBuf.WriteString(str)
 		default:
+			return fmt.Errorf("this option is not supported yet")
 		}
 	}
 
 	cmdString := fmt.Sprintf(`%s %s "%s" %s %s`, setBuf.String(), "plot", path, usingBuf.String(), withBuf.String())
-	fmt.Println(cmdString)
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -83,10 +87,13 @@ func Plot(pd PlotData, setOpts ...GnuplotOpt) error {
 	return nil
 }
 
-// PlotN plots n number of datasets side by side.
-// This is useful when you want to compare two different datasets,
+// PlotN plots several PlotData objects `pd` in one graph.
+// Use PlotN when you want to compare two different datasets,
 // or a dataset with a line of best fit.
-// Set options should be passed in separately as a parameter, not inside PlotData.
+//
+// Refer to the [gnuplot documentation] for `set` options.
+//
+// [gnuplot documentation]: http://gnuplot.info/docs_5.5/loc9418.html
 func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 	rand.Seed(time.Now().UnixNano())
 
@@ -128,13 +135,14 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 			case "with":
 				withBuf.WriteString(str)
 			default:
+				return fmt.Errorf("this option is not supported yet")
 			}
 		}
 
 		cmdStringPiece := fmt.Sprintf(`%s %s %s,`, path, usingBuf.String(), withBuf.String())
 		cmdString += cmdStringPiece
 	}
-	fmt.Println(cmdString)
+
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -146,11 +154,11 @@ func PlotN(plotdata []PlotData, setOpts ...GnuplotOpt) error {
 	return nil
 }
 
-// Fit calculates the line of best fit.
-// ff is the fitting function.
-// pd is the PlotData you would like to fit. Only the data pd.Df and pd.Columns will be used.
-// Pass options such as `using` or `via` in opts.
-func Fit(ff string, pd PlotData, opts ...GnuplotOpt) error {
+// Fit fits a user-defined function ff to data given in PlotData pd,
+// and prints out the results.
+//
+// Pass options such as `using` in pd, but `via` in viaOpts.
+func Fit(ff string, pd PlotData, viaOpts ...GnuplotOpt) error {
 	rand.Seed(time.Now().UnixNano())
 	newDf, err := pd.Df.LocCols(pd.Columns...)
 	if err != nil {
@@ -164,11 +172,14 @@ func Fit(ff string, pd PlotData, opts ...GnuplotOpt) error {
 	}
 
 	var usingBuf, viaBuf bytes.Buffer
-	for _, opt := range opts {
+	for _, opt := range pd.Opts {
 		str := opt.createCmdString()
 		if opt.getOption() == "using" {
 			usingBuf.WriteString(str)
 		}
+	}
+	for _, opt := range viaOpts {
+		str := opt.createCmdString()
 		if opt.getOption() == "via" {
 			viaBuf.WriteString(str)
 		}
