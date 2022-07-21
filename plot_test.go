@@ -208,9 +208,9 @@ func TestFit(t *testing.T) {
 				}(),
 				[]string{"date.utc", "value"},
 				"",
-				nil,
+				[]GnuplotOpt{Using("0:1")},
 			},
-			[]GnuplotOpt{Using("0:1"), Via("a,b")},
+			[]GnuplotOpt{Via("a,b")},
 		},
 	}
 	for _, test := range fitTests {
