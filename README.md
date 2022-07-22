@@ -27,12 +27,13 @@ The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/githu
   - [x] Selecting a subset of data
     - [x] At, IAt
     - [x] Loc, ILoc
-  - [ ] Plotting
+    - [ ] Easier filtering (close to that of SQL)
+  - [x] Plotting
     - [x] Set
     - [x] Using
     - [x] Trendline (fit)
     - [x] Statistics
-    - [ ] Categorical count
+    - [x] Categorical count
   - [x] Creating new columns derived from existing columns
     - [x] Creating new columns
     - [x] Applying operations to the new column
