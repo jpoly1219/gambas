@@ -8,7 +8,7 @@ import (
 	"text/tabwriter"
 )
 
-// Series type represents a column of data.
+// A Series represents a column of data.
 type Series struct {
 	data  []interface{}
 	index IndexData
@@ -92,6 +92,8 @@ func (s *Series) PrintRange(start, end int) {
 	}
 	w.Flush()
 }
+
+/* Indexing methods */
 
 // Head prints the first n items in the series.
 func (s *Series) Head(howMany int) {
@@ -230,7 +232,7 @@ func (s *Series) ILoc(min, max int) ([]interface{}, error) {
 	return result, nil
 }
 
-// Summary statistics functions
+/* Summary statistics methods. These are Series-specific, unlike the ones in stats.go. */
 
 // Count counts the number of non-NA elements in a column.
 func (s *Series) Count() StatsResult {
@@ -509,6 +511,8 @@ func (s *Series) ValueCounts() (Series, error) {
 	return newS, nil
 }
 
+/* Series manipulation methods */
+
 // RenameCol renames the series.
 func (s *Series) RenameCol(newName string) {
 	s.name = newName
@@ -533,6 +537,8 @@ func (s *Series) RenameIndex(newNames map[string]string) error {
 
 	return nil
 }
+
+/* Sorting methods */
 
 // SortByIndex sorts the elements in a series by the index.
 func (s *Series) SortByIndex(ascending bool) error {
