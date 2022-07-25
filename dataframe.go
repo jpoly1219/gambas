@@ -109,6 +109,7 @@ func (df *DataFrame) Tail(howMany int) {
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
+// You are only allowed to pass in indices of the DataFrame as rows.
 func (df *DataFrame) LocRows(rows ...[]interface{}) (DataFrame, error) {
 	filteredData := make([][]interface{}, 0)
 	filteredColname := make([]string, 0)
@@ -141,6 +142,7 @@ func (df *DataFrame) LocRows(rows ...[]interface{}) (DataFrame, error) {
 }
 
 // LocRowsItems will return a slice of rows.
+// You are only allowed to pass in indices of the DataFrame as rows.
 // Use this over LocRows if you want to extract the items directly
 // instead of getting a DataFrame object.
 func (df *DataFrame) LocRowsItems(rows ...[]interface{}) ([][]interface{}, error) {
@@ -213,6 +215,7 @@ func (df *DataFrame) LocColsItems(cols ...string) ([][]interface{}, error) {
 }
 
 // Loc indexes the DataFrame object given a slice of row and column labels.
+// You are only allowed to pass in indices of the DataFrame as rows.
 func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (DataFrame, error) {
 	df1, err := df.LocCols(cols...)
 	if err != nil {
@@ -227,7 +230,7 @@ func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (DataFrame, error
 	return df2, nil
 }
 
-// Basic arithmetic operations for columns.
+/* Basic arithmetic operations for columns. */
 
 // ColAdd() adds the given value to each element in the specified column.
 func (df *DataFrame) ColAdd(colname string, value float64) (DataFrame, error) {
