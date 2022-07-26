@@ -20,8 +20,30 @@ const sidebars = {
   docsSidebar: [
     {
       type: 'doc',
-      id: 'intro',
+      id: 'introduction',
       label: 'Introduction',
+    },
+    {
+      type: 'category',
+      label: 'Generator',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'generator/introduction',
+        'generator/creating-new-objects',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'I/O',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'io/introduction',
+        'io/csv',
+        'io/json',
+        'io/excel',
+      ]
     },
     {
       type: 'category',
