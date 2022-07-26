@@ -71,6 +71,7 @@ const sidebars = {
         'dataframe/arithmetic-operations',
         'dataframe/manipulation',
         'dataframe/sorting',
+        'dataframe/reshaping',
       ]
     },
     {
@@ -83,6 +84,26 @@ const sidebars = {
         'plotting/plotting',
         'plotting/plotting-options',
         'plotting/fitting',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'GroupBy',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'groupby/introduction',
+        'groupby/groupby',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Statistics',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'statistics/introduction',
+        'statistics/statistics-functions',
       ]
     },
   ],
