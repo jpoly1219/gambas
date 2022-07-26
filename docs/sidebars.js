@@ -34,12 +34,22 @@ const sidebars = {
         'series/indexing',
         'series/summary-statistics',
         'series/manipulation',
+        'series/sorting',
       ]
     },
     {
-      type: 'doc',
-      id: 'dataframe',
+      type: 'category',
       label: 'DataFrame',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'dataframe/introduction',
+        'dataframe/printing',
+        'dataframe/indexing',
+        'dataframe/arithmetic-operations',
+        'dataframe/manipulation',
+        'dataframe/sorting',
+      ]
     },
   ],
 };
