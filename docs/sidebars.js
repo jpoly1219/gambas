@@ -51,6 +51,18 @@ const sidebars = {
         'dataframe/sorting',
       ]
     },
+    {
+      type: 'category',
+      label: 'Plotting',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'plotting/introduction',
+        'plotting/plotting',
+        'plotting/plotting-options',
+        'plotting/fitting',
+      ]
+    },
   ],
 };
 
