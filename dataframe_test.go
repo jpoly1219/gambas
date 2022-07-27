@@ -16,6 +16,44 @@ func TestDataFramePrint(t *testing.T) {
 	}
 	printTests := []printTest{
 		{
+			DataFrame{
+				[]Series{
+					{
+						[]interface{}{1, 2, 3},
+						IndexData{
+							[]Index{{0, []interface{}{1}}, {1, []interface{}{2}}, {2, []interface{}{3}}},
+							[]string{"group a"},
+						},
+						"group a",
+						"int",
+					},
+					{
+						[]interface{}{4, 5, 6},
+						IndexData{
+							[]Index{{0, []interface{}{1}}, {1, []interface{}{2}}, {2, []interface{}{3}}},
+							[]string{"group a"},
+						},
+						"group b",
+						"int",
+					},
+					{
+						[]interface{}{7, 8, 9},
+						IndexData{
+							[]Index{{0, []interface{}{1}}, {1, []interface{}{2}}, {2, []interface{}{3}}},
+							[]string{"group a"},
+						},
+						"group c",
+						"int",
+					},
+				},
+				IndexData{
+					[]Index{{0, []interface{}{1}}, {1, []interface{}{2}}, {2, []interface{}{3}}},
+					[]string{"group a"},
+				},
+				[]string{"group a", "group b", "group c"},
+			},
+		},
+		{
 			func() DataFrame {
 				newDf, err := ReadCsv("./testfiles/testdropnan1.csv", []string{"Name"})
 				if err != nil {
