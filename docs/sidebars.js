@@ -25,28 +25,6 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'Generator',
-      collapsible: true,
-      collapsed: false,
-      items: [
-        'generator/introduction',
-        'generator/creating-new-objects',
-      ]
-    },
-    {
-      type: 'category',
-      label: 'I/O',
-      collapsible: true,
-      collapsed: false,
-      items: [
-        'io/introduction',
-        'io/csv',
-        'io/json',
-        'io/excel',
-      ]
-    },
-    {
-      type: 'category',
       label: 'Series',
       collapsible: true,
       collapsed: false,
@@ -72,6 +50,37 @@ const sidebars = {
         'dataframe/manipulation',
         'dataframe/sorting',
         'dataframe/reshaping',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Index',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'index/introduction',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Generator',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'generator/introduction',
+        'generator/creating-new-objects',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'I/O',
+      collapsible: true,
+      collapsed: false,
+      items: [
+        'io/introduction',
+        'io/csv',
+        'io/json',
+        'io/excel',
       ]
     },
     {
