@@ -6,7 +6,7 @@
 func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error)
 ```
 
-`ReadCsv` reads a CSV file and returns a new DataFrame object. It is recommended to generate pathToFile using the `path/filepath` package for cross-platform compatibility.
+`ReadCsv` reads a CSV file and returns a new DataFrame object. It is recommended to generate `pathToFile` using the `path/filepath` package for cross-platform compatibility.
 
 ```go
 /*
@@ -38,7 +38,7 @@ Charlie    |    Charlie    17     175
 func WriteCsv(df DataFrame, pathToFile string, skipColumnLabel bool) (os.FileInfo, error)
 ```
 
-`WriteCsv` writes a DataFrame object to CSV file. It is recommended to generate pathToFile using the `path/filepath` package for cross-platform compatibility.
+`WriteCsv` writes a DataFrame object to CSV file. It is recommended to generate `pathToFile` using the `path/filepath` package for cross-platform compatibility.
 
 You can choose whether the output CSV file should contain column labels or not. If you choose to include it, pass `false` to `skipColumnLabel`. Otherwise, pass `true`.
 
