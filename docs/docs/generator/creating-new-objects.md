@@ -52,7 +52,7 @@ myIndexCols := []string{"group a"}
 
 myDf, err := gambas.NewDataFrame(myData, myCols, myIndexCols)
 if err != nil {
-    return err
+    fmt.Println(err)
 }
 
 myDf.Print()
