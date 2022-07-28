@@ -67,9 +67,8 @@ func (s *Series) Print() {
 	w.Flush()
 }
 
-// PrintRange prints x at a given range.
+// PrintRange prints data in a Series object at a given range.
 // Index starts at 0.
-// For example, to print 3 elements starting from the 2nd element, use PrintRange(2, 5).
 func (s *Series) PrintRange(start, end int) {
 	w := new(tabwriter.Writer)
 
@@ -99,12 +98,12 @@ func (s *Series) PrintRange(start, end int) {
 
 /* Indexing methods */
 
-// Head prints the first n items in the series.
+// Head prints the first howMany items in a Series object.
 func (s *Series) Head(howMany int) {
 	s.PrintRange(0, howMany)
 }
 
-// Tail prints the last n items in the dataframe.
+// Tail prints the last howMany items in a Series object.
 func (s *Series) Tail(howMany int) {
 	s.PrintRange(len(s.data)-howMany, len(s.data))
 }
