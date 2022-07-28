@@ -26,10 +26,10 @@ if err != nil {
 mySeries.Print()
 ```
 ```
-     Fruit     
-0    apple     
-1    banana    
-2    cherry
+     |    Fruit     
+0    |    apple     
+1    |    banana    
+2    |    cherry 
 ```
 
 ## NewDataFrame
