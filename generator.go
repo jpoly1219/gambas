@@ -105,3 +105,15 @@ func NewDataFrame(data [][]interface{}, columns []string, indexCols []string) (D
 
 	return df, nil
 }
+
+// NewIndexData creates a new IndexData object.
+func NewIndexData(index [][]interface{}, names []string) (IndexData, error) {
+	indexData := IndexData{}
+	for i, val := range index {
+		idx := Index{i, val}
+		indexData.index = append(indexData.index, idx)
+	}
+	indexData.names = names
+
+	return indexData, nil
+}

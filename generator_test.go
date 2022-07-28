@@ -324,3 +324,51 @@ func TestGeneratorNewDataFrame(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkNewIndexData(b *testing.B) {
+
+}
+
+func TestNewIndexData(t *testing.T) {
+	type newIndexDataTest struct {
+		arg1     [][]interface{}
+		arg2     []string
+		expected IndexData
+	}
+	newIndexDataTests := []newIndexDataTest{
+		{
+			[][]interface{}{{"a"}, {"b"}, {"c"}, {"d"}, {"e"}},
+			[]string{"key"},
+			IndexData{
+				[]Index{
+					{0, []interface{}{"a"}},
+					{1, []interface{}{"b"}},
+					{2, []interface{}{"c"}},
+					{3, []interface{}{"d"}},
+					{4, []interface{}{"e"}},
+				},
+				[]string{"key"},
+			},
+		},
+		{
+			[][]interface{}{{"a", "blue"}, {"b", "yellow"}, {"c", "yellow"}, {"d", "red"}, {"e", "blue"}},
+			[]string{"key", "color"},
+			IndexData{
+				[]Index{
+					{0, []interface{}{"a", "blue"}},
+					{1, []interface{}{"b", "yellow"}},
+					{2, []interface{}{"c", "yellow"}},
+					{3, []interface{}{"d", "red"}},
+					{4, []interface{}{"e", "blue"}},
+				},
+				[]string{"key", "color"},
+			},
+		},
+	}
+	for _, test := range newIndexDataTests {
+		output, err := NewIndexData(test.arg1, test.arg2)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) || err != nil {
+			t.Fatalf("expected: %v, got: %v, err: %v", test.expected, output, err)
+		}
+	}
+}
