@@ -6,7 +6,7 @@
 func ReadJsonByColumns(pathToFile string, indexCols []string) (DataFrame, error)
 ```
 
-`ReadJson` reads a JSON file and returns a new DataFrame object. It is recommended to generate `pathToFile` using the `path/filepath` package for cross-platform compatibility.
+`ReadJsonByColumns` reads a JSON file and returns a new DataFrame object. It is recommended to generate `pathToFile` using the `path/filepath` package for cross-platform compatibility.
 
 The JSON file should be in this format:
 `{"col1":[val1, val2, ...], "col2":[val1, val2, ...], ...}`
