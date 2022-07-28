@@ -48,6 +48,7 @@ func (s *Series) Print() {
 	for i := range s.index.names {
 		fmt.Fprint(w, s.index.names[i], "\t")
 	}
+	fmt.Fprint(w, "|", "\t")
 	fmt.Fprintln(w, s.name, "\t")
 
 	for i := 0; i < len(s.data); i++ {
@@ -59,6 +60,7 @@ func (s *Series) Print() {
 			fmt.Fprint(w, s.index.index[i].value[0], "\t")
 		}
 
+		fmt.Fprint(w, "|", "\t")
 		fmt.Fprint(w, s.data[i], "\t")
 		fmt.Fprintln(w)
 	}
@@ -76,6 +78,7 @@ func (s *Series) PrintRange(start, end int) {
 	for i := range s.index.names {
 		fmt.Fprint(w, s.index.names[i], "\t")
 	}
+	fmt.Fprint(w, "|", "\t")
 	fmt.Fprintln(w, s.name, "\t")
 
 	for i := start; i < end; i++ {
@@ -87,6 +90,7 @@ func (s *Series) PrintRange(start, end int) {
 			fmt.Fprint(w, s.index.index[i].value[0], "\t")
 		}
 
+		fmt.Fprint(w, "|", "\t")
 		fmt.Fprint(w, s.data[i], "\t")
 		fmt.Fprintln(w)
 	}

@@ -100,12 +100,28 @@ func (df *DataFrame) PrintRange(start, end int) {
 
 	w.Init(os.Stdout, 5, 0, 4, ' ', 0)
 
+	for i := range df.index.names {
+		fmt.Fprint(w, df.index.names[i], "\t")
+	}
+
+	fmt.Fprint(w, "|", "\t")
+
 	for i := range df.columns {
 		fmt.Fprint(w, df.columns[i], "\t")
 	}
 	fmt.Fprintln(w)
 
 	for i := start; i < end; i++ {
+		if len(df.index.index[i].value) > 1 {
+			for j := range df.index.index[i].value {
+				fmt.Fprint(w, df.index.index[i].value[j], "\t")
+			}
+		} else {
+			fmt.Fprint(w, df.index.index[i].value[0], "\t")
+		}
+
+		fmt.Fprint(w, "|", "\t")
+
 		for j := range df.columns {
 			fmt.Fprint(w, df.series[j].data[i], "\t")
 		}
