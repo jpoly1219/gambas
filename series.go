@@ -185,9 +185,7 @@ func (s *Series) Loc(idx ...[]interface{}) (Series, error) {
 	return result, nil
 }
 
-// LocItems returns a slice of data at given rows.
-// Use this over Loc if you want to extract the items directly
-// instead of getting a Series object.
+// LocItems acts the exact same as Loc, but returns data as []interface{} instead of Series.
 func (s *Series) LocItems(idx ...[]interface{}) ([]interface{}, error) {
 	indexLength := len(idx[0])
 	for i, eachIndex := range idx {
