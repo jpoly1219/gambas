@@ -96,7 +96,9 @@ cherry
 func (s *Series) Loc(idx ...[]interface{}) (Series, error)
 ```
 
-`Loc` returns a range of data at given rows.
+`Loc` accepts index tuples and returns a `Series` object containing data at the given rows.
+
+Each `idx` item should contain the index of the data you would like to query. For multiindex `Series`, you can either pass in the whole index tuple, or the first index.
 
 ### Example 1: Indexing a single item
 
@@ -186,7 +188,6 @@ mySeries, err := gambas.NewSeries(myData, myName, &myIndexData)
 if err != nil {
     fmt.Println(err)
 }
-// mySeries.Print()
 
 res, err := mySeries.Loc([]interface{}{"a"})
 if err != nil {
@@ -199,4 +200,58 @@ key    color    |    Fruit
 a      red      |    apple     
 a      red      |    cherry    
 a      green    |    kiwi
+```
+
+## LocItems
+
+```go
+func (s *Series) LocItems(idx ...[]interface{}) ([]interface{}, error)
+```
+
+`LocItems` acts the exact same as Loc, but returns data as `[]interface{}` instead of `Series`. For usage, refer to `Loc`.
+
+```go
+myData := []interface{}{"apple", "banana", "cherry", "durian", "kiwi"}
+myName := "Fruit"
+
+mySeries, err := gambas.NewSeries(myData, myName, nil)
+if err != nil {
+    fmt.Println(err)
+}
+
+res, err := mySeries.LocItems([]interface{}{1}, []interface{}{3}, []interface{}{4})
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(res)
+```
+```
+[banana durian kiwi]
+```
+
+## ILoc
+
+```go
+func (s *Series) ILoc(min, max int) ([]interface{}, error)
+```
+
+`ILoc` returns an array of elements at a given integer index range.
+
+```go
+myData := []interface{}{"apple", "banana", "cherry", "durian", "kiwi"}
+myName := "Fruit"
+
+mySeries, err := gambas.NewSeries(myData, myName, nil)
+if err != nil {
+    fmt.Println(err)
+}
+
+res, err := mySeries.ILoc(1, 3)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(res)
+```
+```
+[banana cherry]
 ```
