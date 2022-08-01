@@ -137,7 +137,9 @@ func (s *Series) IAt(ind int) (interface{}, error) {
 	return s.data[ind], nil
 }
 
-// Loc returns a range of data at given rows.
+// Loc accepts index tuples and returns a Series object containing data at the given rows.
+// Each idx item should contain the index of the data you would like to query.
+// For multiindex Series, you can either pass in the whole index tuple, or the first index.
 func (s *Series) Loc(idx ...[]interface{}) (Series, error) {
 	// This makes sure that each index passed are the same length.
 	indexLength := len(idx[0])
