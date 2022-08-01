@@ -12,7 +12,9 @@ func NewSeries(data []interface{}, name string, index *IndexData) (Series, error
 
 `data` should hold items of same data type. Supported data types include `int`, `float64`, `bool`, and `string`.
 
-Leave `index` parameter as `nil`, and `NewSeries` will automatically generate a RangeIndex. The `index` field is meant to be filled when it's called by other functions.
+Leave `index` parameter as `nil`, and `NewSeries` will automatically generate a RangeIndex.
+
+### Example 1: Single index
 
 ```go
 myData := []interface{}{"apple", "banana", "cherry"}
@@ -30,6 +32,31 @@ mySeries.Print()
 0    |    apple     
 1    |    banana    
 2    |    cherry 
+```
+
+### Example 2: Multiindex
+
+```go
+myData := []interface{}{"apple", "banana", "cherry"}
+myName := "Fruit"
+myIndex := [][]interface{}{{"a", "red"}, {"b", "yellow"}, {"c", "red"}}
+
+myIndexData, err := gambas.NewIndexData(myIndex, []string{"key", "color"})
+if err != nil {
+    fmt.Println(err)
+}
+
+mySeries, err := gambas.NewSeries(myData, myName, &myIndexData)
+if err != nil {
+    fmt.Println(err)
+}
+mySeries.Print()
+```
+```
+key    color     |    Fruit     
+a      red       |    apple     
+b      yellow    |    banana    
+c      red       |    cherry
 ```
 
 ## NewDataFrame
@@ -103,6 +130,40 @@ group a    group b    |    group a    group b    group c
 1          4          |    1          4          7          
 2          5          |    2          5          8          
 3          6          |    3          6          9        
+```
+
+## NewIndexData
+
+```go
+func NewIndexData(index [][]interface{}, names []string) (IndexData, error)
+```
+
+`NewIndexData` creates a custom `IndexData` object.
+
+`index` should be a 2D slice that contains index tuples. For single index, the index tuple will contain only one item. For multiindex, the index tuple will contain more than one item.
+
+`names` are labels for each index. The length should match that of `index` items.
+
+## Example 1: Single index
+
+```go
+myIndex := [][]interface{}{{"a"}, {"b"}, {"c"}}
+
+myIndexData, err := gambas.NewIndexData(myIndex, []string{"alphabet"})
+if err != nil {
+    fmt.Println(err)
+}
+```
+
+### Example 2: Multiindex
+
+```go
+myIndex := [][]interface{}{{"a", "red"}, {"b", "yellow"}, {"c", "red"}}
+
+myIndexData, err := gambas.NewIndexData(myIndex, []string{"key", "color"})
+if err != nil {
+    fmt.Println(err)
+}
 ```
 
 ## CreateRangeIndex
