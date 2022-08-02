@@ -1,5 +1,7 @@
 # Indexing
 
+You can index your `Series` with `gambas`'s built-in indexing tools.
+
 ## At
 
 ```go

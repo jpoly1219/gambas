@@ -1,5 +1,7 @@
 # Printing
 
+`gambas` provides several options to print your `Series`.
+
 ## Print
 
 ```go
