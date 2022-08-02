@@ -386,7 +386,7 @@ func (s *Series) Q1() StatsResult {
 }
 
 // Q2 returns the middle quartile (50%) of the elements in a column.
-// This accomplishes the same thing as s.Median().
+// This accomplishes the same thing as Median.
 func (s *Series) Q2() StatsResult {
 	q2Result := s.Median()
 	if q2Result.Err != nil {
