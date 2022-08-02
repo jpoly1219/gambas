@@ -237,7 +237,7 @@ func (s *Series) ILoc(min, max int) ([]interface{}, error) {
 
 /* Summary statistics methods. These are Series-specific, unlike the ones in stats.go. */
 
-// Count counts the number of non-NA elements in a column.
+// Count counts the number of non-NaN elements in a column.
 func (s *Series) Count() StatsResult {
 	count := 0
 	for _, v := range s.data {
