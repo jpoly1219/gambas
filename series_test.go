@@ -4302,7 +4302,7 @@ func BenchmarkSeriesDescribe(b *testing.B) {
 func TestSeriesDescribe(t *testing.T) {
 	type describeTest struct {
 		arg1     Series
-		expected []float64
+		expected []StatsResult
 	}
 	describeTests := []describeTest{
 		{
@@ -4337,7 +4337,17 @@ func TestSeriesDescribe(t *testing.T) {
 				"col1",
 				"float64",
 			},
-			[]float64{3, 456.456, 456.456, 333.333, 123.123, 789.789, 123.123, 456.456, 789.789},
+			[]StatsResult{
+				{"Count", 3, nil},
+				{"Mean", 456.456, nil},
+				{"Median", 456.456, nil},
+				{"Std", 333.333, nil},
+				{"Min", 123.123, nil},
+				{"Max", 789.789, nil},
+				{"Q1", 123.123, nil},
+				{"Q2", 456.456, nil},
+				{"Q3", 789.789, nil},
+			},
 		},
 	}
 	for _, test := range describeTests {

@@ -424,7 +424,7 @@ func (s *Series) Q3() StatsResult {
 
 // Describe runs through the most commonly used statistics functions
 // and prints the output.
-func (s *Series) Describe() ([]float64, error) {
+func (s *Series) Describe() ([]StatsResult, error) {
 	count := s.Count()
 	fmt.Println("Count:", count.Result)
 
@@ -450,7 +450,7 @@ func (s *Series) Describe() ([]float64, error) {
 	if min.Err != nil {
 		return nil, min.Err
 	}
-	fmt.Println("Min:", min)
+	fmt.Println("Min:", min.Result)
 
 	max := s.Max()
 	if max.Err != nil {
@@ -462,7 +462,7 @@ func (s *Series) Describe() ([]float64, error) {
 	if q1.Err != nil {
 		return nil, q1.Err
 	}
-	fmt.Println("Q1:", q1)
+	fmt.Println("Q1:", q1.Result)
 
 	q2 := s.Q2()
 	if q2.Err != nil {
@@ -476,8 +476,8 @@ func (s *Series) Describe() ([]float64, error) {
 	}
 	fmt.Println("Q3:", q3.Result)
 
-	result := []float64{
-		count.Result, mean.Result, median.Result, std.Result, min.Result, max.Result, q1.Result, q2.Result, q3.Result,
+	result := []StatsResult{
+		count, mean, median, std, min, max, q1, q2, q3,
 	}
 
 	return result, nil
