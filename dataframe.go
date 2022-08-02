@@ -196,7 +196,7 @@ func (df *DataFrame) LocRowsItems(rows ...[]interface{}) ([][]interface{}, error
 	return filteredRows, nil
 }
 
-// LocCols returns a column as a new Series object.
+// LocCol returns a column as a new Series object.
 func (df *DataFrame) LocCol(col string) (Series, error) {
 	for _, series := range df.series {
 		if series.name == col {
