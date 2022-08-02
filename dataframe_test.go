@@ -1088,6 +1088,63 @@ func TestDataFrameLocRowsItems(t *testing.T) {
 	}
 }
 
+func BenchmarkDataFrameLocCol(b *testing.B) {
+	testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+	if err != nil {
+		b.Error(err)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		testDf.LocCol("id")
+	}
+}
+
+func TestDataFrameLocCol(t *testing.T) {
+	type dataframeLocColTest struct {
+		arg1     DataFrame
+		arg2     string
+		expected Series
+	}
+	dataframeLocColTests := []dataframeLocColTest{
+		{
+			func() DataFrame {
+				newDf, err := ReadCsv("./testfiles/testdfloccols1.csv", []string{"Name"})
+				if err != nil {
+					t.Error(err)
+				}
+				return newDf
+			}(),
+			"Name",
+			Series{
+				[]interface{}{
+					"Avery Bradley",
+					"Jae Crowder",
+					"John Holland",
+					"R.J. Hunter",
+				},
+				IndexData{
+					[]Index{
+						{0, []interface{}{"Avery Bradley"}},
+						{1, []interface{}{"Jae Crowder"}},
+						{2, []interface{}{"John Holland"}},
+						{3, []interface{}{"R.J. Hunter"}},
+					},
+					[]string{"Name"},
+				},
+				"Name",
+				"string",
+			},
+		},
+	}
+	for _, test := range dataframeLocColTests {
+		output, err := test.arg1.LocCol(test.arg2)
+		if !cmp.Equal(output, test.expected, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) || (!cmp.Equal(output, DataFrame{}, cmp.AllowUnexported(DataFrame{}, Series{}, IndexData{}, Index{})) && err != nil) {
+			t.Fatalf("expected %v, got %v, error %v", test.expected, output, err)
+		}
+	}
+}
+
 func BenchmarkDataFrameLocCols(b *testing.B) {
 	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
 	if err != nil {

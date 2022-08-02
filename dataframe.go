@@ -196,7 +196,23 @@ func (df *DataFrame) LocRowsItems(rows ...[]interface{}) ([][]interface{}, error
 	return filteredRows, nil
 }
 
-// LocRows returns a set of columns as a new DataFrame object, given a list of labels.
+// LocCols returns a column as a new Series object.
+func (df *DataFrame) LocCol(col string) (Series, error) {
+	for _, series := range df.series {
+		if series.name == col {
+			ser, err := NewSeries(series.data, series.name, &series.index)
+			if err != nil {
+				return Series{}, err
+			}
+
+			return ser, nil
+		}
+	}
+
+	return Series{}, fmt.Errorf("column '%v' does not exist", col)
+}
+
+// LocCols returns a set of columns as a new DataFrame object, given a list of labels.
 func (df *DataFrame) LocCols(cols ...string) (DataFrame, error) {
 	filtered2D := make([][]interface{}, 0)
 	for _, column := range cols {
