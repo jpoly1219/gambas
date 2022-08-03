@@ -33,6 +33,7 @@ const sidebars = {
         'series/printing',
         'series/indexing',
         'series/summary-statistics',
+        'series/properties',
         'series/editing-properties',
         'series/sorting',
       ]
