@@ -16,6 +16,22 @@ type Series struct {
 	dtype string
 }
 
+func (s Series) Data() []interface{} {
+	return s.data
+}
+
+func (s Series) Index() IndexData {
+	return s.index
+}
+
+func (s Series) Name() string {
+	return s.name
+}
+
+func (s Series) Dtype() string {
+	return s.dtype
+}
+
 // Len is used to implement the sort.Sort interface.
 func (s Series) Len() int {
 	return len(s.data)
