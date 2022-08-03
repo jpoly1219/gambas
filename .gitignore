@@ -2,6 +2,7 @@
 # /testfiles
 features.md
 todolist.md
+review.md
 *.out
 *.test
 commit*
