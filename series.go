@@ -499,6 +499,8 @@ func (s *Series) Describe() ([]StatsResult, error) {
 	return result, nil
 }
 
+/* Properties */
+
 // ValueCounts returns a Series containing the number of unique values in a given Series.
 func (s *Series) ValueCounts() (Series, error) {
 	valueCountMap := make(map[interface{}]int, 0)
@@ -530,6 +532,25 @@ func (s *Series) ValueCounts() (Series, error) {
 	return newS, nil
 }
 
+// IndexHasDuplicateValues checks if the Series have duplicate index values.
+func (s *Series) IndexHasDuplicateValues() (bool, error) {
+	indexDataMap := make(map[string]interface{}, 0)
+
+	for _, index := range s.index.index {
+		key, err := index.hashKeyValueOnly()
+		if err != nil {
+			return false, err
+		}
+		val, exists := indexDataMap[*key]
+		if !exists {
+			indexDataMap[*key] = val
+		} else {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
 /* Series manipulation methods */
 
 // RenameCol renames the series.
@@ -559,7 +580,8 @@ func (s *Series) RenameIndex(newNames map[string]string) error {
 
 /* Sorting methods */
 
-// SortByIndex sorts the elements in a series by the index.
+// SortByIndex sorts the elements in a Series by index.
+// Pass in true if you want to sort in ascending order, and false for descending order.
 func (s *Series) SortByIndex(ascending bool) error {
 	indDatMap := make(map[string]interface{})
 	for i, data := range s.data {
@@ -591,7 +613,7 @@ func (s *Series) SortByIndex(ascending bool) error {
 func (s *Series) SortByGivenIndex(index IndexData) error {
 	rowMap := make(map[string]interface{}, 0)
 	for i, data := range s.data {
-		key, err := s.index.index[i].hashKey()
+		key, err := s.index.index[i].hashKeyValueOnly()
 		if err != nil {
 			return err
 		}
@@ -601,7 +623,7 @@ func (s *Series) SortByGivenIndex(index IndexData) error {
 	s.index = index
 
 	for i, index := range s.index.index {
-		key, err := index.hashKey()
+		key, err := index.hashKeyValueOnly()
 		if err != nil {
 			return err
 		}
@@ -612,6 +634,7 @@ func (s *Series) SortByGivenIndex(index IndexData) error {
 }
 
 // SortByValues sorts the Series by its values.
+// Pass in true if you want to sort in ascending order, and false for descending order.
 func (s *Series) SortByValues(ascending bool) error {
 	rowMap := make(map[interface{}]Index, 0)
 	keyStore := make(sort.StringSlice, 0)
@@ -639,23 +662,4 @@ func (s *Series) SortByValues(ascending bool) error {
 	}
 
 	return nil
-}
-
-// IndexHasDuplicateValues checks if the Series have duplicate index values.
-func (s *Series) IndexHasDuplicateValues() (bool, error) {
-	indexDataMap := make(map[string]interface{}, 0)
-
-	for _, index := range s.index.index {
-		key, err := index.hashKeyValueOnly()
-		if err != nil {
-			return false, err
-		}
-		val, exists := indexDataMap[*key]
-		if !exists {
-			indexDataMap[*key] = val
-		} else {
-			return true, nil
-		}
-	}
-	return false, nil
 }
