@@ -103,9 +103,8 @@ func (df *DataFrame) Print() {
 	w.Flush()
 }
 
-// PrintRange prints x at a given range.
+// PrintRange prints data in a DataFrame object at a given range.
 // Index starts at 0.
-// For example, to print 3 elements starting from the 2nd element, use PrintRange(2, 5).
 func (df *DataFrame) PrintRange(start, end int) {
 	w := new(tabwriter.Writer)
 
@@ -141,18 +140,18 @@ func (df *DataFrame) PrintRange(start, end int) {
 	w.Flush()
 }
 
-// Head prints the first n items in the dataframe.
+// Head prints the first howMany items in a DataFrame object.
 func (df *DataFrame) Head(howMany int) {
 	df.PrintRange(0, howMany)
 }
 
-// Tail prints the last n items in the dataframe.
+// Tail prints the last howMany items in a DataFrame object.
 func (df *DataFrame) Tail(howMany int) {
 	df.PrintRange(len(df.series[0].data)-howMany, len(df.series[0].data))
 }
 
 // LocRows returns a set of rows as a new DataFrame object, given a list of labels.
-// You are only allowed to pass in indices of the DataFrame as rows.
+// You are only allowed to pass in the indices of the DataFrame as rows.
 func (df *DataFrame) LocRows(rows ...[]interface{}) (DataFrame, error) {
 	filteredData := make([][]interface{}, 0)
 	filteredColname := make([]string, 0)
@@ -273,7 +272,7 @@ func (df *DataFrame) LocColsItems(cols ...string) ([][]interface{}, error) {
 	return filtered2D, nil
 }
 
-// Loc indexes the DataFrame object given a slice of row and column labels.
+// Loc indexes the DataFrame object given a slice of row and column labels, and returns the result as a new DataFrame object.
 // You are only allowed to pass in indices of the DataFrame as rows.
 func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (DataFrame, error) {
 	df1, err := df.LocCols(cols...)
