@@ -17,6 +17,17 @@ type DataFrame struct {
 	columns []string
 }
 
+func (df DataFrame) Series() []Series {
+	return df.series
+}
+
+func (df DataFrame) Index() IndexData {
+	return df.index
+}
+func (df DataFrame) Columns() []string {
+	return df.columns
+}
+
 // MarshalJSON is used to implement the json.Marshaler interface{}.
 func (df *DataFrame) MarshalJSON() ([]byte, error) {
 	type serJson struct {
