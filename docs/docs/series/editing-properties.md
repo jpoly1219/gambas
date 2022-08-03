@@ -2,6 +2,8 @@
 
 You can edit your `Series` object using these functions.
 
+The data used in the example `neo_v2.csv` is NASA's list of Nearest Earth Objects, sourced from [Kaggle](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects).
+
 ## RenameCol
 
 ```go
