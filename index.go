@@ -16,6 +16,14 @@ type Index struct {
 	value []interface{}
 }
 
+func (i Index) Id() int {
+	return i.id
+}
+
+func (i Index) Value() []interface{} {
+	return i.value
+}
+
 // hashKey creates a hash of the Index object for use in maps.
 func (i Index) hashKey() (*string, error) {
 	if len(i.value) == 0 {
@@ -59,6 +67,14 @@ func (i Index) hashKeyValueOnly() (*string, error) {
 type IndexData struct {
 	index []Index
 	names []string
+}
+
+func (id IndexData) Index() []Index {
+	return id.index
+}
+
+func (id IndexData) Names() []string {
+	return id.names
 }
 
 // Len is used to implement the sort.Sort interface.
