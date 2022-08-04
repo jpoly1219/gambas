@@ -2,6 +2,8 @@
 
 You can index your `DataFrame` with `gambas`'s built-in indexing tools.
 
+The data used in the example `2019.csv` is UN's 2019 World Happiness Report, sourced from [Kaggle](https://www.kaggle.com/datasets/unsdsn/world-happiness).
+
 ## LocRows
 
 ```go
