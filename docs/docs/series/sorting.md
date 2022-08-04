@@ -1,6 +1,6 @@
 # Sorting
 
-In some occasions, you may need to sort your data in different order. `gambas` allows you to sort your Series in a couple of different ways.
+In some occasions, you may need to sort your data in different order. `gambas` allows you to sort your `Series` in a couple of different ways.
 
 The data used in the example `neo_v2.csv` is NASA's list of Nearest Earth Objects, sourced from [Kaggle](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects).
 

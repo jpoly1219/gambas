@@ -290,7 +290,7 @@ func (df *DataFrame) Loc(cols []string, rows ...[]interface{}) (DataFrame, error
 
 /* Basic arithmetic operations for columns. */
 
-// ColAdd() adds the given value to each element in the specified column.
+// ColAdd adds the given value to each element in the specified column.
 func (df *DataFrame) ColAdd(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 
@@ -311,7 +311,7 @@ func (df *DataFrame) ColAdd(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// ColSub() subtracts the given value from each element in the specified column.
+// ColSub subtracts the given value from each element in the specified column.
 func (df *DataFrame) ColSub(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
@@ -331,7 +331,7 @@ func (df *DataFrame) ColSub(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// ColMul() multiplies each element in the specified column by the given value.
+// ColMul multiplies each element in the specified column by the given value.
 func (df *DataFrame) ColMul(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
@@ -351,7 +351,7 @@ func (df *DataFrame) ColMul(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// ColDiv() divides each element in the specified column by the given value.
+// ColDiv divides each element in the specified column by the given value.
 func (df *DataFrame) ColDiv(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
@@ -371,7 +371,7 @@ func (df *DataFrame) ColDiv(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// ColMod() applies modulus calculations on each element in the specified column, returning the remainder.
+// ColMod applies modulus calculations on each element in the specified column, returning the remainder.
 func (df *DataFrame) ColMod(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for _, series := range newDf.series {
@@ -392,7 +392,7 @@ func (df *DataFrame) ColMod(colname string, value float64) (DataFrame, error) {
 
 // Basic boolean operators for columns.
 
-// ColGt() checks if each element in the specified column is greater than the given value.
+// ColGt checks if each element in the specified column is greater than the given value.
 func (df *DataFrame) ColGt(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i, series := range newDf.series {
@@ -413,7 +413,7 @@ func (df *DataFrame) ColGt(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// ColLt() checks if each element in the specified column is less than the given value.
+// ColLt checks if each element in the specified column is less than the given value.
 func (df *DataFrame) ColLt(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i, series := range newDf.series {
@@ -434,7 +434,7 @@ func (df *DataFrame) ColLt(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
-// ColEq() checks if each element in the specified column is equal to the given value.
+// ColEq checks if each element in the specified column is equal to the given value.
 func (df *DataFrame) ColEq(colname string, value float64) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i, series := range newDf.series {
@@ -455,11 +455,17 @@ func (df *DataFrame) ColEq(colname string, value float64) (DataFrame, error) {
 	return DataFrame{}, fmt.Errorf("colname does not match any of the existing column names")
 }
 
+/* Editing Properties */
+
 // NewCol creates a new column with the given data and column name.
-// To create a blank column, pass in a slice with empty string values
-// like so: []interface{}{"", "", "", ...}
+// To create a blank column, pass in nil.
 func (df *DataFrame) NewCol(colname string, data []interface{}) (DataFrame, error) {
 	newDf := copyDf(df)
+	if data == nil {
+		for i := 0; i < len(df.series[0].data); i++ {
+			data = append(data, math.NaN())
+		}
+	}
 	newSeries, err := NewSeries(data, colname, &newDf.index)
 	if err != nil {
 		return DataFrame{}, err
@@ -472,8 +478,7 @@ func (df *DataFrame) NewCol(colname string, data []interface{}) (DataFrame, erro
 }
 
 // NewDerivedCol creates a new column derived from an existing column.
-// It copies over the data from a column named srcCol into a new column.
-// You can then apply column operations such as ColAdd to the new column.
+// It copies over the data from srcCol into a new column.
 func (df *DataFrame) NewDerivedCol(colname, srcCol string) (DataFrame, error) {
 	newDf := copyDf(df)
 	for i := range newDf.series {
@@ -521,6 +526,79 @@ func (df *DataFrame) RenameCol(colnames map[string]string) error {
 
 	return nil
 }
+
+// DropNaN drops rows or columns with NaN values.
+// Specify axis to choose whether to remove rows with NaN or columns with NaN.
+// axis=0 is row, axis=1 is column.
+func (df *DataFrame) DropNaN(axis int) (DataFrame, error) {
+	if axis > 1 || axis < 0 {
+		return DataFrame{}, fmt.Errorf("axis can only be either 0 or 1")
+	}
+
+	newDf := df
+
+	// for each series, iterate through the series until NaN is found
+	// if NaN, save NaN index
+	// sort the NaNindex slice
+
+	indexSlice := make([]int, 0)
+	seriesHasNaNSlice := make([]bool, len(newDf.series))
+	for i, ser := range newDf.series {
+		for j, data := range ser.data {
+			switch v := data.(type) {
+			case string:
+				if v == "NaN" {
+					indexSlice = append(indexSlice, j)
+					seriesHasNaNSlice[i] = true
+				}
+			case float64:
+				if math.IsNaN(v) {
+					indexSlice = append(indexSlice, j)
+					seriesHasNaNSlice[i] = true
+				}
+			}
+		}
+	}
+
+	sort.Ints(indexSlice)
+
+	// deleting rows containing NaN
+	// for each series, remove data at the index. length of newDf.series.data will decrease by 1.
+	// subtract 1 from each index so that it matches the new length newDf.series.data.
+	if axis == 0 {
+		for i := range newDf.series {
+			iSlice := make([]int, len(indexSlice))
+			copy(iSlice, indexSlice)
+
+			for j, index := range iSlice {
+				newDf.series[i].index.index = append(newDf.series[i].index.index[:index], newDf.series[i].index.index[index+1:]...)
+				newDf.series[i].data = append(newDf.series[i].data[:index], newDf.series[i].data[index+1:]...)
+
+				for k := j + 1; k < len(iSlice); k++ {
+					iSlice[k] -= 1
+				}
+			}
+		}
+		newDf.index.index = newDf.series[0].index.index
+	}
+
+	// deleting columns containing NaN
+	// for each series, remove data at the index. length of newDf.series.data will decrease by 1.
+	// subtract 1 from each index so that it matches the new length newDf.series.data.
+	if axis == 1 {
+		for i, hasNaN := range seriesHasNaNSlice {
+			if hasNaN {
+				newDf.columns = append(newDf.columns[:i], newDf.columns[i+1:]...)
+				newDf.series = append(newDf.series[:i], newDf.series[i+1:]...)
+				seriesHasNaNSlice = append(seriesHasNaNSlice[:i], seriesHasNaNSlice[i+1:]...)
+			}
+		}
+	}
+
+	return *newDf, nil
+}
+
+/* Merging */
 
 // MergeDfsHorizontally merges two DataFrame objects side by side.
 // The target DataFrame will always be appended to the right of the source DataFrame.
@@ -603,7 +681,7 @@ func (df *DataFrame) MergeDfsVertically(target DataFrame) (DataFrame, error) {
 	return newDf, nil
 }
 
-// Sorting functions
+/* Sorting Functions */
 
 // SortByIndex sorts the items by index.
 func (df *DataFrame) SortByIndex(ascending bool) error {
@@ -616,7 +694,7 @@ func (df *DataFrame) SortByIndex(ascending bool) error {
 	return nil
 }
 
-// SortByValues sorts the items by values in a selected series.
+// SortByValues sorts the items by values in a selected Series.
 func (df *DataFrame) SortByValues(by string, ascending bool) error {
 	var index IndexData
 	for i := range df.series {
@@ -657,78 +735,9 @@ func (df *DataFrame) SortIndexColFirst() {
 	}
 }
 
-// DropNaN drops rows or columns with NaN values.
-// Specify axis to choose whether to remove rows with NaN or columns with NaN.
-// axis=0 is row, axis=1 is column.
-func (df *DataFrame) DropNaN(axis int) (DataFrame, error) {
-	if axis > 1 || axis < 0 {
-		return DataFrame{}, fmt.Errorf("axis can only be either 0 or 1")
-	}
+/* Reshaping Fuctions */
 
-	newDf := df
-
-	// for each series, iterate through the series until NaN is found
-	// if NaN, save NaN index
-	// sort the NaNindex slice
-
-	indexSlice := make([]int, 0)
-	seriesHasNaNSlice := make([]bool, len(newDf.series))
-	for i, ser := range newDf.series {
-		for j, data := range ser.data {
-			switch v := data.(type) {
-			case string:
-				if v == "NaN" {
-					indexSlice = append(indexSlice, j)
-					seriesHasNaNSlice[i] = true
-				}
-			case float64:
-				if math.IsNaN(v) {
-					indexSlice = append(indexSlice, j)
-					seriesHasNaNSlice[i] = true
-				}
-			}
-		}
-	}
-
-	sort.Ints(indexSlice)
-
-	// deleting rows containing NaN
-	// for each series, remove data at the index. length of newDf.series.data will decrease by 1.
-	// subtract 1 from each index so that it matches the new length newDf.series.data.
-	if axis == 0 {
-		for i := range newDf.series {
-			iSlice := make([]int, len(indexSlice))
-			copy(iSlice, indexSlice)
-
-			for j, index := range iSlice {
-				newDf.series[i].index.index = append(newDf.series[i].index.index[:index], newDf.series[i].index.index[index+1:]...)
-				newDf.series[i].data = append(newDf.series[i].data[:index], newDf.series[i].data[index+1:]...)
-
-				for k := j + 1; k < len(iSlice); k++ {
-					iSlice[k] -= 1
-				}
-			}
-		}
-		newDf.index.index = newDf.series[0].index.index
-	}
-
-	// deleting columns containing NaN
-	// for each series, remove data at the index. length of newDf.series.data will decrease by 1.
-	// subtract 1 from each index so that it matches the new length newDf.series.data.
-	if axis == 1 {
-		for i, hasNaN := range seriesHasNaNSlice {
-			if hasNaN {
-				newDf.columns = append(newDf.columns[:i], newDf.columns[i+1:]...)
-				newDf.series = append(newDf.series[:i], newDf.series[i+1:]...)
-				seriesHasNaNSlice = append(seriesHasNaNSlice[:i], seriesHasNaNSlice[i+1:]...)
-			}
-		}
-	}
-
-	return *newDf, nil
-}
-
-// Pivot returns an organized dataframe that has values corresponding to the index and the given column.
+// Pivot returns an organized Dataframe that has values corresponding to the index and the given column.
 func (df *DataFrame) Pivot(column, value string) (DataFrame, error) {
 	// check if index contains duplicate entires.
 	// for the same index, if column has a value that is repeated, then raise an error.
