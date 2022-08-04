@@ -48,7 +48,7 @@ const sidebars = {
         'dataframe/printing',
         'dataframe/indexing',
         'dataframe/arithmetic-operations',
-        'dataframe/manipulation',
+        'dataframe/editing-properties',
         'dataframe/sorting',
         'dataframe/reshaping',
       ]
