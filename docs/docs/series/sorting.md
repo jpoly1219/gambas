@@ -50,10 +50,12 @@ id         |    est_diameter_min
 ## SortByGivenIndex
 
 ```go
-func (s *Series) SortByGivenIndex(index IndexData) error
+func (s *Series) SortByGivenIndex(index IndexData, withId bool) error
 ```
 
 `SortByGivenIndex` sorts the `Series` by a given index.
+
+`withId` should be left as `false`. This field is only used for internal purposes.
 
 ```go
 df, err := gambas.ReadCsv(filepath.Join(".", "neo_v2.csv"), []string{"id"})
@@ -80,7 +82,7 @@ if err != nil {
     fmt.Println(err)
 }
 
-col1.SortByGivenIndex(ci)
+col1.SortByGivenIndex(ci, false)
 col1.Head(5)
 ```
 ```
