@@ -1478,7 +1478,7 @@ type terminal struct {
 }
 
 func (t terminal) createCmdString() string {
-	return fmt.Sprintf(`set terminal "%s"`, t.value)
+	return fmt.Sprintf(`set terminal %s`, t.value)
 }
 
 func (t terminal) getOption() string {

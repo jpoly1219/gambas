@@ -706,7 +706,7 @@ func (df *DataFrame) SortByValues(by string, ascending bool) error {
 	}
 
 	for i := range df.series {
-		df.series[i].SortByGivenIndex(index)
+		df.series[i].SortByGivenIndex(index, true)
 	}
 
 	df.index = index

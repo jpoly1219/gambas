@@ -4867,7 +4867,7 @@ func BenchmarkSeriesSortByGivenIndex(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		testDf.series[0].SortByGivenIndex(testDf.index)
+		testDf.series[0].SortByGivenIndex(testDf.index, true)
 	}
 }
 
@@ -5021,7 +5021,7 @@ func TestSeriesSortByGivenIndex(t *testing.T) {
 	}
 
 	for _, test := range sortByGivenIndexTests {
-		test.arg1.SortByGivenIndex(test.arg2)
+		test.arg1.SortByGivenIndex(test.arg2, true)
 		if !cmp.Equal(test.arg1, test.expected, cmp.AllowUnexported(Series{}, IndexData{}, Index{})) {
 			t.Fatalf("expected %v, got %v", test.expected, test.arg1)
 		}

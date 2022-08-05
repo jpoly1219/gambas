@@ -610,10 +610,16 @@ func (s *Series) SortByIndex(ascending bool) error {
 }
 
 // SortByGivenIndex sorts the Series by a given index.
-func (s *Series) SortByGivenIndex(index IndexData) error {
+func (s *Series) SortByGivenIndex(index IndexData, withId bool) error {
 	rowMap := make(map[string]interface{}, 0)
 	for i, data := range s.data {
-		key, err := s.index.index[i].hashKey()
+		var key *string
+		var err error
+		if withId {
+			key, err = s.index.index[i].hashKey()
+		} else {
+			key, err = s.index.index[i].hashKeyValueOnly()
+		}
 		if err != nil {
 			return err
 		}
@@ -623,7 +629,13 @@ func (s *Series) SortByGivenIndex(index IndexData) error {
 	s.index = index
 
 	for i, index := range s.index.index {
-		key, err := index.hashKey()
+		var key *string
+		var err error
+		if withId {
+			key, err = index.hashKey()
+		} else {
+			key, err = index.hashKeyValueOnly()
+		}
 		if err != nil {
 			return err
 		}
