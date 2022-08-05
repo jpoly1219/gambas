@@ -49,6 +49,7 @@ const sidebars = {
         'dataframe/indexing',
         'dataframe/arithmetic-operations',
         'dataframe/editing-properties',
+        'dataframe/merging',
         'dataframe/sorting',
         'dataframe/reshaping',
       ]
