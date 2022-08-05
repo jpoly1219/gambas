@@ -613,7 +613,7 @@ func (s *Series) SortByIndex(ascending bool) error {
 func (s *Series) SortByGivenIndex(index IndexData) error {
 	rowMap := make(map[string]interface{}, 0)
 	for i, data := range s.data {
-		key, err := s.index.index[i].hashKeyValueOnly()
+		key, err := s.index.index[i].hashKey()
 		if err != nil {
 			return err
 		}
@@ -623,7 +623,7 @@ func (s *Series) SortByGivenIndex(index IndexData) error {
 	s.index = index
 
 	for i, index := range s.index.index {
-		key, err := index.hashKeyValueOnly()
+		key, err := index.hashKey()
 		if err != nil {
 			return err
 		}
