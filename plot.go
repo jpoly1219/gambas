@@ -185,7 +185,7 @@ func Fit(ff string, pd PlotData, viaOpts ...GnuplotOpt) error {
 		}
 	}
 
-	cmdString := fmt.Sprintf(`%s %s "%s" %s %s`, "fit", ff, path, usingBuf.String(), viaBuf.String())
+	cmdString := fmt.Sprintf(`%s %s "%s" %s %s`, `set datafile sep ","; fit`, ff, path, usingBuf.String(), viaBuf.String())
 	cmd := exec.Command("gnuplot", "-persist", "-e", cmdString)
 	combOutput, err := cmd.CombinedOutput()
 	if err != nil {
