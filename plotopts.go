@@ -27,7 +27,7 @@ func (a angles) getOption() string {
 	return a.option
 }
 
-func SetAngles(value string) GnuplotOpt {
+func Setangles(value string) GnuplotOpt {
 	a := angles{"angles", value}
 	return a
 }
