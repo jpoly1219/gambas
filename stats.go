@@ -16,7 +16,7 @@ type StatsResult struct {
 	Err      error
 }
 
-// Count counts the number of non-NA elements in a column.
+// Count counts the number of non-NaN elements in a dataset.
 func Count(dataset []interface{}) StatsResult {
 	count := 0
 	for _, v := range dataset {
@@ -28,7 +28,7 @@ func Count(dataset []interface{}) StatsResult {
 	return StatsResult{"Count", float64(count), nil}
 }
 
-// Mean returns the mean of the elements in a column.
+// Mean returns the mean of the elements in a dataset.
 func Mean(dataset []interface{}) StatsResult {
 	mean := 0.0
 
@@ -52,7 +52,7 @@ func Mean(dataset []interface{}) StatsResult {
 	return StatsResult{"Mean", roundedMean, nil}
 }
 
-// Median returns the median of the elements in a column.
+// Median returns the median of the elements in a dataset.
 func Median(dataset []interface{}) StatsResult {
 	data, err := interface2F64Slice(dataset)
 	if err != nil {
@@ -80,7 +80,7 @@ func Median(dataset []interface{}) StatsResult {
 	}
 }
 
-// Std returns the sample standard deviation of the elements in a column.
+// Std returns the sample standard deviation of the elements in a dataset.
 func Std(dataset []interface{}) StatsResult {
 	std := 0.0
 	meanResult := Mean(dataset) // this also checks that all data can be converted to float64.
@@ -99,7 +99,7 @@ func Std(dataset []interface{}) StatsResult {
 	return StatsResult{"Std", roundedStd, nil}
 }
 
-// Min returns the smallest element in a column.
+// Min returns the smallest element in a dataset.
 func Min(dataset []interface{}) StatsResult {
 	data, err := interface2F64Slice(dataset)
 	if err != nil {
@@ -120,7 +120,7 @@ func Min(dataset []interface{}) StatsResult {
 	return StatsResult{"Min", min, nil}
 }
 
-// Max returns the largest element is a column.
+// Max returns the largest element is a dataset.
 func Max(dataset []interface{}) StatsResult {
 	data, err := interface2F64Slice(dataset)
 	if err != nil {
@@ -141,7 +141,7 @@ func Max(dataset []interface{}) StatsResult {
 	return StatsResult{"Max", max, nil}
 }
 
-// Q1 returns the lower quartile (25%) of the elements in a column.
+// Q1 returns the lower quartile (25%) of the elements in a dataset.
 // This does not include the median during calculation.
 func Q1(dataset []interface{}) StatsResult {
 	data, err := interface2F64Slice(dataset)
@@ -167,8 +167,8 @@ func Q1(dataset []interface{}) StatsResult {
 	}
 }
 
-// Q2 returns the middle quartile (50%) of the elements in a column.
-// This accomplishes the same thing as s.Median().
+// Q2 returns the middle quartile (50%) of the elements in a dataset.
+// This accomplishes the same thing as Median.
 func Q2(dataset []interface{}) StatsResult {
 	q2Result := Median(dataset)
 	if q2Result.Err != nil {
@@ -178,7 +178,7 @@ func Q2(dataset []interface{}) StatsResult {
 	return StatsResult{"Q2", q2Result.Result, nil}
 }
 
-// Q3 returns the upper quartile (75%) of the elements in a column.
+// Q3 returns the upper quartile (75%) of the elements in a dataset.
 // This does not include the median during calculation.
 func Q3(dataset []interface{}) StatsResult {
 	data, err := interface2F64Slice(dataset)
