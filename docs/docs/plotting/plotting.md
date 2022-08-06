@@ -1,5 +1,7 @@
 # Plotting
 
+The data used in the example `air_quality_no2.csv` shows the level of NO2 in Antwep, Paris, and London recorded over a certain time peried, sourced from [pandas-dev Github repository](https://github.com/pandas-dev/pandas/blob/main/doc/data/air_quality_no2.csv).
+
 ## Plot
 
 ```go
