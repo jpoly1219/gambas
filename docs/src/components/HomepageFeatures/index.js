@@ -8,7 +8,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        gambas aims to be intuitive and easy to use.
+        gambas is intuitive and easy to use. Become a data wrangler in no time.
       </>
     ),
   },
@@ -17,7 +17,7 @@ const FeatureList = [
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        gambas leverages the power of goroutines to quickly process data.
+        gambas leverages the power of goroutines to quickly process data (coming soon).
       </>
     ),
   },
