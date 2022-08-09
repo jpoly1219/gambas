@@ -1,6 +1,8 @@
-# Changelog for v0.3.0
+# Changelog for v0.2.2
 
-## New features:
+## *==Documentation Update==*
+
+### New features:
 - We have a new documentation page! I thought that pkg.go.dev page left a lot to be desired, so I made a separate documentation page for a better experience.
 - `Series`, `DataFrame`, `IndexData`, and `Index` types now have a getter method that returns its private field values.
 ```go
@@ -79,9 +81,9 @@ func (df *DataFrame) LocCol(col string) (Series, error)
 ```
 
 
-## Changes
+### Changes
 - `Describe` now returns a `[]StatsResult` instead of `[]float64`.
 - `SortByGivenIndex` now accepts `withId` field for internal uses. For normal use, just pass `false`.
 
-## Bug fixes
+### Bug fixes
 - `Fit` no longer bugs out while reading certain CSV files.
