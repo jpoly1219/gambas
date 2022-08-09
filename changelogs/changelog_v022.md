@@ -3,7 +3,7 @@
 ## *==Documentation Update==*
 
 ### New features:
-- We have a new documentation page! I thought that pkg.go.dev page left a lot to be desired, so I made a separate documentation page for a better experience.
+- We have a new [documentation page](https://jpoly1219.github.io/gambas/)! I thought that pkg.go.dev page left a lot to be desired, so I made a separate documentation page for a better experience.
 - `Series`, `DataFrame`, `IndexData`, and `Index` types now have a getter method that returns its private field values.
 ```go
 type Series struct {
