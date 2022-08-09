@@ -17,7 +17,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'jpoly1219', // Usually your GitHub org/user name.
-  projectName: 'gambas', // Usually your repo name.
+  projectName: 'jpoly1219.github.io', // Usually your repo name.
   trailingSlash: false,
 
   // Even if you don't use internalization, you can use this field to set useful
