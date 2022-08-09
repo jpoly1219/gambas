@@ -69,7 +69,6 @@ const sidebars = {
       collapsible: true,
       collapsed: false,
       items: [
-        'generator/introduction',
         'generator/creating-new-objects',
       ]
     },
