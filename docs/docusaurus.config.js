@@ -9,7 +9,7 @@ const config = {
   title: 'gambas',
   tagline: 'The data analysis package for Gophers',
   url: 'https://jpoly1219.github.io',
-  baseUrl: '',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   // favicon: 'img/favicon.ico',
