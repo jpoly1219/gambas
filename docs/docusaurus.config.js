@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'gambas',
   tagline: 'The data analysis package for Gophers',
-  url: 'https://jpoly1219.github.io/',
-  baseUrl: '/gambas/',
+  url: 'https://jpoly1219.github.io',
+  baseUrl: '',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   // favicon: 'img/favicon.ico',
