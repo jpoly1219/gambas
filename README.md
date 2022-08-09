@@ -11,7 +11,8 @@ $ go get -u github.com/jpoly1219/gambas
 
 ## Documentation
 ---
-The documentation can be found in our [pkg.go.dev page](https://pkg.go.dev/github.com/jpoly1219/gambas).
+The documentation can be found in our [docs page](https://jpoly1219.github.io/gambas/).
+We also have a link to the [pkg.go.dev page](https://pkg.go.dev/github.com/jpoly1219/gambas).
 
 ## Project Goals
 ---
