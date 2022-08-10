@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"runtime"
 	"sort"
+	"sync"
 	"text/tabwriter"
 )
 
@@ -267,27 +269,65 @@ func (s *Series) Count() StatsResult {
 
 // Mean returns the mean of the elements in a column.
 func (s *Series) Mean() StatsResult {
-	mean := 0.0
-
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Mean", math.NaN(), err}
 	}
-	sort.Float64s(data)
 
-	total := len(data)
-	if total == 0 {
-		return StatsResult{"Mean", math.NaN(), fmt.Errorf("no elements in this column")}
+	n := runtime.NumCPU()
+	segment := make([][]float64, 0, n)
+	size := (len(data) + n - 1) / n
+	for i := 0; i < len(data); i += size {
+		end := i + size
+		if end > len(data) {
+			end = len(data)
+		}
+		segment = append(segment, data[i:end])
 	}
+	result := make([]float64, n)
+	var wg sync.WaitGroup
+	wg.Add(n)
 
-	for _, v := range data {
-		mean += v
+	for i, values := range segment {
+		go func(index int, sublist []float64) {
+			defer wg.Done()
+			sum := 0.0
+			for _, number := range sublist {
+				sum += number
+			}
+			result[index] = sum
+		}(i, values)
 	}
+	wg.Wait()
 
+	mean := 0.0
+	for _, segSum := range result {
+		mean += segSum
+	}
 	mean /= float64(len(data))
 	roundedMean := math.Round(mean*1000) / 1000
-
 	return StatsResult{"Mean", roundedMean, nil}
+	// mean := 0.0
+
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Mean", math.NaN(), err}
+	// }
+	// // sort.Float64s(data)
+
+	// total := len(data)
+	// if total == 0 {
+	// 	return StatsResult{"Mean", math.NaN(), fmt.Errorf("no elements in this column")}
+	// }
+
+	// for _, v := range data {
+	// 	mean += v
+	// }
+
+	// mean /= float64(len(data))
+	// roundedMean := math.Round(mean*1000) / 1000
+
+	// return StatsResult{"Mean", roundedMean, nil}
 }
 
 // Median returns the median of the elements in a column.
