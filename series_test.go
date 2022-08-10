@@ -3174,7 +3174,7 @@ func TestSeriesCount(t *testing.T) {
 }
 
 func BenchmarkSeriesMean(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
 	if err != nil {
 		b.Error(err)
 	}
