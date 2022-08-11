@@ -3174,14 +3174,60 @@ func TestSeriesCount(t *testing.T) {
 }
 
 func BenchmarkSeriesMean(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Mean()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Mean()
+			}
+		})
 	}
 }
 
@@ -3259,14 +3305,60 @@ func TestSeriesMean(t *testing.T) {
 }
 
 func BenchmarkSeriesMedian(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Median()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Median()
+			}
+		})
 	}
 }
 
@@ -3406,14 +3498,60 @@ func TestSeriesMedian(t *testing.T) {
 }
 
 func BenchmarkSeriesStd(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Std()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Std()
+			}
+		})
 	}
 }
 
@@ -3553,14 +3691,60 @@ func TestSeriesStd(t *testing.T) {
 }
 
 func BenchmarkSeriesMin(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Min()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Min()
+			}
+		})
 	}
 }
 
@@ -3700,14 +3884,60 @@ func TestSeriesMin(t *testing.T) {
 }
 
 func BenchmarkSeriesMax(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Max()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Max()
+			}
+		})
 	}
 }
 
@@ -3847,14 +4077,60 @@ func TestSeriesMax(t *testing.T) {
 }
 
 func BenchmarkSeriesQ1(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Q1()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Q1()
+			}
+		})
 	}
 }
 
@@ -3994,14 +4270,60 @@ func TestSeriesQ1(t *testing.T) {
 }
 
 func BenchmarkSeriesQ2(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Q2()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Q2()
+			}
+		})
 	}
 }
 
@@ -4141,14 +4463,60 @@ func TestSeriesQ2(t *testing.T) {
 }
 
 func BenchmarkSeriesQ3(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
-	if err != nil {
-		b.Error(err)
+	benchmarks := []struct {
+		name string
+		ser  Series
+	}{
+		{
+			"459 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Salary")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"90837 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("est_diameter_min")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"4857378 Points",
+			func() Series {
+				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("Close")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
 	}
 	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		testDf.series[4].Q3()
+	for _, bm := range benchmarks {
+		b.Run(bm.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				bm.ser.Q3()
+			}
+		})
 	}
 }
 
@@ -4288,7 +4656,7 @@ func TestSeriesQ3(t *testing.T) {
 }
 
 func BenchmarkSeriesDescribe(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
 	if err != nil {
 		b.Error(err)
 	}
@@ -4359,7 +4727,7 @@ func TestSeriesDescribe(t *testing.T) {
 }
 
 func BenchmarkSeriesValueCounts(b *testing.B) {
-	testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+	testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
 	if err != nil {
 		b.Error(err)
 	}
