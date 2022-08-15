@@ -6,7 +6,6 @@ import (
 	"os"
 	"runtime"
 	"sort"
-	"sync"
 	"text/tabwriter"
 )
 
@@ -269,44 +268,90 @@ func (s *Series) Count() StatsResult {
 
 // Mean returns the mean of the elements in a column.
 func (s *Series) Mean() StatsResult {
+	// conc 2
+
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Mean", math.NaN(), err}
 	}
 
+	done := make(chan struct{})
+	ch := make(chan float64)
 	n := runtime.NumCPU()
-	segment := make([][]float64, 0, n)
+
 	size := (len(data) + n - 1) / n
+	segNum := 0
 	for i := 0; i < len(data); i += size {
+		segNum++
 		end := i + size
 		if end > len(data) {
 			end = len(data)
 		}
-		segment = append(segment, data[i:end])
-	}
-	result := make([]float64, n)
-	var wg sync.WaitGroup
-	wg.Add(n)
 
-	for i, values := range segment {
-		go func(index int, sublist []float64) {
-			defer wg.Done()
+		seg := data[i:end]
+		go func() {
 			sum := 0.0
-			for _, number := range sublist {
-				sum += number
+			for j := range seg {
+				sum += seg[j]
 			}
-			result[index] = sum
-		}(i, values)
+			ch <- sum
+		}()
 	}
-	wg.Wait()
 
 	mean := 0.0
-	for _, segSum := range result {
-		mean += segSum
+	for i := 0; i < segNum; i++ {
+		mean += <-ch
 	}
+	close(done)
+
+	<-done
 	mean /= float64(len(data))
 	roundedMean := math.Round(mean*1000) / 1000
 	return StatsResult{"Mean", roundedMean, nil}
+
+	// conc 1
+
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Mean", math.NaN(), err}
+	// }
+
+	// n := runtime.NumCPU()
+	// segment := make([][]float64, 0, n)
+	// size := (len(data) + n - 1) / n
+	// for i := 0; i < len(data); i += size {
+	// 	end := i + size
+	// 	if end > len(data) {
+	// 		end = len(data)
+	// 	}
+	// 	segment = append(segment, data[i:end])
+	// }
+	// result := make([]float64, n)
+	// var wg sync.WaitGroup
+	// wg.Add(n)
+
+	// for i, values := range segment {
+	// 	go func(index int, sublist []float64) {
+	// 		defer wg.Done()
+	// 		sum := 0.0
+	// 		for _, number := range sublist {
+	// 			sum += number
+	// 		}
+	// 		result[index] = sum
+	// 	}(i, values)
+	// }
+	// wg.Wait()
+
+	// mean := 0.0
+	// for _, segSum := range result {
+	// 	mean += segSum
+	// }
+	// mean /= float64(len(data))
+	// roundedMean := math.Round(mean*1000) / 1000
+	// return StatsResult{"Mean", roundedMean, nil}
+
+	// sequential
+
 	// mean := 0.0
 
 	// data, err := interface2F64Slice(s.data)
