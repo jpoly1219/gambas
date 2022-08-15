@@ -1,6 +1,11 @@
 package gambas
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"strings"
+	"time"
+)
 
 // CreateRangeIndex takes the length of an Index and creates a RangeIndex.
 // RangeIndex is an index that spans from 0 to the length of the index.
@@ -116,4 +121,61 @@ func NewIndexData(index [][]interface{}, names []string) (IndexData, error) {
 	indexData.names = names
 
 	return indexData, nil
+}
+
+/* Sample generator */
+
+// NewSampleDataFrame creates a sample DataFrame object.
+// colNameDtype defines each column's name and dtype.
+// length controls the length of columns.
+// You can choose certain columns to be indexes, or just leave this as nil.
+func NewSampleDataFrame(colNameDtype map[string]string, length int, indexCols []string) (DataFrame, error) {
+	rand.Seed(time.Now().UnixNano())
+
+	newDfData := make([][]interface{}, 0)
+	newDfColumns := make([]string, 0)
+	for name, dtype := range colNameDtype {
+		newDfColumns = append(newDfColumns, name)
+		data := make([]interface{}, 0)
+
+		switch dtype {
+		case "bool":
+			for i := 0; i < length; i++ {
+				if rand.Intn(2) == 0 {
+					data = append(data, false)
+				} else {
+					data = append(data, true)
+				}
+			}
+		case "int":
+			for i := 0; i < length; i++ {
+				data = append(data, rand.Intn(100))
+			}
+		case "float64":
+			for i := 0; i < length; i++ {
+				data = append(data, 100*rand.Float64())
+			}
+		case "string":
+			var sb strings.Builder
+			charset := "abcdefghijklmnopqrstuvwxyz"
+			for i := 0; i < length; i++ {
+				for j := 0; j < 8; j++ {
+					sb.WriteByte(charset[rand.Intn(len(charset))])
+				}
+				data = append(data, sb.String())
+				sb.Reset()
+			}
+		default:
+			return DataFrame{}, fmt.Errorf("invalid data type")
+		}
+
+		newDfData = append(newDfData, data)
+	}
+
+	newDf, err := NewDataFrame(newDfData, newDfColumns, indexCols)
+	if err != nil {
+		return DataFrame{}, err
+	}
+
+	return newDf, nil
 }
