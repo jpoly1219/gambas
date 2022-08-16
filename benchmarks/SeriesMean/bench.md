@@ -47,3 +47,13 @@ BenchmarkSeriesMean/1000000_Points-8        2766           8039915 ns/op        
 BenchmarkSeriesMean/10000000_Points-8        258          93566885 ns/op        492001106 B/op        59 allocs/op
 PASS
 ok      github.com/jpoly1219/gambas     233.017s
+
+# Fit
+Linear regression: f(x) = a*x + b, x-axis = # of data points, y-axis = average time taken per operation in ns
+- seq: a = 10.0178855210433, b = -218611.315987982
+- conc1: a = 9.43244778948078, b = -198224.78642987
+- conc2: a = 9.36448751306933, b = -190408.520391392
+Intersections:
+- seq, conc1: 34822.712, 130238.629
+- seq, conc2: 43163.272, 213793.398
+- conc1, conc2: 115012.276, 886622.498
