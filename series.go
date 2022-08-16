@@ -326,9 +326,10 @@ func (s *Series) Mean() StatsResult {
 	// 	}
 	// 	segment = append(segment, data[i:end])
 	// }
+
 	// result := make([]float64, n)
 	// var wg sync.WaitGroup
-	// wg.Add(n)
+	// wg.Add(len(segment))
 
 	// for i, values := range segment {
 	// 	go func(index int, sublist []float64) {
