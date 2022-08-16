@@ -372,3 +372,34 @@ func TestNewIndexData(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkNewSampleDataFrame(b *testing.B) {
+
+}
+
+func TestNewSampleDataFrame(t *testing.T) {
+	type newSampleDataFrameTest struct {
+		arg1 map[string]string
+		arg2 int
+		arg3 []string
+	}
+	newSampleDataFrameTests := []newSampleDataFrameTest{
+		{
+			map[string]string{
+				"title":  "string",
+				"genre":  "string",
+				"author": "string",
+				"rating": "float64",
+			},
+			10,
+			nil,
+		},
+	}
+	for _, test := range newSampleDataFrameTests {
+		output, err := NewSampleDataFrame(test.arg1, test.arg2, test.arg3)
+		if err != nil {
+			t.Fatalf("err %v", err)
+		}
+		output.Print()
+	}
+}
