@@ -279,7 +279,6 @@ func (s *Series) Mean() StatsResult {
 		return StatsResult{"Mean", math.NaN(), err}
 	}
 
-	done := make(chan struct{})
 	ch := make(chan float64)
 	n := runtime.NumCPU()
 
@@ -306,12 +305,9 @@ func (s *Series) Mean() StatsResult {
 	for i := 0; i < segNum; i++ {
 		mean += <-ch
 	}
-	close(done)
 
-	<-done
 	mean /= float64(len(data))
-	roundedMean := math.Round(mean*1000) / 1000
-	return StatsResult{"Mean", roundedMean, nil}
+	return StatsResult{"Mean", math.Round(mean*1000) / 1000, nil}
 
 	// conc 1
 
@@ -419,11 +415,9 @@ func (s *Series) Std() StatsResult {
 	if err != nil {
 		return StatsResult{"Std", math.NaN(), err}
 	}
-	// sort.Float64s(data)
 
 	n := runtime.NumCPU()
 	ch := make(chan float64)
-	done := make(chan struct{})
 	size := (len(data) + n - 1) / n
 	segNum := 0
 
@@ -450,11 +444,8 @@ func (s *Series) Std() StatsResult {
 	for i := 0; i < segNum; i++ {
 		numerator += <-ch
 	}
-	close(done)
 
-	<-done
 	std := math.Sqrt(numerator / float64(len(data)-1))
-
 	return StatsResult{"Std", math.Round(std*1000) / 1000, nil}
 }
 
