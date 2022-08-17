@@ -270,6 +270,10 @@ func (s *Series) Count() StatsResult {
 func (s *Series) Mean() StatsResult {
 	// conc 2
 
+	if len(s.data) == 0 {
+		return StatsResult{"Mean", math.NaN(), fmt.Errorf("no elements in this column")}
+	}
+
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Mean", math.NaN(), err}
@@ -416,7 +420,7 @@ func (s *Series) Std() StatsResult {
 	if err != nil {
 		return StatsResult{"Std", math.NaN(), err}
 	}
-	sort.Float64s(data)
+	// sort.Float64s(data)
 
 	numerator := 0.0
 	for _, v := range data {
