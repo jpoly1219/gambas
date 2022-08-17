@@ -410,7 +410,6 @@ func (s *Series) Median() StatsResult {
 
 // Std returns the sample standard deviation of the elements in a column.
 func (s *Series) Std() StatsResult {
-	std := 0.0
 	meanResult := s.Mean() // this also checks that all data can be converted to float64.
 	if meanResult.Err != nil {
 		return StatsResult{"Std", math.NaN(), meanResult.Err}
@@ -422,15 +421,41 @@ func (s *Series) Std() StatsResult {
 	}
 	// sort.Float64s(data)
 
-	numerator := 0.0
-	for _, v := range data {
-		temp := math.Pow(v-meanResult.Result, 2)
-		numerator += temp
-	}
-	std = math.Sqrt(numerator / float64(len(data)-1))
-	roundedStd := math.Round(std*1000) / 1000
+	n := runtime.NumCPU()
+	ch := make(chan float64)
+	done := make(chan struct{})
+	size := (len(data) + n - 1) / n
+	segNum := 0
 
-	return StatsResult{"Std", roundedStd, nil}
+	for i := 0; i < len(data); i += size {
+		segNum++
+
+		end := i + size
+		if end > len(data) {
+			end = len(data)
+		}
+
+		segment := data[i:end]
+		go func(sublist []float64) {
+			temp := 0.0
+			for _, v := range sublist {
+				temp += math.Pow(v-meanResult.Result, 2)
+			}
+			ch <- temp
+		}(segment)
+
+	}
+
+	numerator := 0.0
+	for i := 0; i < segNum; i++ {
+		numerator += <-ch
+	}
+	close(done)
+
+	<-done
+	std := math.Sqrt(numerator / float64(len(data)-1))
+
+	return StatsResult{"Std", math.Round(std*1000) / 1000, nil}
 }
 
 // Min returns the smallest element in a column.
