@@ -378,30 +378,50 @@ func (s *Series) Mean() StatsResult {
 
 // Median returns the median of the elements in a column.
 func (s *Series) Median() StatsResult {
+	// new median algorithm using the quickselect algorithm and Hoare's partition scheme
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Median", math.NaN(), err}
 	}
-	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
 		return StatsResult{"Median", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
+
+	median := 0.0
 	if total%2 == 0 {
-		lower := data[total/2-1]
-		upper := data[total/2]
-
-		median := (lower + upper) / 2
-		roundedMedian := math.Round(median*1000) / 1000
-
-		return StatsResult{"Median", roundedMedian, nil}
+		median = 0.5 * (quickSelect(data, 0, total-1, total/2-1) + quickSelect(data, 0, total-1, total/2))
 	} else {
-		median := data[(total+1)/2-1]
-		roundedMedian := math.Round(median*1000) / 1000
-
-		return StatsResult{"Median", roundedMedian, nil}
+		median = quickSelect(data, 0, total-1, total/2)
 	}
+
+	return StatsResult{"Median", math.Round(median*1000) / 1000, nil}
+
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Median", math.NaN(), err}
+	// }
+	// sort.Float64s(data)
+
+	// total := len(data)
+	// if total == 0 {
+	// 	return StatsResult{"Median", math.NaN(), fmt.Errorf("no elements in this column")}
+	// }
+	// if total%2 == 0 {
+	// 	lower := data[total/2-1]
+	// 	upper := data[total/2]
+
+	// 	median := (lower + upper) / 2
+	// 	roundedMedian := math.Round(median*1000) / 1000
+
+	// 	return StatsResult{"Median", roundedMedian, nil}
+	// } else {
+	// 	median := data[(total+1)/2-1]
+	// 	roundedMedian := math.Round(median*1000) / 1000
+
+	// 	return StatsResult{"Median", roundedMedian, nil}
+	// }
 }
 
 // Std returns the sample standard deviation of the elements in a column.
