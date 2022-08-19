@@ -434,3 +434,40 @@ func generateAlphabets(i int) string {
 
 	return result
 }
+
+func quickSelect(arr []float64, lo int, hi int, k int) float64 {
+	if lo == hi {
+		return arr[k]
+	}
+
+	pivotIndex := hoarePartition(arr, lo, hi)
+
+	if k < pivotIndex {
+		return quickSelect(arr, lo, pivotIndex, k)
+	} else if k > pivotIndex {
+		return quickSelect(arr, pivotIndex+1, hi, k)
+	} else {
+		return arr[k]
+	}
+}
+
+func hoarePartition(arr []float64, lo int, hi int) int {
+	pivot := arr[(lo+hi)/2]
+	i := lo - 1
+	j := hi + 1
+
+	for {
+		for ok := true; ok; ok = arr[i] < pivot {
+			i++
+		}
+		for ok := true; ok; ok = arr[j] > pivot {
+			j--
+		}
+
+		if i >= j {
+			return j
+		}
+
+		arr[i], arr[j] = arr[j], arr[i]
+	}
+}
