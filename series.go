@@ -475,18 +475,65 @@ func (s *Series) Min() StatsResult {
 	if err != nil {
 		return StatsResult{"Min", math.NaN(), err}
 	}
-	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
 		return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
-	return StatsResult{"Min", data[0], nil}
+	min := math.MaxFloat64
+	for i := range data {
+		if data[i] < min {
+			min = data[i]
+		}
+	}
+
+	return StatsResult{"Min", min, nil}
+
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Min", math.NaN(), err}
+	// }
+
+	// total := len(data)
+	// if total == 0 {
+	// 	return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
+	// }
+
+	// min := quickSelect(data, 0, total-1, 0)
+
+	// return StatsResult{"Min", min, nil}
+
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Min", math.NaN(), err}
+	// }
+	// sort.Float64s(data)
+
+	// total := len(data)
+	// if total == 0 {
+	// 	return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
+	// }
+
+	// return StatsResult{"Min", data[0], nil}
 }
 
 // Max returns the largest element is a column.
 func (s *Series) Max() StatsResult {
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Min", math.NaN(), err}
+	// }
+
+	// total := len(data)
+	// if total == 0 {
+	// 	return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
+	// }
+
+	// max := quickSelect(data, 0, total-1, total-1)
+
+	// return StatsResult{"Min", max, nil}
+
 	data, err := interface2F64Slice(s.data)
 	if err != nil {
 		return StatsResult{"Max", math.NaN(), err}
