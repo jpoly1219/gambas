@@ -4169,13 +4169,13 @@ func BenchmarkSeriesMax(b *testing.B) {
 		ser  Series
 	}{
 		{
-			"459 Points",
+			"1 Points",
 			func() Series {
-				testDf, err := ReadCsv("testfiles/nba.csv", []string{"Name"})
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 1, nil)
 				if err != nil {
 					b.Error(err)
 				}
-				testSer, err := testDf.LocCol("Salary")
+				testSer, err := testDf.LocCol("rating")
 				if err != nil {
 					b.Error(err)
 				}
@@ -4183,13 +4183,13 @@ func BenchmarkSeriesMax(b *testing.B) {
 			}(),
 		},
 		{
-			"90837 Points",
+			"10 Points",
 			func() Series {
-				testDf, err := ReadCsv("testfiles/neo_v2.csv", []string{"id"})
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 10, nil)
 				if err != nil {
 					b.Error(err)
 				}
-				testSer, err := testDf.LocCol("est_diameter_min")
+				testSer, err := testDf.LocCol("rating")
 				if err != nil {
 					b.Error(err)
 				}
@@ -4197,13 +4197,83 @@ func BenchmarkSeriesMax(b *testing.B) {
 			}(),
 		},
 		{
-			"4857378 Points",
+			"100 Points",
 			func() Series {
-				testDf, err := ReadCsv("testfiles/bitstampUSD_1-min_data_2012-01-01_to_2021-03-31.csv", []string{"Timestamp"})
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 100, nil)
 				if err != nil {
 					b.Error(err)
 				}
-				testSer, err := testDf.LocCol("Close")
+				testSer, err := testDf.LocCol("rating")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"1000 Points",
+			func() Series {
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 1000, nil)
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("rating")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"10000 Points",
+			func() Series {
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 10000, nil)
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("rating")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"100000 Points",
+			func() Series {
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 100000, nil)
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("rating")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"1000000 Points",
+			func() Series {
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 1000000, nil)
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("rating")
+				if err != nil {
+					b.Error(err)
+				}
+				return testSer
+			}(),
+		},
+		{
+			"10000000 Points",
+			func() Series {
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 10000000, nil)
+				if err != nil {
+					b.Error(err)
+				}
+				testSer, err := testDf.LocCol("rating")
 				if err != nil {
 					b.Error(err)
 				}
@@ -4215,7 +4285,7 @@ func BenchmarkSeriesMax(b *testing.B) {
 	for _, bm := range benchmarks {
 		b.Run(bm.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				bm.ser.Max()
+				bm.ser.Std()
 			}
 		})
 	}
