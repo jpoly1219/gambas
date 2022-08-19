@@ -32,7 +32,7 @@ BenchmarkSeriesMin/10000000_Points-8          88         253558259 ns/op        
 PASS
 ok      github.com/jpoly1219/gambas     218.184s
 
-# New (using for loop over data)
+# New (using for loop over data, i, data)
 goos: linux
 goarch: amd64
 pkg: github.com/jpoly1219/gambas
@@ -47,5 +47,21 @@ BenchmarkSeriesMin/1000000_Points-8         1023          22001633 ns/op        
 BenchmarkSeriesMin/10000000_Points-8          87         255599807 ns/op        984002509 B/op       124 allocs/op
 PASS
 ok      github.com/jpoly1219/gambas     216.875s
+
+# New (using for loop over data, i only)
+goos: linux
+goarch: amd64
+pkg: github.com/jpoly1219/gambas
+cpu: Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz
+BenchmarkSeriesMin/1_Points-8           25311508               933.1 ns/op           368 B/op          7 allocs/op
+BenchmarkSeriesMin/10_Points-8           5208818              4564 ns/op            1488 B/op         27 allocs/op
+BenchmarkSeriesMin/100_Points-8          2348414             10166 ns/op            5552 B/op         42 allocs/op
+BenchmarkSeriesMin/1000_Points-8          583315             39729 ns/op           51888 B/op         50 allocs/op
+BenchmarkSeriesMin/10000_Points-8          92572            253265 ns/op          716720 B/op         64 allocs/op
+BenchmarkSeriesMin/100000_Points-8          9838           2424566 ns/op         8204209 B/op         82 allocs/op
+BenchmarkSeriesMin/1000000_Points-8         1065          21801945 ns/op        83357620 B/op        102 allocs/op
+BenchmarkSeriesMin/10000000_Points-8          92         242466478 ns/op        984002533 B/op       124 allocs/op
+PASS
+ok      github.com/jpoly1219/gambas     237.016s
 
 # Fit
