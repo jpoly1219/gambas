@@ -520,6 +520,24 @@ func (s *Series) Min() StatsResult {
 
 // Max returns the largest element is a column.
 func (s *Series) Max() StatsResult {
+	data, err := interface2F64Slice(s.data)
+	if err != nil {
+		return StatsResult{"Max", math.NaN(), err}
+	}
+
+	total := len(data)
+	if total == 0 {
+		return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
+	}
+
+	max := -1.0 * math.MaxFloat64
+	for i := range data {
+		if data[i] > max {
+			max = data[i]
+		}
+	}
+
+	return StatsResult{"Max", max, nil}
 	// data, err := interface2F64Slice(s.data)
 	// if err != nil {
 	// 	return StatsResult{"Min", math.NaN(), err}
@@ -534,18 +552,18 @@ func (s *Series) Max() StatsResult {
 
 	// return StatsResult{"Min", max, nil}
 
-	data, err := interface2F64Slice(s.data)
-	if err != nil {
-		return StatsResult{"Max", math.NaN(), err}
-	}
-	sort.Float64s(data)
+	// data, err := interface2F64Slice(s.data)
+	// if err != nil {
+	// 	return StatsResult{"Max", math.NaN(), err}
+	// }
+	// sort.Float64s(data)
 
-	total := len(data)
-	if total == 0 {
-		return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
-	}
+	// total := len(data)
+	// if total == 0 {
+	// 	return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
+	// }
 
-	return StatsResult{"Max", data[total-1], nil}
+	// return StatsResult{"Max", data[total-1], nil}
 }
 
 // Q1 returns the lower quartile (25%) of the elements in a column.
