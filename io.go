@@ -9,6 +9,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"strings"
 
 	"github.com/xuri/excelize/v2"
 )
@@ -16,6 +17,12 @@ import (
 // ReadCsv reads a CSV file and returns a new DataFrame object.
 // It is recommended to generate pathToFile using `filepath.Join`.
 func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
+	return ReadCsvWithSep(pathToFile, indexCols, ",")
+}
+
+// ReadCsvWithSep reads a CSV file with special sep and returns a new DataFrame object.
+// It is recommended to generate pathToFile using `filepath.Join`.
+func ReadCsvWithSep(pathToFile string, indexCols []string, sep string) (DataFrame, error) {
 	// read line by line
 	f, err := os.Open(pathToFile)
 	if err != nil {
@@ -35,6 +42,8 @@ func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
 			}
 			log.Fatal(err)
 		}
+		newRow := strings.Join(row, "")
+		row = strings.Split(newRow, sep)
 		// first line is column name
 		if rowNum == 0 {
 			// add to columnArray
@@ -66,6 +75,13 @@ func ReadCsv(pathToFile string, indexCols []string) (DataFrame, error) {
 // WriteCsv writes a DataFrame object to CSV file.
 // It is recommended to generate pathToFile using `filepath.Join`.
 func WriteCsv(df DataFrame, pathToFile string, skipColumnLabel bool) (os.FileInfo, error) {
+	return WriteCsvWithSep(df, pathToFile, skipColumnLabel, ",")
+}
+
+// WriteCsvWithSep writes a DataFrame object to CSV file.
+// The param is sep but head and index is also needed
+// It is recommended to generate pathToFile using `filepath.Join`.
+func WriteCsvWithSep(df DataFrame, pathToFile string, skipColumnLabel bool, sep string) (os.FileInfo, error) {
 	f, err := os.Create(pathToFile)
 	if err != nil {
 		return nil, err
@@ -82,7 +98,7 @@ func WriteCsv(df DataFrame, pathToFile string, skipColumnLabel bool) (os.FileInf
 			}
 
 			if i+1 != len(df.columns) {
-				_, err := w.WriteString(",")
+				_, err := w.WriteString(fmt.Sprintf("%s", sep))
 				if err != nil {
 					return nil, err
 				}
@@ -100,7 +116,7 @@ func WriteCsv(df DataFrame, pathToFile string, skipColumnLabel bool) (os.FileInf
 			}
 
 			if j+1 != len(df.series) {
-				_, err := w.WriteString(",")
+				_, err := w.WriteString(fmt.Sprintf("%s", sep))
 				if err != nil {
 					return nil, err
 				}

@@ -989,3 +989,27 @@ func (df *DataFrame) GroupBy(by ...string) (GroupBy, error) {
 
 	return *gb, nil
 }
+
+func (df DataFrame) Shape() (shape [2]int) {
+	shape[0] = df.index.Len()
+	shape[1] = len(df.columns)
+	return shape
+}
+
+func (df DataFrame) GetRecords() (resMapList []map[string]interface{}) {
+	df.Print()
+	fmt.Println(df.Shape())
+	resMapList = make([]map[string]interface{}, df.Shape()[0])
+	for cindex, col := range df.columns {
+		for sindex := range resMapList {
+			resMap := resMapList[sindex]
+			if resMap == nil {
+				resMap = make(map[string]interface{})
+			}
+			s_data := df.series[cindex].Data()
+			resMap[col] = s_data[sindex]
+			resMapList[sindex] = resMap
+		}
+	}
+	return
+}
