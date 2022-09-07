@@ -4,6 +4,39 @@
 goos: linux
 goarch: amd64
 pkg: github.com/jpoly1219/gambas
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkSeriesStd/1_Points-12          277077998               83.52 ns/op           16 B/op          2 allocs/op
+BenchmarkSeriesStd/10_Points-12         40704534               567.6 ns/op           496 B/op         10 allocs/op
+BenchmarkSeriesStd/100_Points-12         6353716              3765 ns/op            4080 B/op         16 allocs/op
+BenchmarkSeriesStd/1000_Points-12         628785             37184 ns/op           50416 B/op         24 allocs/op
+BenchmarkSeriesStd/10000_Points-12         60936            386015 ns/op          715248 B/op         38 allocs/op
+BenchmarkSeriesStd/100000_Points-12         5313           4043989 ns/op         8202736 B/op         56 allocs/op
+BenchmarkSeriesStd/1000000_Points-12         565          41433648 ns/op        83356145 B/op         76 allocs/op
+BenchmarkSeriesStd/10000000_Points-12         48         454171096 ns/op        984001028 B/op        98 allocs/op
+PASS
+ok      github.com/jpoly1219/gambas     218.050s
+
+# Concurrency
+goos: linux
+goarch: amd64
+pkg: github.com/jpoly1219/gambas
+cpu: Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz
+BenchmarkSeriesStd/1_Points-12          11311244              2091 ns/op             368 B/op          7 allocs/op
+BenchmarkSeriesStd/10_Points-12           683043             33398 ns/op            2288 B/op         42 allocs/op
+BenchmarkSeriesStd/100_Points-12          618217             39451 ns/op            6192 B/op         54 allocs/op
+BenchmarkSeriesStd/1000_Points-12         247261             89863 ns/op           52528 B/op         62 allocs/op
+BenchmarkSeriesStd/10000_Points-12         66519            355339 ns/op          717361 B/op         76 allocs/op
+BenchmarkSeriesStd/100000_Points-12         7952           2611768 ns/op         8204850 B/op         94 allocs/op
+BenchmarkSeriesStd/1000000_Points-12        1105          21021578 ns/op        83358262 B/op        114 allocs/op
+BenchmarkSeriesStd/10000000_Points-12         91         237870411 ns/op        984003155 B/op       136 allocs/op
+PASS
+ok      github.com/jpoly1219/gambas     203.410s
+
+*old*
+# No Concurrency (Mean No Concurrency)
+goos: linux
+goarch: amd64
+pkg: github.com/jpoly1219/gambas
 cpu: Intel(R) Core(TM) i7-7700K CPU @ 4.20GHz
 BenchmarkSeriesStd/1_Points-8           309436428               77.26 ns/op           16 B/op          2 allocs/op
 BenchmarkSeriesStd/10_Points-8          44632078               533.9 ns/op           496 B/op         10 allocs/op
