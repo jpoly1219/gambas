@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -347,38 +348,38 @@ func containsSlice(s1 [][]interface{}, s2 []interface{}) bool {
 
 // median() returns the median of the elements in an array.
 func median(data []float64) (float64, error) {
-	// median := 0.0
-	// sort.Float64s(data)
-
-	// total := len(data)
-	// if total == 0 {
-	// 	return math.NaN(), fmt.Errorf("no elements in this column")
-	// }
-	// if total%2 == 0 {
-	// 	lower := data[total/2-1]
-	// 	upper := data[total/2]
-
-	// 	median = (lower + upper) / 2
-	// } else {
-	// 	median := data[(total+1)/2-1]
-	// 	return median, nil
-	// }
-
-	// return median, nil
+	median := 0.0
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
 		return math.NaN(), fmt.Errorf("no elements in this column")
 	}
-
-	median := 0.0
 	if total%2 == 0 {
-		median = 0.5 * (quickSelect(data, 0, total-1, total/2-1) + quickSelect(data, 0, total-1, total/2))
+		lower := data[total/2-1]
+		upper := data[total/2]
+
+		median = (lower + upper) / 2
 	} else {
-		median = quickSelect(data, 0, total-1, total/2)
+		median := data[(total+1)/2-1]
+		return median, nil
 	}
 
-	return math.Round(median*1000) / 1000, nil
+	return median, nil
+
+	// total := len(data)
+	// if total == 0 {
+	// 	return math.NaN(), fmt.Errorf("no elements in this column")
+	// }
+
+	// median := 0.0
+	// if total%2 == 0 {
+	// 	median = 0.5 * (quickSelect(data, 0, total-1, total/2-1) + quickSelect(data, 0, total-1, total/2))
+	// } else {
+	// 	median = quickSelect(data, 0, total-1, total/2)
+	// }
+
+	// return math.Round(median*1000) / 1000, nil
 }
 
 // copyDf takes a source DataFrame and returns a copy of it with different memory address.
