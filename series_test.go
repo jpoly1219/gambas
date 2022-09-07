@@ -5123,8 +5123,8 @@ func TestSeriesQ3(t *testing.T) {
 			},
 			StatsResult{
 				"Q3",
-				30.0,
-				nil,
+				math.NaN(),
+				fmt.Errorf("there must be at least 4 data points"),
 			},
 		},
 		{
@@ -5157,7 +5157,7 @@ func TestSeriesQ3(t *testing.T) {
 			},
 			StatsResult{
 				"Q3",
-				180.6,
+				175.85,
 				nil,
 			},
 		},
@@ -5178,8 +5178,8 @@ func TestSeriesQ3(t *testing.T) {
 			},
 			StatsResult{
 				"Q3",
-				182.5,
-				nil,
+				math.NaN(),
+				fmt.Errorf("there must be at least 4 data points"),
 			},
 		},
 		{
@@ -5198,8 +5198,8 @@ func TestSeriesQ3(t *testing.T) {
 			},
 			StatsResult{
 				"Q3",
-				178.7,
-				nil,
+				math.NaN(),
+				fmt.Errorf("there must be at least 4 data points"),
 			},
 		},
 	}
