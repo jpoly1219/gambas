@@ -4958,9 +4958,9 @@ func BenchmarkSeriesQ3(b *testing.B) {
 		ser  Series
 	}{
 		{
-			"1 Points",
+			"4 Points",
 			func() Series {
-				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 1, nil)
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 4, nil)
 				if err != nil {
 					b.Error(err)
 				}
