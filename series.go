@@ -398,46 +398,14 @@ func (s *Series) Max() StatsResult {
 	if err != nil {
 		return StatsResult{"Max", math.NaN(), err}
 	}
+	sort.Float64s(data)
 
 	total := len(data)
 	if total == 0 {
 		return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
 	}
 
-	max := -1.0 * math.MaxFloat64
-	for i := range data {
-		if data[i] > max {
-			max = data[i]
-		}
-	}
-
-	return StatsResult{"Max", max, nil}
-	// data, err := interface2F64Slice(s.data)
-	// if err != nil {
-	// 	return StatsResult{"Min", math.NaN(), err}
-	// }
-
-	// total := len(data)
-	// if total == 0 {
-	// 	return StatsResult{"Min", math.NaN(), fmt.Errorf("no elements in this column")}
-	// }
-
-	// max := quickSelect(data, 0, total-1, total-1)
-
-	// return StatsResult{"Min", max, nil}
-
-	// data, err := interface2F64Slice(s.data)
-	// if err != nil {
-	// 	return StatsResult{"Max", math.NaN(), err}
-	// }
-	// sort.Float64s(data)
-
-	// total := len(data)
-	// if total == 0 {
-	// 	return StatsResult{"Max", math.NaN(), fmt.Errorf("no elements in this column")}
-	// }
-
-	// return StatsResult{"Max", data[total-1], nil}
+	return StatsResult{"Max", data[total-1], nil}
 }
 
 // Q1 returns the lower quartile (25%) of the elements in a column.
@@ -447,21 +415,20 @@ func (s *Series) Q1() StatsResult {
 	if err != nil {
 		return StatsResult{"Q1", math.NaN(), err}
 	}
-	sort.Float64s(data)
+
+	if len(data) < 4 {
+		return StatsResult{"Q1", math.NaN(), fmt.Errorf("there must be at least 4 data points")}
+	}
 
 	if len(data)%2 == 0 {
 		lower := data[:len(data)/2]
-		q1, err := median(lower)
-		if err != nil {
-			return StatsResult{"Q1", math.NaN(), err}
-		}
+		total := len(lower)
+		q1 := 0.5 * (quickSelect(lower, 0, total-1, total/2-1) + quickSelect(lower, 0, total-1, total/2))
 		return StatsResult{"Q1", q1, nil}
 	} else {
 		lower := data[:(len(data)-1)/2]
-		q1, err := median(lower)
-		if err != nil {
-			return StatsResult{"Q1", math.NaN(), err}
-		}
+		total := len(lower)
+		q1 := quickSelect(lower, 0, total-1, total/2)
 		return StatsResult{"Q1", q1, nil}
 	}
 }
@@ -484,21 +451,20 @@ func (s *Series) Q3() StatsResult {
 	if err != nil {
 		return StatsResult{"Q3", math.NaN(), err}
 	}
-	sort.Float64s(data)
+
+	if len(data) < 4 {
+		return StatsResult{"Q3", math.NaN(), fmt.Errorf("there must be at least 4 data points")}
+	}
 
 	if len(data)%2 == 0 {
 		upper := data[len(data)/2:]
-		q3, err := median(upper)
-		if err != nil {
-			return StatsResult{"Q3", math.NaN(), err}
-		}
+		total := len(upper)
+		q3 := 0.5 * (quickSelect(upper, 0, total-1, total/2-1) + quickSelect(upper, 0, total-1, total/2))
 		return StatsResult{"Q3", q3, nil}
 	} else {
 		upper := data[(len(data)+1)/2:]
-		q3, err := median(upper)
-		if err != nil {
-			return StatsResult{"Q3", math.NaN(), err}
-		}
+		total := len(upper)
+		q3 := quickSelect(upper, 0, total-1, total/2)
 		return StatsResult{"Q3", q3, nil}
 	}
 }
