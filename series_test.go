@@ -4432,9 +4432,9 @@ func BenchmarkSeriesQ1(b *testing.B) {
 		ser  Series
 	}{
 		{
-			"1 Points",
+			"4 Points",
 			func() Series {
-				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 1, nil)
+				testDf, err := NewSampleDataFrame(map[string]string{"title": "string", "rating": "float64"}, 4, nil)
 				if err != nil {
 					b.Error(err)
 				}
@@ -4597,8 +4597,8 @@ func TestSeriesQ1(t *testing.T) {
 			},
 			StatsResult{
 				"Q1",
-				19.0,
-				nil,
+				math.NaN(),
+				fmt.Errorf("there must be at least 4 data points"),
 			},
 		},
 		{
@@ -4631,7 +4631,7 @@ func TestSeriesQ1(t *testing.T) {
 			},
 			StatsResult{
 				"Q1",
-				168.65,
+				173.4,
 				nil,
 			},
 		},
@@ -4652,8 +4652,8 @@ func TestSeriesQ1(t *testing.T) {
 			},
 			StatsResult{
 				"Q1",
-				164.3,
-				nil,
+				math.NaN(),
+				fmt.Errorf("there must be at least 4 data points"),
 			},
 		},
 		{
@@ -4672,8 +4672,8 @@ func TestSeriesQ1(t *testing.T) {
 			},
 			StatsResult{
 				"Q1",
-				164.3,
-				nil,
+				math.NaN(),
+				fmt.Errorf("there must be at least 4 data points"),
 			},
 		},
 	}
